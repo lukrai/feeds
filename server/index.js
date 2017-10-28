@@ -1,0 +1,40 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const bodyParser = require('body-parser');
+const keys = require('./config/keys');
+require('./models/User');
+require('./models/Comment');
+require('./models/Feed');
+require('./models/Like');
+require('./services/passport');
+
+mongoose.connect(keys.mongoURI);
+
+const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use(
+    cookieSession({
+        maxAge: 30 * 24 * 60 * 60 * 100,
+        keys: [keys.cookieKey]
+    })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./routes/authRoutes')(app);
+require('./routes/feedRoutes')(app);
+require('./routes/likeRoutes')(app);
+
+app.get('/', (req, res) => {
+    res.send({ hi: "bla"});
+});
+
+app.listen(5000);

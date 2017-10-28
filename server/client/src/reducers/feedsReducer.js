@@ -1,0 +1,93 @@
+// import { FETCH_FEEDS } from '../actions/types';
+
+// export default function(state = [], action) {
+//   console.log(action.type+' action type')
+//     switch (action.type) {
+//       case FETCH_FEEDS:
+//       {
+//         console.log(action.payload + ' payload');
+//         return action.payload;
+//       }
+//       default:
+//         return state;
+//     }
+//   }
+  
+import {
+	FETCH_FEEDS, FETCH_FEEDS_SUCCESS, FETCH_FEEDS_FAILURE, RESET_FEEDS,
+	FETCH_FEED, FETCH_FEED_SUCCESS,  FETCH_FEED_FAILURE, RESET_ACTIVE_FEED,
+	CREATE_FEED, CREATE_FEED_SUCCESS, CREATE_FEED_FAILURE, RESET_NEW_FEED,
+	DELETE_FEED, DELETE_FEED_SUCCESS, DELETE_FEED_FAILURE, RESET_DELETED_FEED,
+  VALIDATE_FEED_FIELDS,VALIDATE_FEED_FIELDS_SUCCESS, VALIDATE_FEED_FIELDS_FAILURE, RESET_FEED_FIELDS
+} from '../actions/feeds';
+
+
+	const INITIAL_STATE = { feedsList: {feeds: [], error:null, loading: false},  
+							newFeed:{feed:null, error: null, loading: false}, 
+							activeFeed:{feed:null, error:null, loading: false}, 
+							deletedFeed: {feed: null, error:null, loading: false},
+						};
+
+export default function(state = INITIAL_STATE, action) {
+  let error;
+  switch(action.type) {
+
+  case FETCH_FEEDS:// start fetching feeds and set loading = true
+  	return { ...state, feedsList: {feeds:[], error: null, loading: true} }; 
+  case FETCH_FEEDS_SUCCESS:// return list of posts and make loading = false
+    return { ...state, feedsList: {feeds: action.payload, error:null, loading: false} };
+  case FETCH_FEEDS_FAILURE:// return error and make loading = false
+    error = action.payload || {message: action.payload.message};//2nd one is network or server down errors
+    return { ...state, feedsList: {feeds: [], error: error, loading: false} };
+  case RESET_FEEDS:// reset postList to initial state
+    return { ...state, feedsList: {feeds: [], error:null, loading: false} };
+
+  case FETCH_FEED:
+    return { ...state, activeFeed:{...state.activeFeed, loading: true}};
+  case FETCH_FEED_SUCCESS:
+    return { ...state, activeFeed: {feed: action.payload, error:null, loading: false}};
+  case FETCH_FEED_FAILURE:
+    error = action.payload || {message: action.payload.message};//2nd one is network or server down errors
+    return { ...state, activeFeed: {feed: null, error:error, loading:false}};
+  case RESET_ACTIVE_FEED:
+    return { ...state, activeFeed: {feed: null, error:null, loading: false}};
+
+  case CREATE_FEED:
+  	return {...state, newFeed: {...state.newFeed, loading: true}}
+  case CREATE_FEED_SUCCESS:
+  	return {...state, newFeed: {feed:action.payload, error:null, loading: false}}
+  case CREATE_FEED_FAILURE:
+    error = action.payload || {message: action.payload.message};//2nd one is network or server down errors
+  	return {...state, newFeed: {feed:null, error:error, loading: false}}
+  case RESET_NEW_FEED:
+  	return {...state,  newFeed:{feed:null, error:null, loading: false}}
+
+
+  case DELETE_FEED:
+   	return {...state, deletedFeed: {...state.deletedFeed, loading: true}}
+  case DELETE_FEED_SUCCESS:{
+  	return {...state, deletedFeed: {feed:action.payload, error:null, loading: false}}}
+  case DELETE_FEED_FAILURE:
+    error = action.payload || {message: action.payload.message};//2nd one is network or server down errors
+  	return {...state, deletedFeed: {feed:null, error:error, loading: false}}
+  case RESET_DELETED_FEED:
+  	return {...state,  deletedFeed:{feed:null, error:null, loading: false}}
+
+  // case VALIDATE_POST_FIELDS:
+  //   return {...state, newPost:{...state.newPost, error: null, loading: true}}
+  // case VALIDATE_POST_FIELDS_SUCCESS:
+  //   return {...state, newPost:{...state.newPost, error: null, loading: false}}
+  // case VALIDATE_POST_FIELDS_FAILURE:
+  //   let result = action.payload;
+  //   if(!result) {
+  //     error = {message: action.payload.message};
+  //   } else {
+  //     error = {title: result.title, categories: result.categories, description: result.description};
+  //   }
+  //   return {...state, newPost:{...state.newPost, error: error, loading: false}}
+  // case RESET_POST_FIELDS:
+  //   return {...state, newPost:{...state.newPost, error: null, loading: null}}
+   default:
+     return state;
+  }
+}
