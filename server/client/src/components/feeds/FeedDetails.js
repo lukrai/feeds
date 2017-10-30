@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 class FeedDetails extends Component {
   static contextTypes = {
@@ -14,10 +14,14 @@ class FeedDetails extends Component {
     }
   }
 
+  componentWillMount() {
+    this.props.resetMe();
+  }
+
   componentWillUnmount() {
     //Important! If your component is navigating based on some global state(from say componentWillReceiveProps)
     //always reset that global state back to null when you REMOUNT
-     this.props.resetMe();
+     //this.props.resetMe();
   }
 
   componentDidMount() {
@@ -46,6 +50,11 @@ class FeedDetails extends Component {
         <div className="container">
             <div className="" style={{paddingRight: '50px', paddingTop: '10px'}}>
                 <button className="btn deep-purple"  onClick={()=> {this.props.onDeleteClick(this.props.feedId,user)}}>Delete Feed</button>
+            </div>
+            <div className="" style={{paddingRight: '50px', paddingTop: '10px'}}>
+              <Link /*className="btn deep-purple" /*style={{color:'black'}}/*/ to={"/feeds/edit"}>
+                <button className="btn deep-purple">Edit</button>
+              </Link>
             </div>
             <h3>{feed.title}</h3>
             {/* <h6>Categories: {feed.pages}</h6> */}

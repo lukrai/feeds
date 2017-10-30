@@ -1,4 +1,4 @@
-import FeedsForm from '../components/feeds/FeedsForm'
+import FeedsUpdateForm from '../components/feeds/FeedsForm'
 import { resetNewFeed } from '../actions/feeds';
 import { connect } from 'react-redux';
 
@@ -18,4 +18,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeedsForm);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedsUpdateForm);

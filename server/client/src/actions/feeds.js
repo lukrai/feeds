@@ -140,10 +140,10 @@ export function resetNewFeed() {
   };
 }
 
-export function updateFeed(feed) {
+export function updateFeed(id, feed) {
     const request = axios({
         method: 'put',
-        data: email,
+        data: feed,
         url: `/api/feed/${id}`,
     });
   

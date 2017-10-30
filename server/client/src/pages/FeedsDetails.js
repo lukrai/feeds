@@ -5,27 +5,22 @@ import { deleteFeed } from '../actions/feeds';
 import FeedDetailsContainer from '../containers/FeedDetailsContainer.js';
 
 class FeedsDetails extends Component {
-  static contextTypes = {
-    router: PropTypes.object
-  };
+    static contextTypes = {
+        router: PropTypes.object
+    };
 
-  onDeleteClick() {
-    console.log("FeedDetail pages");
-    this.props.deleteFeed(this.props.params.id)
-      .then(() => { this.context.router.push('/'); });
-  }
+    
+    render() {
+        console.log(this.props);
+        return (
+            //console.log(this.props);
+            <div className='container'>
+                {/* <Header type="posts_show" postId={this.props.params.id}/> */}
 
-  render() {
-    console.log(this.props);
-    return (
-        //console.log(this.props);
-      <div className='container'>
-        {/* <Header type="posts_show" postId={this.props.params.id}/> */}
-
-        <FeedDetailsContainer id={this.props.match.params.id}/>
-      </div>
-    );
-  }
+                <FeedDetailsContainer id={this.props.match.params.id}/>
+            </div>
+        );
+    }
 }
 
 export default FeedsDetails;
