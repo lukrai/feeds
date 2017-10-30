@@ -105,33 +105,33 @@ export function fetchFeedsFailure(error) {
 
 
 export function createFeed(props) {
-  const request = axios({
-    method: 'post',
-    data: props,
-    url: '/api/feed',
-    // headers: {
-    //   'Authorization': `Bearer ${tokenFromStorage}`
-    // }
-  });
+    const request = axios({
+        method: 'post',
+        data: props,
+        url: '/api/feed',
+        // headers: {
+        //   'Authorization': `Bearer ${tokenFromStorage}`
+        // }
+    });
 
-  return {
-    type: CREATE_FEED,
-    payload: request
-  };
+    return {
+        type: CREATE_FEED,
+        payload: request
+    };
 }
 
 export function createFeedSuccess(newFeed) {
-  return {
-    type: CREATE_FEED_SUCCESS,
-    payload: newFeed
-  };
+    return {
+        type: CREATE_FEED_SUCCESS,
+        payload: newFeed
+    };
 }
 
 export function createFeedFailure(error) {
-  return {
-    type: CREATE_FEED_FAILURE,
-    payload: error
-  };
+    return {
+        type: CREATE_FEED_FAILURE,
+        payload: error
+    };
 }
 
 export function resetNewFeed() {
@@ -140,11 +140,43 @@ export function resetNewFeed() {
   };
 }
 
+export function updateFeed(feed) {
+    const request = axios({
+        method: 'put',
+        data: email,
+        url: `/api/feed/${id}`,
+    });
+  
+    return {
+      type: UPDATE_FEED,
+      payload: request
+    };
+}
+ 
+export function updateFeedSuccess() {
+    return {
+        type: UPDATE_FEED_SUCCESS
+    };
+}
+  
+export function updateFeedFailure(error) {
+    return {
+        type: UPDATE_FEED_FAILURE,
+        payload: error
+    };
+}
+  
+export function resetUpdateFeedState() {
+    return {
+        type: RESET_UPDATE_FEED_STATE
+    };
+}
+
 
 export function resetDeletedFeed() {
-  return {
-    type: RESET_DELETED_FEED
-  };
+    return {
+        type: RESET_DELETED_FEED
+    };
 }
 
 
@@ -172,33 +204,33 @@ export function fetchFeedFailure(error) {
 }
 
 export function resetActiveFeed() {
-  return {
-    type: RESET_ACTIVE_FEED
-  };
+    return {
+        type: RESET_ACTIVE_FEED
+    };
 }
 
 
 export function deleteFeed(id) {
-  const request = axios({
-    method: 'delete',
-    url: `/api/feed/${id}`,   
-  });
-  return {
-    type: DELETE_FEED,
-    payload: request
-  };
+    const request = axios({
+        method: 'delete',
+        url: `/api/feed/${id}`,   
+    });
+    return {
+        type: DELETE_FEED,
+        payload: request
+    };
 }
 
 export function deleteFeedSuccess(deletedFeed) {
-  return {
-    type: DELETE_FEED_SUCCESS,
-    payload: deletedFeed
-  };
+    return {
+        type: DELETE_FEED_SUCCESS,
+        payload: deletedFeed
+    };
 }
 
 export function deleteFeedFailure(response) {
-  return {
-    type: DELETE_FEED_FAILURE,
-    payload: response
-  };
+    return {
+        type: DELETE_FEED_FAILURE,
+        payload: response
+    };
 }

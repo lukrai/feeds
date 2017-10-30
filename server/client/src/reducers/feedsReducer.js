@@ -1,32 +1,18 @@
-// import { FETCH_FEEDS } from '../actions/types';
-
-// export default function(state = [], action) {
-//   console.log(action.type+' action type')
-//     switch (action.type) {
-//       case FETCH_FEEDS:
-//       {
-//         console.log(action.payload + ' payload');
-//         return action.payload;
-//       }
-//       default:
-//         return state;
-//     }
-//   }
-  
 import {
-	FETCH_FEEDS, FETCH_FEEDS_SUCCESS, FETCH_FEEDS_FAILURE, RESET_FEEDS,
-	FETCH_FEED, FETCH_FEED_SUCCESS,  FETCH_FEED_FAILURE, RESET_ACTIVE_FEED,
-	CREATE_FEED, CREATE_FEED_SUCCESS, CREATE_FEED_FAILURE, RESET_NEW_FEED,
-	DELETE_FEED, DELETE_FEED_SUCCESS, DELETE_FEED_FAILURE, RESET_DELETED_FEED,
-  VALIDATE_FEED_FIELDS,VALIDATE_FEED_FIELDS_SUCCESS, VALIDATE_FEED_FIELDS_FAILURE, RESET_FEED_FIELDS
+    FETCH_FEEDS, FETCH_FEEDS_SUCCESS, FETCH_FEEDS_FAILURE, RESET_FEEDS,
+    FETCH_FEED, FETCH_FEED_SUCCESS,  FETCH_FEED_FAILURE, RESET_ACTIVE_FEED,
+    CREATE_FEED, CREATE_FEED_SUCCESS, CREATE_FEED_FAILURE, RESET_NEW_FEED,
+    DELETE_FEED, DELETE_FEED_SUCCESS, DELETE_FEED_FAILURE, RESET_DELETED_FEED,
+    VALIDATE_FEED_FIELDS,VALIDATE_FEED_FIELDS_SUCCESS, VALIDATE_FEED_FIELDS_FAILURE, RESET_FEED_FIELDS,
+    UPDATE_FEED, UPDATE_FEED_SUCCESS, UPDATE_FEED_FAILURE, RESET_UPDATE_FEED_STATE
 } from '../actions/feeds';
 
 
-	const INITIAL_STATE = { feedsList: {feeds: [], error:null, loading: false},  
+const INITIAL_STATE = { feedsList: {feeds: [], error:null, loading: false},  
 							newFeed:{feed:null, error: null, loading: false}, 
 							activeFeed:{feed:null, error:null, loading: false}, 
 							deletedFeed: {feed: null, error:null, loading: false},
-						};
+          };
 
 export default function(state = INITIAL_STATE, action) {
   let error;
@@ -60,8 +46,17 @@ export default function(state = INITIAL_STATE, action) {
     error = action.payload || {message: action.payload.message};//2nd one is network or server down errors
   	return {...state, newFeed: {feed:null, error:error, loading: false}}
   case RESET_NEW_FEED:
-  	return {...state,  newFeed:{feed:null, error:null, loading: false}}
-
+    return {...state,  newFeed:{feed:null, error:null, loading: false}}
+    
+  case UPDATE_FEED:
+    return { ...state, feedUpdated: false, error: null, loading: true};
+  case UPDATE_FEED_SUCCESS:
+    return { ...state, feedUpdated: true, error: null, loading: false};
+  case UPDATE_FEED_FAILURE:
+    error = action.payload || {message: action.payload.message};//2nd one is network or server down errors
+  	return { ...state, feedUpdated: false, error: error, loading: false};
+  case RESET_UPDATE_FEED_STATE:
+  	return { ...state, feedUpdated: false, error: null, loading: false};
 
   case DELETE_FEED:
    	return {...state, deletedFeed: {...state.deletedFeed, loading: true}}
