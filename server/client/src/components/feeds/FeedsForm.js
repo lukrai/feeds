@@ -18,7 +18,7 @@ const validateAndCreateFeed = (values, dispatch) => {
             }
             //let other components know that everything is fine by updating the redux` state
             dispatch(createFeedSuccess(result.data)); //ps: this is same as dispatching RESET_USER_FIELDS
-            this.context.router.history.push('/feeds');
+            //this.context.router.history.push('/feeds');
         });
 
 
