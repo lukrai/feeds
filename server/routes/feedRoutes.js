@@ -2,6 +2,7 @@ const keys = require('../config/keys');
 const requireLogin = require('../middlewares/requireLogin');
 const mongoose = require('mongoose');
 const Feed = mongoose.model('feeds');
+const request = require('request-promise');
 
 module.exports = app => {
     app.post('/api/feed', requireLogin, /*async*/(req, res) => {
@@ -61,7 +62,7 @@ module.exports = app => {
             
         // }
     });
-
+    const pageFieldSet = 'name, category, link, picture, is_verified';
     //Get feed by id
     app.get('/api/feed/:feed_id', requireLogin, (req, res) => {
 
@@ -70,12 +71,49 @@ module.exports = app => {
                 return res.status(500).send("There was a problem parsing feed.");
             }
             if (!feed) {
-                console.log(feed);
-                //return res.status(404).send("Feed not found.");    
                 return res.status(404).json({
                     message: 'Feed not found'
                   });
             }
+            //https://graph.facebook.com/?ids=footengo31,footengo01,Footengo69&fields=posts.limit(5){message,created_time,picture}&access_token={your_access_token}
+
+            const options = {
+                method: 'GET',
+                uri: `https://graph.facebook.com/v2.10/?ids=MercedesAMG,Formula1`,
+                qs: {
+                  access_token: keys.fbAccessKey,
+                  fields: 'feed.limit(3){message,created_time,from}'//'feed.limit(3).order(reverse_chronological)'
+                },
+                //json: true
+              };
+            request(options)
+                .then(fbRes => {
+                    var ss = fbRes;
+                    //console.log(fbRes);
+                    //console.log("---------------------");
+                    //console.log(Object.keys(fbRes).length); 
+                    // for(prpoperty in fbRes){
+                    //     console.log(fbRes[prpoperty]['feed']);
+                    //     fbRes[prpoperty]['feed']['name'] = prpoperty;
+                    //     console.log(fbRes[prpoperty]['feed']);
+                    // };
+                    // var a = [];
+                    // for (name in fbRes) {
+                    //     if (fbRes.hasOwnProperty(name)) {
+                    //     //console.log(Object.keys(fbRes)[0]); 
+                    //     //a = a.contact(fbRes.name);
+                    //     console.log(fbRes.name);
+                    //     }
+                    // }
+                    // console.log(a);
+
+                  //res.json(fbRes);
+                });
+
+            // console.log(feed);
+            // console.log(feed['_id']);
+            // console.log(feed._id);
+           // console.log(feed._id);
             res.status(200).send(feed);
         });
     });
