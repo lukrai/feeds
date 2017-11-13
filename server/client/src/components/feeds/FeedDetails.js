@@ -1,10 +1,16 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes} from 'react';
 import { Link } from 'react-router-dom';
 
 class FeedDetails extends Component {
   static contextTypes = {
-    router: PropTypes.object
+     router: PropTypes.object
   };
+  constructor (props){
+    super(props)
+    // this.renderImage = this.renderImage.bind(this);
+    // this.handleLogoutClick = this.handleLogoutClick
+  }
+
 
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
@@ -28,13 +34,26 @@ class FeedDetails extends Component {
     this.props.fetchFeed(this.props.feedId);
   }
 
+  
+  // renderImage() {
+  //   // if (post.attachments.data[0].media){
+  //   //   return(
+  //   //     <img src={post.picture}/>
+  //   //   );
+  //   // }
+  //   return  <h1>AA</h1>;
+
+  // }
+
   render() {
-    //console.log(this.props);
+
     const { feed, loading, error } = this.props.activeFeed;
-    //const { user } = this.props.user;
+
     const user = this.props.user;
-    //console.log(this.props);
-    //console.log(this.contextTypes);
+
+
+
+
     if (loading) {
         return (
             <div className="progress">
@@ -46,30 +65,88 @@ class FeedDetails extends Component {
     } else if(!feed) {
       return <span />
     }
-    return (
-        <div className="container">
-            <div className="" style={{paddingRight: '50px', paddingTop: '10px'}}>
-                <button className="btn deep-purple"  onClick={()=> {this.props.onDeleteClick(this.props.feedId,user)}}>Delete Feed</button>
+    return (    
+        <div className="">
+            <div className="row" style={{paddingRight: '50px', paddingTop: '10px'}}>
+
+              <div className="col s12 m4 l3 ">
+
+              </div>
+              <div className="col s12 m4 l5">
+                <h3>{feed.title}</h3>
+                <h5>Pages List:</h5>
+                <div>
+                  {feed.pages.map(function(page) {
+                    return (
+                        <li key={page._id}>{page.url}</li>
+                    );
+                  })}
+                </div>
+                {feed.feedData.map(function(post) {
+                  return (
+                    
+                    <div className="row" key={post.id}>
+                      <div className="">
+                        <div className="card">
+                          <div className="card-content">
+                            <span style = {{fontWeight: '400'}} className="card-title">{post.from.name}</span>
+                              <h6>{getTime(post.created_time)}</h6>
+                              <p className="light" style={{paddingTop:'10px', paddingBottom: '10px' }}>{post.message}</p>
+                              <div className="card-image">
+                              
+                                {/* <img src={ `https://graph.facebook.com/v2.11/${post.id}/picture` }/> */}
+                                {/* <span className="card-title">Card Title</span> */}
+            
+                                {renderImage(post)}
+                                
+                                {/* <img src={post.picture}/> */}
+                              </div>
+                          </div>
+                          <div className="card-action">
+                            <a href="#">This is a link</a>
+                          </div>
+                        </div>
+                      </div>
+                      {/* <img src={post.picture}/> */}
+                    </div>
+                      // <li key={post.created_time}>..</li>
+                  );
+                })}
+
+              </div>
+              <div className="col s12 m4 l2">               
+                <button className="btn deep-purple" onClick={()=> {this.props.onDeleteClick(this.props.feedId,user)}}>Delete Feed</button><br />
+                <div style={{ paddingTop: '10px'}}>
+                  <Link /*className="btn deep-purple" /*style={{color:'black'}}/*/ to={"/feeds/edit"} style={{ paddingTop: '10px'}}>
+                    <button className="btn deep-purple">Edit</button>
+                  </Link>
+                </div>
+              </div>
+
+                
             </div>
-            <div className="" style={{paddingRight: '50px', paddingTop: '10px'}}>
-              <Link /*className="btn deep-purple" /*style={{color:'black'}}/*/ to={"/feeds/edit"}>
-                <button className="btn deep-purple">Edit</button>
-              </Link>
-            </div>
-            <h3>{feed.title}</h3>
-            {/* <h6>Categories: {feed.pages}</h6> */}
-            <p>{feed.date_created}</p>           
-            {feed.pages.map(function(page) {
-                return (
-                    <li key={page._id}>{page.url}</li>
-                );
-            })}
+                            
+            
             {/* <ModalConfirmDelete/> */}
             {/* <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> */}
 
         </div>
     );
   }
+}
+
+const renderImage = function(post) {
+    if (post.attachments.data[0].media){
+        return(
+           <img src={post.attachments.data[0].media.image.src}/>
+         );
+    }
+}
+
+const getTime = function(time) {
+  var t = new Date(1970, 0, 1, 0,0); // Epoch
+  t.setSeconds(Date.parse(time).toString().substring(0,10));
+  return t.toLocaleString();
 }
 
 export default FeedDetails;

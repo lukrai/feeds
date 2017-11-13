@@ -1,77 +1,85 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
-import { fetchFeeds } from '../../actions/feeds';
-import FeedView from './FeedView';
+import { Link } from 'react-router-dom';
 
 class FeedList extends Component {
 
-    getLocation(id) {
-        var feedpath = {
-            pathname: '/feed/'+id,
-            state: { feedId: id }
-        };
-
-        return feedpath;
-    }
-    
     componentDidMount() {
         this.props.fetchFeeds();
     }
 
-    handleClick(id) {
-        //e.preventDefault();
-        <Link to="/feed" className="btn-floating btn-large red" id={id}>
-            <i className="material-icons">add</i>
-        </Link>
-        console.log(id); 
-    }
-
-    renderFeeds() {
-        return this.props.feeds.reverse().map(feed => {
-            return (
-                <div className="card darken-1 highlight" key={feed._id} onClick={(e) => this.handleClick(feed._id)}>
-                    <div className="card-content">
-                        <span className="card-title">{feed.title}</span>
-                        <p>
-                            {feed.pages.map(function(page) {
-                                return (
-                                    <li key={page._id}>{page.url}</li>
-                                );
-                            })}
-                        </p>
-                        <p className="right">
-                        Sent On: {new Date(feed.date_created).toLocaleDateString()}
-                        </p>
-                    </div>
-                    <div className="card-action">
+    renderFeeds(feeds) {
+        // return this.props.feeds.reverse().map(feed => {
+        //     return (
+        //         <div className="card darken-1 highlight" key={feed._id} onClick={(e) => this.handleClick(feed._id)}>
+        //             <div className="card-content">
+        //                 <span className="card-title">{feed.title}</span>
+        //                 <p>
+        //                     {feed.pages.map(function(page) {
+        //                         return (
+        //                             <li key={page._id}>{page.url}</li>
+        //                         );
+        //                     })}
+        //                 </p>
+        //                 <p className="right">
+        //                 Sent On: {new Date(feed.date_created).toLocaleDateString()}
+        //                 </p>
+        //             </div>
+        //             <div className="card-action">
                       
-                        <Link to={this.getLocation(feed._id)} className="waves-effect waves-light btn">
-                            <i className="material-icons right">cloud</i>GetFeed
-                        </Link>
+        //                 <Link to={this.getLocation(feed._id)} className="waves-effect waves-light btn">
+        //                     <i className="material-icons right">cloud</i>GetFeed
+        //                 </Link>
 
-                        
-                        
-                    </div>
-                </div>
+                                              
+        //             </div>
+        //         </div>
+        //     );
+        //});
+        return feeds.map((feed) => {
+            return (
+              <li className="collection-item avatar" key={feed._id}>
+                <Link style={{color:'black'}} to={"feeds/" + feed._id}>
+                  <h3 className="list-group-item-heading">{feed.title}</h3>
+                
+                  {/* {this.renderCategories(post.categories)} */}
+                  <i className="material-icons circle">folder</i>
+                  <span className="title">{feed.title}</span>
+                  <p>First Line <br />
+                     Second Line
+                  </p>
+                  </Link>
+                  <a href="#!" className="secondary-content"><i className="material-icons">grade</i></a>
+              </li>
             );
-        });
+          });
   }
 
   
 
     render() {
-        return (
-            <div className="container">
-                {this.renderFeeds()}       
-            </div>
-        );
+        const { feeds, loading, error } = this.props.feedsList;
+        
+            if(loading) {
+              return (
+                   <div className="container"><h1>Feeds</h1><h3>Loading...</h3>
+                    <div className="progress">
+                      <div className="indeterminate"></div>
+                    </div>
+                  </div> 
+              );     
+            } else if(error) {
+              return <div className="alert alert-danger">Error: {error.message}</div>
+            }
+        
+            return (
+              <div className="container">
+                <h1>Feeds</h1>
+                <ul className="collection">
+                  {this.renderFeeds(feeds)}
+                </ul>
+              </div>
+            );
     }
 }
 
-function mapStateToProps({ feeds }) {
-    //console.log(feeds + " maps to state");
-    return { feeds };
-}
-
-export default connect(mapStateToProps, { fetchFeeds })(FeedList);
+export default FeedList;

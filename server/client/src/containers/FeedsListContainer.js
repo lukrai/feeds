@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { fetchFeeds, fetchFeedsSuccess, fetchFeedsFailure } from '../actions/feeds';
-import FeedList from '../components/feeds/FeedList1';
+import FeedList from '../components/feeds/FeedList';
 
 
 const mapStateToProps = (state) => {

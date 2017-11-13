@@ -18,14 +18,18 @@ class Header extends Component {
         }
     }
     render() {
-        return (
-            <nav>
-                <div className="nav-wrapper deep-purple">
-                    <a href="/" className="brand-logo">Logo</a>
-                    <ul id="nav-mobile" className="right hide-on-med-and-down">
-                        {this.renderContent()}               
+        return (         
+            <nav className="deep-purple" role="navigation">
+                <div className="nav-wrapper container"><a id="logo-container" href="#" className="brand-logo">Logo</a>
+                    <ul className="right hide-on-med-and-down">
+                        {this.renderContent()}     
                     </ul>
-                </div>
+          
+                    <ul id="nav-mobile" className="side-nav">
+                        {this.renderContent()}     
+                    </ul>
+                    <a href="#" data-activates="nav-mobile" className="button-collapse"><i className="material-icons">menu</i></a>
+              </div>
             </nav>
         );
     }

@@ -21,10 +21,10 @@ const mapDispatchToProps = (dispatch) => {
         var response = dispatch(fetchFeed(id));
         //console.log(response);
         response.payload.then((payload)=> {
-            //console.log(payload);
+            console.log(payload);
             if (payload && payload.status == 200) {
                 //console.log("status 200");
-                //console.log(payload);
+                console.log(payload);
                 dispatch(fetchFeedSuccess(payload.data))                   
             } else {
                 dispatch(fetchFeedFailure(payload.data));

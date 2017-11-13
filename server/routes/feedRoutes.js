@@ -49,19 +49,9 @@ module.exports = app => {
             if (!feeds) 
                 return res.status(404).send("Feed not found.");    
             res.status(200).send(feeds);
-        });
-
-        // try{
-        //     const feeds = await Feed.find({ _userID: req.user.id });
-        //     if (!feeds) 
-        //         return res.status(404).send("No feeds found.");
-        //     //res.status(200).send(feeds);
-        //     res.json(feeds);
-        // } catch(err){
-        //     res.status(500).send(err);
-            
-        // }
+        });       
     });
+    
     const pageFieldSet = 'name, category, link, picture, is_verified';
     //Get feed by id
     app.get('/api/feed/:feed_id', requireLogin, (req, res) => {
@@ -75,46 +65,37 @@ module.exports = app => {
                     message: 'Feed not found'
                   });
             }
+            //      
             //https://graph.facebook.com/?ids=footengo31,footengo01,Footengo69&fields=posts.limit(5){message,created_time,picture}&access_token={your_access_token}
 
             const options = {
                 method: 'GET',
-                uri: `https://graph.facebook.com/v2.10/?ids=MercedesAMG,Formula1`,
+                uri: `https://graph.facebook.com/v2.11/?ids=MercedesAMG,Formula1`,
                 qs: {
                   access_token: keys.fbAccessKey,
-                  fields: 'feed.limit(3){message,created_time,from}'//'feed.limit(3).order(reverse_chronological)'
+                  fields: 'feed.limit(3){description,message,created_time,from, picture.height(720), properties, source, attachments}'//'feed.limit(3).order(reverse_chronological)'
                 },
-                //json: true
+                json: true
               };
             request(options)
                 .then(fbRes => {
-                    var ss = fbRes;
-                    //console.log(fbRes);
-                    //console.log("---------------------");
-                    //console.log(Object.keys(fbRes).length); 
-                    // for(prpoperty in fbRes){
-                    //     console.log(fbRes[prpoperty]['feed']);
-                    //     fbRes[prpoperty]['feed']['name'] = prpoperty;
-                    //     console.log(fbRes[prpoperty]['feed']);
-                    // };
-                    // var a = [];
-                    // for (name in fbRes) {
-                    //     if (fbRes.hasOwnProperty(name)) {
-                    //     //console.log(Object.keys(fbRes)[0]); 
-                    //     //a = a.contact(fbRes.name);
-                    //     console.log(fbRes.name);
-                    //     }
-                    // }
-                    // console.log(a);
-
-                  //res.json(fbRes);
+                    console.log(fbRes);
+                    console.log("---------------------");
+                    var feedData = feed.toJSON();
+                    feedData['feedData'] = [];
+                    for (pageName in fbRes) {
+                         if (fbRes.hasOwnProperty(pageName)) {                     
+                            //feedData['feedData'].push(fbRes[pageName]['feed']['data']);
+                            feedData['feedData'] = feedData['feedData'].concat(fbRes[pageName]['feed']['data']);
+                            //console.log(fbRes[pageName]['feed']['data']);
+                         }
+                     }
+                    console.log("---------------------");
+                    console.log(feedData['feedData']);
+                    // migth create another route for fb feed
+                    res.json(feedData)
                 });
 
-            // console.log(feed);
-            // console.log(feed['_id']);
-            // console.log(feed._id);
-           // console.log(feed._id);
-            res.status(200).send(feed);
         });
     });
 
@@ -129,7 +110,7 @@ module.exports = app => {
     });        
     
     //update feed
-    app.put('/api/feed/:feed_id', (req, res) => {
+    app.put('/api/feed/:feed_id', requireLogin, (req, res) => {
         const feed = {
             title: req.body.title,
             date_updated: Date.now()
@@ -145,7 +126,7 @@ module.exports = app => {
     });
 
     //delete fee
-    app.delete('/api/feed/:feed_id', (req, res) => {
+    app.delete('/api/feed/:feed_id', requireLogin, (req, res) => {
         Feed.findByIdAndRemove(req.params.feed_id, function (err) {
             if (err) 
                 return res.status(500).send("There was a problem deleting feed.");

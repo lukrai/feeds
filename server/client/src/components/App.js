@@ -6,6 +6,7 @@ import * as actions from '../actions';
 import Header from './Header';
 import Landing from './Landing';
 import Dashboard from './Dashboard';
+import Footer from './Footer';
 
 import FeedDetails from '../pages/FeedsDetails';
 import FeedsList from '../pages/FeedsList';
@@ -23,9 +24,9 @@ render() {
     //console.log(this.props.auth);
     return (
         <div>
-            <BrowserRouter>
-                <div>
-                    <Header/>
+            <Header/>
+            <BrowserRouter>          
+                <div>                    
                     <Route exact path="/" component={Landing}/>
                     <Route exact path="/feeds" component={FeedsList}/>    
                     <Switch>
@@ -35,8 +36,10 @@ render() {
                     </Switch>                               
                     {/* <Route exact path="/feeds/new" component={FeedsNew}/> */}
                     {/* <Route exact path="/feeds/:id" component={FeedDetails}/> */}
+                    {/* <Footer /> */}
                 </div>
             </BrowserRouter>
+            
         </div>
         );
     }
