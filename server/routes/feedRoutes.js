@@ -73,7 +73,7 @@ module.exports = app => {
                 uri: `https://graph.facebook.com/v2.11/?ids=MercedesAMG,Formula1`,
                 qs: {
                   access_token: keys.fbAccessKey,
-                  fields: 'feed.limit(3){description,message,created_time,from, picture.height(720), properties, source, attachments}'//'feed.limit(3).order(reverse_chronological)'
+                  fields: 'feed.limit(3){description,message,created_time,from{name, picture}, picture.height(720), properties, source, attachments, likes.summary(1).limit(0), link}'//'feed.limit(3).order(reverse_chronological)'
                 },
                 json: true
               };
