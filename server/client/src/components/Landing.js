@@ -14,7 +14,7 @@ const Landing = () => {
           </div>
           <div className="row center">
           <Link to={"/feeds"}>
-            <a className="btn-large waves-effect waves-light red lighten-1">Get Started</a>
+            <span className="btn-large waves-effect waves-light red lighten-1">Get Started</span>
           </Link>
           </div>
           <br/><br/>

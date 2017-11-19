@@ -14,7 +14,7 @@ class FeedsDetails extends Component {
         console.log(this.props);
         return (
             //console.log(this.props);
-            <div className="container grey lighten-4">
+            <div className="container">
                 {/* <Header type="posts_show" postId={this.props.params.id}/> */}
 
                 <FeedDetailsContainer id={this.props.match.params.id}/>

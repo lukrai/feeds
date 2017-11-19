@@ -12,9 +12,6 @@ import FeedDetails from '../pages/FeedsDetails';
 import FeedsList from '../pages/FeedsList';
 import FeedsNew from '../pages/FeedsNew';
 import FeedsEdit from '../pages/FeedsEdit';
- 
-
-
 
 class App extends Component {
 componentDidMount() {
@@ -22,11 +19,13 @@ componentDidMount() {
 }
 render() {
     //console.log(this.props.auth);
-    return (
-        <div>
-            <Header/>
-            <BrowserRouter>          
-                <div>                    
+    return (       
+        <div>           
+            <BrowserRouter> 
+                   
+                <div >      
+                <Header/> 
+                    <div className="container" style={{paddingTop: '55px'}}>               
                     <Route exact path="/" component={Landing}/>
                     <Route exact path="/feeds" component={FeedsList}/>    
                     <Switch>
@@ -36,6 +35,7 @@ render() {
                     </Switch>                               
                     {/* <Route exact path="/feeds/new" component={FeedsNew}/> */}
                     {/* <Route exact path="/feeds/:id" component={FeedDetails}/> */}
+                    </div>
                     {/* <Footer /> */}
                 </div>
             </BrowserRouter>

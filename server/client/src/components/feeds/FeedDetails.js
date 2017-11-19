@@ -58,79 +58,75 @@ class FeedDetails extends Component {
         <div className="">
             <div className="row" style={{paddingTop: '10px'}}>
 
-              <div className="col s12 m4 l3 ">
+              <div className="col s12 m2 l3 ">
 
               </div>
-              <div className="col s12 m4 l5">
-                <h3>{feed.title}</h3>
-                <h5>Pages List:</h5>
-                <div>
-                  {feed.pages.map(function(page) {
-                    return (
-                        <li key={page._id}>{page.url}</li>
-                    );
-                  })}
+
+              <div className="col s12 m8 l5">               
+                <div className="row">                  
+                    <div className="card">
+                      <div className="card-content">
+                        <span style={{fontWeight: '400'}} className="card-title ">{feed.title}</span>
+                        <p className="">
+                        {feed.pages.map(function(page) {
+                          return (
+                              page.url +'; '
+                          );
+                        })}
+                        </p>
+                    </div>
+                  </div>
                 </div>
+
                 {feed.feedData.map(function(post) {
-                  return (
-                    
-                    <div className="row" key={post.id}>
-                      <div className="">
-                        <div className="card">
+                  if(post.from){
+                    return (                   
+                      <div className="row" key={post.id}>
+                        <div className="">
 
-                          <div className="col s12  m12  l12">
-                            {/* <div className="card-panel grey lighten-5 z-depth-1"> */}
-                              <div className="row valign-wrapper">
-                                <div  className="col s2">
-                                  <img style={{marginLeft: '0px'}} src={post.from.picture.data.url} className="circle z-depth-3"></img>
-                                </div>
-                                <div className="col s10">
-                                  <p className="light-text"><span className="card-title">{post.from.name}</span> <br/>
-                                  {getTime(post.created_time)}</p>
-                                </div>
-                              </div>
-                            {/* </div> */}
-                          </div>
+                          <div className="card">
+                            <div className="col s12  m12  l12">
+                                  <div style={{paddingTop: '15px', paddingBottom: '10px'}}  className="col s2">
+                                    <img src={post.from.picture.data.url} className="circle z-depth-2"></img>
+                                  </div>
+                                  <div className="col s10">
+                                    <p style={{fontSize: '12px'}} className="grey-text text-darken-1"><span style={{fontWeight: '400'}} className="card-title black-text">{post.from.name}</span> <br/>
+                                    {getTime(post.created_time)}</p>
+                                  </div>
+                            </div>
 
-                          {/* <div className="avatar">
-                            <img src={post.from.picture.data.url} className="circle"/>
-                            <span style = {{fontWeight: '400'}} className="card-title">{post.from.name}</span>
-                            <h6>{getTime(post.created_time)}</h6>
-                          </div> */}
-                          {/* <span className="card-title">Card Title</span> */}
+                            <div className="card-image">
+                              {renderImage(post)}                        
+                            </div>
 
-                          <div className="card-image">
-                            {renderImage(post)}                        
-                          </div>
-                          <div className="card-content">
-                            {/* <span style = {{fontWeight: '400'}} className="card-title">{post.from.name}</span>
-                              <h6>{getTime(post.created_time)}</h6> */}
-                              <p className="light" style={{paddingTop:'10px', paddingBottom: '10px' }}>{post.message}</p>
-                              <p className="black-text" style={{ paddingTop: '10px'}}><i style={{ paddingRight: '10px',  display: 'inline-flex', verticalAlign: 'bottom'}} className="blue-text material-icons">thumb_up</i>{post.likes.summary.total_count}</p>
-
-                          </div>
-                          <div className="card-action">
-                            <a href="#">This is a link</a>
+                            <div className="card-content">
+                              {/* <span style = {{fontWeight: '400'}} className="card-title">{post.from.name}</span>
+                                <h6>{getTime(post.created_time)}</h6> */}
+                                <p className="light" style={{paddingTop:'10px', paddingBottom: '10px' }}>{post.message}</p>
+                                <p className="black-text" style={{ paddingTop: '10px'}}>
+                                  <i style={{ paddingRight: '10px',  display: 'inline-flex', verticalAlign: 'bottom'}} className="blue-text material-icons">thumb_up</i>
+                                  {post.likes.summary.total_count}
+                                </p>
+                            </div>
+                            <div className="card-action">
+                              <a href="#">This is a link</a>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      {/* <img src={post.picture}/> */}
-                    </div>
-                      // <li key={post.created_time}>..</li>
-                  );
+                    );
+                  }
                 })}
 
               </div>
-              <div className="col s12 m4 l3">               
+              <div className="col s12 m2 l3">               
                 <button className="btn deep-purple" onClick={()=> {this.props.onDeleteClick(this.props.feedId,user)}}>Delete Feed</button><br />
                 <div style={{ paddingTop: '10px'}}>
                   <Link /*className="btn deep-purple" /*style={{color:'black'}}/*/ to={"/feeds/edit"} style={{ paddingTop: '10px'}}>
                     <button className="btn deep-purple">Edit</button>
                   </Link>
                 </div>
-              </div>
-
-                
+              </div>             
             </div>
                             
             
