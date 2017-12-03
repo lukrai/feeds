@@ -1,5 +1,6 @@
 import React, { Component, PropTypes} from 'react';
 import { Link } from 'react-router-dom';
+import { Card, Icon, Image, Grid, Segment, List, Header } from 'semantic-ui-react';
 
 class FeedDetails extends Component {
   static contextTypes = {
@@ -55,68 +56,60 @@ class FeedDetails extends Component {
       return <span />
     }
     return (    
+
         <div className="">
-            <div className="row" style={{paddingTop: '10px'}}>
-
-              <div className="col s12 m2 l3 ">
-
-              </div>
-
-              <div className="col s12 m8 l5">               
-                <div className="row">                  
-                    <div className="card">
-                      <div className="card-content">
-                        <span style={{fontWeight: '400'}} className="card-title ">{feed.title}</span>
-                        <p className="">
-                        {feed.pages.map(function(page) {
-                          return (
-                              page.url +'; '
-                          );
-                        })}
-                        </p>
-                    </div>
-                  </div>
-                </div>
-
-                {feed.feedData.map(function(post) {
+        <Grid columns={3} stackable style={{paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
+          <Grid.Column>
+            <Segment>
+              <Header size='medium'>{feed.title}</Header>
+              <List bulleted>
+                {feed.pages.map(function(page) {
+                  return (
+                    <List.Item key={page.url}>{page.url}</List.Item>
+                  );
+                })}
+              </List>
+            </Segment>
+          </Grid.Column>
+          <Grid.Column>
+            {feed.feedData.map(function(post) {
                   if(post.from){
                     return (                   
-                      <div className="row" key={post.id}>
-                        <div className="">
-
-                          <div className="card">
-                            <div className="col s12  m12  l12">
-                                  <div style={{paddingTop: '15px', paddingBottom: '10px'}}  className="col s2">
-                                    <img src={post.from.picture.data.url} className="circle z-depth-2"></img>
-                                  </div>
-                                  <div className="col s10">
-                                    <p style={{fontSize: '12px'}} className="grey-text text-darken-1"><span style={{fontWeight: '400'}} className="card-title black-text">{post.from.name}</span> <br/>
-                                    {getTime(post.created_time)}</p>
-                                  </div>
-                            </div>
-
-                            <div className="card-image">
-                              {renderImage(post)}                        
-                            </div>
-
-                            <div className="card-content">
-                              {/* <span style = {{fontWeight: '400'}} className="card-title">{post.from.name}</span>
-                                <h6>{getTime(post.created_time)}</h6> */}
-                                <p className="light" style={{paddingTop:'10px', paddingBottom: '10px' }}>{post.message}</p>
-                                <p className="black-text" style={{ paddingTop: '10px'}}>
-                                  <i style={{ paddingRight: '10px',  display: 'inline-flex', verticalAlign: 'bottom'}} className="blue-text material-icons">thumb_up</i>
-                                  {post.likes.summary.total_count}
-                                </p>
-                            </div>
-                            <div className="card-action">
-                              <a href="#">This is a link</a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                        <Card fluid key={post.id}>
+                            <Card.Content>
+                              <Card.Header>                   
+                                <Image src={post.from.picture.data.url} floated='left' avatar />             
+                                {post.from.name}
+                              </Card.Header>
+                              <Card.Meta>
+                                <span className='date'>
+                                {getTime(post.created_time)}
+                                </span>
+                              </Card.Meta>
+                            </Card.Content>
+                          {renderImage(post)}                            
+                            <Card.Content>
+                              <Card.Description>
+                                {post.message}
+                              </Card.Description>
+                            </Card.Content>
+                            <Card.Content extra>
+                              <a>
+                                <Icon name='like' />
+                                {post.likes.summary.total_count} Likes
+                              </a>
+                            </Card.Content>
+                        </Card>                     
                     );
                   }
-                })}
+              })}
+          </Grid.Column>
+          <Grid.Column>
+            <Segment>Content</Segment>
+          </Grid.Column>
+        </Grid>
+        <div>
+            <div className="row" style={{paddingTop: '10px'}}>
 
               </div>
               <div className="col s12 m2 l3">               
@@ -141,7 +134,8 @@ class FeedDetails extends Component {
 const renderImage = function(post) {
     if (post.attachments.data[0].media){
         return(
-           <img src={post.attachments.data[0].media.image.src}/>
+          <Image src={post.attachments.data[0].media.image.src} />
+          // <img src={post.attachments.data[0].media.image.src}/>
          );
     }
 }
