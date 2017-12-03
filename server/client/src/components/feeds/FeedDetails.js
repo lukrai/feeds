@@ -1,6 +1,6 @@
 import React, { Component, PropTypes} from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Icon, Image, Grid, Segment, List, Header, Button, Modal } from 'semantic-ui-react';
+import { Card, Icon, Image, Grid, Segment, List, Header, Button, Modal, Dimmer, Loader } from 'semantic-ui-react';
 
 class FeedDetails extends Component {
   static contextTypes = {
@@ -44,10 +44,20 @@ class FeedDetails extends Component {
     const user = this.props.user;
 
     if (loading) {
-        return (
-            <div className="progress">
-                <div className="indeterminate"></div>
-            </div>
+        return (         
+          <Grid columns={3} stackable style={{paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
+            <Grid.Column>
+              <Segment loading='true'>
+                <br /><br /><br />
+              </Segment>
+            </Grid.Column>
+            <Grid.Column>
+              <Segment loading='true'><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></Segment>
+            </Grid.Column>
+            <Grid.Column>
+              <Segment loading='true'><br /></Segment>
+            </Grid.Column>
+          </Grid>
         );
     } else if(error) {
       return  <div className="alert alert-danger">{error.message}</div>
