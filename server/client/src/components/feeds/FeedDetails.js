@@ -1,17 +1,21 @@
 import React, { Component, PropTypes} from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Icon, Image, Grid, Segment, List, Header } from 'semantic-ui-react';
+import { Card, Icon, Image, Grid, Segment, List, Header, Button, Modal } from 'semantic-ui-react';
 
 class FeedDetails extends Component {
   static contextTypes = {
      router: PropTypes.object
   };
   constructor (props){
-    super(props)
-    // this.renderImage = this.renderImage.bind(this);
+    super(props);
+    this.state = { open: false, size: 'small' };
+    this.show = this.show.bind(this);
+    this.close = this.close.bind(this);
     // this.handleLogoutClick = this.handleLogoutClick
   }
 
+  show = size => () => { this.setState({ size, open: true })}
+  close = () => this.setState({ open: false })
 
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
@@ -36,13 +40,8 @@ class FeedDetails extends Component {
   }
 
   render() {
-
     const { feed, loading, error } = this.props.activeFeed;
-
     const user = this.props.user;
-
-
-
 
     if (loading) {
         return (
@@ -56,8 +55,7 @@ class FeedDetails extends Component {
       return <span />
     }
     return (    
-
-        <div className="">
+      <div>
         <Grid columns={3} stackable style={{paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
           <Grid.Column>
             <Segment>
@@ -69,6 +67,27 @@ class FeedDetails extends Component {
                   );
                 })}
               </List>
+              <Button as={Link} to={"/feeds/edit"} basic color='green'>Edit Feed</Button>
+              <Button basic color='red' onClick={this.show('small')}>Delete Feed</Button>
+
+              <div>      
+                <Modal size={this.state.size} open={this.state.open} onClose={this.close}>
+                  <Modal.Header>
+                    Delete Your Feed
+                  </Modal.Header>
+                  <Modal.Content>
+                    <p>Are you sure you want to delete your feed?</p>
+                  </Modal.Content>
+                  <Modal.Actions>
+                    <Button negative onClick={this.close}>
+                      No
+                    </Button>
+                    <Button positive  onClick={()=> {this.props.onDeleteClick(this.props.feedId,user)}}>
+                      Yes
+                    </Button>
+                  </Modal.Actions>
+                </Modal>
+              </div>
             </Segment>
           </Grid.Column>
           <Grid.Column>
@@ -105,39 +124,20 @@ class FeedDetails extends Component {
               })}
           </Grid.Column>
           <Grid.Column>
-            <Segment>Content</Segment>
+            <Segment>Comming soon...</Segment>
           </Grid.Column>
         </Grid>
-        <div>
-            <div className="row" style={{paddingTop: '10px'}}>
-
-              </div>
-              <div className="col s12 m2 l3">               
-                <button className="btn deep-purple" onClick={()=> {this.props.onDeleteClick(this.props.feedId,user)}}>Delete Feed</button><br />
-                <div style={{ paddingTop: '10px'}}>
-                  <Link /*className="btn deep-purple" /*style={{color:'black'}}/*/ to={"/feeds/edit"} style={{ paddingTop: '10px'}}>
-                    <button className="btn deep-purple">Edit</button>
-                  </Link>
-                </div>
-              </div>             
-            </div>
-                            
-            
-            {/* <ModalConfirmDelete/> */}
-            {/* <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> */}
-
-        </div>
+      </div>
     );
   }
 }
 
 const renderImage = function(post) {
-    if (post.attachments.data[0].media){
-        return(
-          <Image src={post.attachments.data[0].media.image.src} />
-          // <img src={post.attachments.data[0].media.image.src}/>
-         );
-    }
+  if (post.attachments.data[0].media){
+    return(
+      <Image src={post.attachments.data[0].media.image.src} />
+      );
+  }
 }
 
 const getTime = function(time) {
