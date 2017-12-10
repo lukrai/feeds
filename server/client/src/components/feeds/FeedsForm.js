@@ -3,6 +3,7 @@ import { Field, FieldArray, reduxForm, SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
 import validate from '../../utils/validateFeedForm';
 import { withRouter, Link } from 'react-router-dom';
+import { List, Loader, Header, Grid, Segment, Button, Form, Checkbox } from 'semantic-ui-react';
 import { createFeed, createFeedSuccess, createFeedFailure, resetNewFeed } from '../../actions/feeds';
 
 const validateAndCreateFeed = (values, dispatch) => {
@@ -48,24 +49,26 @@ const renderField = ({ input, label, type, meta: { touched, error } }) =>
 </div>
 
 const renderPages = ({ fields, meta: { error, submitFailed } }) =>
-<ul>
-  <li>
-    <button type="button" onClick={() => fields.push({})}>
+<div>
+  <div style={{paddingBottom: '1em'}}>
+    <Button type="button" onClick={() => fields.push({})}>
       Add FB Page
-    </button>
+    </Button>
     {submitFailed &&
       error &&
       <span>
         {error}
       </span>}
-  </li>
+  </div>
+  <ul>
   {fields.map((pages, index) =>
-    <li key={index}>
-      <button
+    <div key={index}>
+      <Button
         type="button"
-        title="Remove Page"
         onClick={() => fields.remove(index)}
-      />
+      >
+        Remove Page
+      </Button>
       <h4>
         Page #{index + 1}
       </h4>
@@ -77,9 +80,10 @@ const renderPages = ({ fields, meta: { error, submitFailed } }) =>
         label="FB Page"  
               
       />
-    </li>
+    </div>
   )}
-</ul>
+  </ul>
+</div>
 
 class FeedsForm extends Component {
     static contextTypes = {
@@ -119,40 +123,53 @@ class FeedsForm extends Component {
     render() {
       const {handleSubmit, submitting, newFeed, reset, pristine } = this.props;
       return (
-        <div className='container'>
-          { this.renderError(newFeed) }
-          <form onSubmit={ handleSubmit(validateAndCreateFeed) }>
 
-            <Field
-                name="title"
-                type="text"
-                component={renderField}
-                label="Title"
-            />
-            <FieldArray name="pages" component={renderPages} />
-            <div>
-                <Link to="/feeds" className="red btn-flat white-text">
-                    Cancel
-                </Link>
-                <button type="submit" disabled={submitting}>
-                    Submit
-                </button>
-                <button type="button" disabled={pristine || submitting} onClick={reset}>
-                    Clear Values
-                </button>
-            </div>   
-      
-            <div>
-              {/* <button
-                      type="submit"
-                      className="btn btn-primary"
-                      disabled={ submitting }>
-                Submit
-              </button> */}
-             
-            </div>
-          </form>
-        </div>
+        <Grid columns={3} stackable style={{paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
+          <Grid.Column width={4}>
+            {/* <Segment/> */}
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <Segment>             
+              <Header as='h1' dividing >
+                New Feed
+              </Header>
+
+              <Form onSubmit={handleSubmit(validateAndCreateFeed)}>
+                
+                { this.renderError(newFeed) }
+                {/* <form onSubmit={ handleSubmit(validateAndCreateFeed) }> */}
+
+                  <Field
+                      name="title"
+                      type="text"
+                      component={renderField}
+                      label="Title"
+                  />
+                  <FieldArray name="pages" component={renderPages} />
+                  <Form.Field>
+                    <Checkbox label='Is private' />
+                  </Form.Field>
+                  <div>
+                    <Button as={Link} to="/feeds">
+                        Cancel
+                    </Button>
+                    
+                    <Button type="submit" disabled={submitting}>
+                        Submit
+                    </Button>
+                    <Button type="button" disabled={pristine || submitting} onClick={reset}>
+                        Clear Values
+                    </Button>
+                  </div>   
+              </Form>
+
+            </Segment>
+          </Grid.Column>
+          <Grid.Column width={4}>
+
+          </Grid.Column>
+        </Grid>
+
       )
     }
   }

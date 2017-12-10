@@ -1,26 +1,10 @@
-// import React, { Component } from 'react';
-// import { reduxForm, Filed } from 'redux-form';
-
-// class FeedForm extends Component {
-//     render() {
-//         return(
-//             <div>
-                
-//             </div>    
-//         );
-//     }
-// }
-
-// export default reduxForm({
-//     form: 'FeedForm'
-// })(FeedForm);
-
 import React from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import validate from '../../utils/validateFeedForm';
 import { withRouter, Link } from 'react-router-dom';
 import * as actions from '../../actions';
+import { List, Loader, Header, Grid, Segment, Button, Form } from 'semantic-ui-react';
 
 const renderField = ({ input, label, type, meta: { touched, error } }) =>
   <div>
@@ -36,6 +20,7 @@ const renderField = ({ input, label, type, meta: { touched, error } }) =>
 const renderPages = ({ fields, meta: { error, submitFailed } }) =>
   <ul>
     <li>
+
       <button type="button" onClick={() => fields.push({})}>
         Add FB Page
       </button>
@@ -73,7 +58,39 @@ const renderPages = ({ fields, meta: { error, submitFailed } }) =>
 let FeedForm = ({pristine, reset, submitting, formValues, history, submitFeedForm}) => {
     //const { } = props;
   return (
+
     <div className="container">
+    <Grid columns={3} stackable style={{paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
+      <Grid.Column width={4}>
+        {console.log(feeds)}
+      </Grid.Column>
+      <Grid.Column width={8}>
+        <Segment>             
+          <Header as='h1' dividing >
+            New Feed
+          </Header>
+
+          <Form>
+            <Form.Field>
+              <label>First Name</label>
+              <input placeholder='First Name' />
+            </Form.Field>
+            <Form.Field>
+              <label>Last Name</label>
+              <input placeholder='Last Name' />
+            </Form.Field>
+            <Form.Field>
+              <Checkbox label='Is private' />
+            </Form.Field>
+            <Button type='submit'>Submit</Button>
+          </Form>
+
+        </Segment>
+      </Grid.Column>
+      <Grid.Column width={4}>
+
+      </Grid.Column>
+    </Grid>
     <form onSubmit={() => submitFeedForm(formValues, history)}>
         {console.log(history)}
       <Field

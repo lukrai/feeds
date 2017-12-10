@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { List, Loader, Header, Grid, Segment, Button } from 'semantic-ui-react';
 
 class FeedList extends Component {
 
@@ -8,76 +9,57 @@ class FeedList extends Component {
     }
 
     renderFeeds(feeds) {
-        // return this.props.feeds.reverse().map(feed => {
-        //     return (
-        //         <div className="card darken-1 highlight" key={feed._id} onClick={(e) => this.handleClick(feed._id)}>
-        //             <div className="card-content">
-        //                 <span className="card-title">{feed.title}</span>
-        //                 <p>
-        //                     {feed.pages.map(function(page) {
-        //                         return (
-        //                             <li key={page._id}>{page.url}</li>
-        //                         );
-        //                     })}
-        //                 </p>
-        //                 <p className="right">
-        //                 Sent On: {new Date(feed.date_created).toLocaleDateString()}
-        //                 </p>
-        //             </div>
-        //             <div className="card-action">
-                      
-        //                 <Link to={this.getLocation(feed._id)} className="waves-effect waves-light btn">
-        //                     <i className="material-icons right">cloud</i>GetFeed
-        //                 </Link>
-
-                                              
-        //             </div>
-        //         </div>
-        //     );
-        //});
-        return feeds.map((feed) => {
-            return (
-              <li className="collection-item avatar" key={feed._id}>
-                <Link style={{color:'black'}} to={"feeds/" + feed._id}>
-                  <h3 className="list-group-item-heading">{feed.title}</h3>
-                
-                  {/* {this.renderCategories(post.categories)} */}
-                  <i className="material-icons circle">folder</i>
-                  <span className="title">{feed.title}</span>
-                  <p>First Line <br />
-                     Second Line
-                  </p>
-                  </Link>
-                  <a href="#!" className="secondary-content"><i className="material-icons">grade</i></a>
-              </li>
-            );
-          });
-  }
-
-  
+        return (
+          <List divided relaxed>
+            {feeds.map((feed) => {
+              return (             
+                  <List.Item  as={Link} style={{color:'black'}} to={"feeds/" + feed._id} key={feed._id}>
+                    <List.Icon name='arrow right' size='large' verticalAlign='middle' />
+                    <List.Content>
+                      <List.Header>{feed.title}</List.Header>
+                      <List.Description>Created: {feed.date_created}</List.Description>
+                    </List.Content>
+                  </List.Item>
+              );
+            })}
+          </List>
+        );
+    }
 
     render() {
         const { feeds, loading, error } = this.props.feedsList;
         
             if(loading) {
               return (
-                   <div className="container"><h1>Feeds</h1><h3>Loading...</h3>
-                    <div className="progress">
-                      <div className="indeterminate"></div>
-                    </div>
+                <Loader active >
+                   <div className="container">
+                     <h1>Feeds</h1>
+                     <h3>Loading...</h3>
                   </div> 
+                </Loader>
               );     
             } else if(error) {
               return <div className="alert alert-danger">Error: {error.message}</div>
             }
         
             return (
-              <div className="container">
-                <h1>Feeds</h1>
-                <ul className="collection">
-                  {this.renderFeeds(feeds)}
-                </ul>
-              </div>
+              <Grid columns={3} stackable style={{paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
+                <Grid.Column width={4}>
+                  {console.log(feeds)}
+                </Grid.Column>
+                <Grid.Column width={8}>
+                  <Segment>             
+                    <Header as='h1' dividing >
+                      Feeds <Button floated="right" as={Link} to={"/feeds/new"} basic color='green'>Add Feed</Button>
+                    </Header>
+                    {this.renderFeeds(feeds)}
+
+                  </Segment>
+                </Grid.Column>
+                <Grid.Column width={4}>
+
+                </Grid.Column>
+              </Grid>
             );
     }
 }
