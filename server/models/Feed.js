@@ -10,7 +10,7 @@ const { Schema } = mongoose; // tas pats kaip ir 2 eilutė
 const feedSchema = new Schema({
     _userID: { type: Schema.Types.ObjectId, ref: 'User'  },
     title: String,
-    pages: [{url: String}],
+    pages: [{url: String, _id : false }],
     comments: [CommentSchema],
     date_created: { type: Date },
     date_updated: { type: Date },

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes} from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import { Card, Icon, Image, Grid, Segment, List, Header, Button, Modal, Dimmer, Loader } from 'semantic-ui-react';
 
@@ -47,15 +48,15 @@ class FeedDetails extends Component {
         return (         
           <Grid columns={3} stackable style={{paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
             <Grid.Column>
-              <Segment loading='true'>
+              <Segment loading={true}>
                 <br /><br /><br />
               </Segment>
             </Grid.Column>
             <Grid.Column>
-              <Segment loading='true'><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></Segment>
+              <Segment loading={true}><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></Segment>
             </Grid.Column>
             <Grid.Column>
-              <Segment loading='true'><br /></Segment>
+              <Segment loading={true}><br /></Segment>
             </Grid.Column>
           </Grid>
         );

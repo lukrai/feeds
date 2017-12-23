@@ -5,7 +5,7 @@ const Feed = mongoose.model('feeds');
 const request = require('request-promise');
 
 module.exports = app => {
-    app.post('/api/feed', requireLogin, /*async*/(req, res) => {
+    app.post('/api/feed', requireLogin, (req, res) => {
         const { title, pages } = req.body;
         
         var feed = new Feed({
@@ -52,7 +52,6 @@ module.exports = app => {
         });       
     });
     
-    const pageFieldSet = 'name, category, link, picture, is_verified';
     //Get feed by id
     app.get('/api/feed/:feed_id', requireLogin, (req, res) => {
 
@@ -67,10 +66,14 @@ module.exports = app => {
             }
             //      
             //https://graph.facebook.com/?ids=footengo31,footengo01,Footengo69&fields=posts.limit(5){message,created_time,picture}&access_token={your_access_token}
+            var pagesString = [];
+            feed.pages.forEach(element => {
+                pagesString.push(element['url']);
+            });
 
             const options = {
                 method: 'GET',
-                uri: `https://graph.facebook.com/v2.11/?ids=MercedesAMG,Formula1`,
+                uri: `https://graph.facebook.com/v2.11/?ids=${pagesString.toString()}`,
                 qs: {
                   access_token: keys.fbAccessKey,
                   fields: 'feed.limit(10){description,message,created_time,from{name, picture}, picture.height(720), properties, source, attachments, likes.summary(1).limit(0), link}'//'feed.limit(3).order(reverse_chronological)'
@@ -79,19 +82,18 @@ module.exports = app => {
               };
             request(options)
                 .then(fbRes => {
-                    console.log(fbRes);
-                    console.log("---------------------");
                     var feedData = feed.toJSON();
                     feedData['feedData'] = [];
                     for (pageName in fbRes) {
                          if (fbRes.hasOwnProperty(pageName)) {                     
-                            //feedData['feedData'].push(fbRes[pageName]['feed']['data']);
                             feedData['feedData'] = feedData['feedData'].concat(fbRes[pageName]['feed']['data']);
-                            //console.log(fbRes[pageName]['feed']['data']);
                          }
                      }
-                    console.log("---------------------");
-                    console.log(feedData['feedData']);
+
+                    feedData['feedData'].sort(function(a, b) {
+                        return new Date(b.created_time).getTime() - new Date(a.created_time).getTime();
+                    });
+
                     // migth create another route for fb feed
                     res.json(feedData)
                 });
@@ -99,23 +101,24 @@ module.exports = app => {
         });
     });
 
-    app.get('/api/feed_fb_data/:feed_id', requireLogin, (req, res) => {
-    //suformuoti fb duomenis
-        Feed.findById(req.params.feed_id, function (err, feed) {
-            if (err)
-                res.send(err);
+    // app.get('/api/feed_fb_data/:feed_id', requireLogin, (req, res) => {
+    // //suformuoti fb duomenis
+    //     Feed.findById(req.params.feed_id, function (err, feed) {
+    //         if (err)
+    //             res.send(err);
 
-            res.json(feed);
-        });
-    });        
+    //         res.json(feed);
+    //     });
+    // });        
     
     //update feed
     app.put('/api/feed/:feed_id', requireLogin, (req, res) => {
         const feed = {
             title: req.body.title,
+            pages: req.body.pages,
             date_updated: Date.now()
         };
-        console.log(req);
+        //console.log(req);
         Feed.findByIdAndUpdate(req.params.feed_id, feed, function(err, data){
             if (err) 
                 return res.status(500).send("There was a problem updating feed.");
@@ -125,7 +128,7 @@ module.exports = app => {
         });
     });
 
-    //delete fee
+    //delete feed
     app.delete('/api/feed/:feed_id', requireLogin, (req, res) => {
         Feed.findByIdAndRemove(req.params.feed_id, function (err) {
             if (err) 
