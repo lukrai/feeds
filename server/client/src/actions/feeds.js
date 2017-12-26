@@ -52,12 +52,6 @@ export  function fetchFeeds() {
     };
 }
 
-// export const fetchFeeds = () => async dispatch => {
-//     const res = await axios.get('/api/feed');
-  
-//     dispatch({ type: FETCH_FEEDS, payload: res.data });
-// };
-
 export function fetchFeedsSuccess(feeds) {
     return {
         type: FETCH_FEEDS_SUCCESS,
@@ -66,6 +60,33 @@ export function fetchFeedsSuccess(feeds) {
 }
 
 export function fetchFeedsFailure(error) {
+    return {
+        type: FETCH_FEEDS_FAILURE,
+        payload: error
+    };
+}
+
+export  function fetchAllFeeds() {
+    const request =  axios({
+        method: 'get',
+        url: '/api/feed',
+        headers: []
+    });
+
+    return {
+        type: FETCH_FEEDS,
+        payload: request
+    };
+}
+
+export function fetchAllFeedsSuccess(feeds) {
+    return {
+        type: FETCH_FEEDS_SUCCESS,
+        payload: feeds
+    };
+}
+
+export function fetchAllFeedsFailure(error) {
     return {
         type: FETCH_FEEDS_FAILURE,
         payload: error

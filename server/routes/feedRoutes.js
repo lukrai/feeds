@@ -51,6 +51,31 @@ module.exports = app => {
             res.status(200).send(feeds);
         });       
     });
+
+
+    app.get('/api/feedAll', async (req, res) => {
+
+        var feedsByDate= [];
+        var feedsByLikes = [];
+
+        var feeds = {
+            feedsByDate: [],
+            feedsByLikes: []
+        };
+
+        try {
+            feedsByLikes = await  Feed.find({}, null, {sort: {likes_count: -1}}).limit(1000);
+            feedsByDate = await Feed.find({}, null, {sort: {date_created: 1}}).limit(1000);
+            feeds['feedsByLikes'] = feedsByLikes;
+            feeds['feedsByDate'] = feedsByDate;
+    
+            return res.status(200).send(feeds);
+            
+        } catch (err) {
+            return res.status(500).send("There was a problem parsing feeds.");
+        }      
+
+    });
     
     //Get feed by id
     app.get('/api/feed/:feed_id', requireLogin, (req, res) => {
