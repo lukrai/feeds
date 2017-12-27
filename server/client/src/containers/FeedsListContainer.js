@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { fetchFeeds, fetchFeedsSuccess, fetchFeedsFailure } from '../actions/feeds';
+import { fetchFeeds, fetchFeedsSuccess, fetchFeedsFailure, resetFeeds  } from '../actions/feeds';
 import FeedList from '../components/feeds/FeedList';
 
 
@@ -14,7 +14,6 @@ const mapDispatchToProps = (dispatch) => {
       fetchFeeds: () => {
           var response = dispatch(fetchFeeds());
           //console.log(response);
-          dispatch(fetchFeeds());
           response.payload.then((payload) => {
               //console.log(payload);
               if(payload.status == 200){
@@ -25,6 +24,9 @@ const mapDispatchToProps = (dispatch) => {
               dispatch(fetchFeedsFailure(err));
           });
 
+      },
+      resetMe: () => {
+        dispatch(resetFeeds());
       }
   }
 }

@@ -1,6 +1,7 @@
 import {
     FETCH_FEEDS, FETCH_FEEDS_SUCCESS, FETCH_FEEDS_FAILURE, RESET_FEEDS,
-    FETCH_FEED, FETCH_FEED_SUCCESS,  FETCH_FEED_FAILURE, RESET_ACTIVE_FEED,
+    FETCH_ALL_FEEDS, FETCH_ALL_FEEDS_SUCCESS, FETCH_ALL_FEEDS_FAILURE, RESET_ALL_FEEDS,
+    FETCH_FEED, FETCH_FEED_SUCCESS,  FETCH_FEED_FAILURE, RESET_ACTIVE_FEED, 
     CREATE_FEED, CREATE_FEED_SUCCESS, CREATE_FEED_FAILURE, RESET_NEW_FEED,
     DELETE_FEED, DELETE_FEED_SUCCESS, DELETE_FEED_FAILURE, RESET_DELETED_FEED,
     VALIDATE_FEED_FIELDS,VALIDATE_FEED_FIELDS_SUCCESS, VALIDATE_FEED_FIELDS_FAILURE, RESET_FEED_FIELDS,
@@ -8,7 +9,9 @@ import {
 } from '../actions/feeds';
 
 
-const INITIAL_STATE = { feedsList: {feeds: [], error:null, loading: false},  
+const INITIAL_STATE = { 
+              feedsList: {feeds: [], error:null, loading: false},  
+              allFeedsList: {feeds: [], error:null, loading: false},  
 							newFeed:{feed:null, error: null, loading: false}, 
 							activeFeed:{feed:null, error:null, loading: false}, 
 							deletedFeed: {feed: null, error:null, loading: false},
@@ -27,6 +30,16 @@ export default function(state = INITIAL_STATE, action) {
     return { ...state, feedsList: {feeds: [], error: error, loading: false} };
   case RESET_FEEDS:// reset postList to initial state
     return { ...state, feedsList: {feeds: [], error:null, loading: false} };
+
+  case FETCH_ALL_FEEDS:// start fetching feeds and set loading = true
+  	return { ...state, allFeedsList: {feeds:[], error: null, loading: true} }; 
+  case FETCH_ALL_FEEDS_SUCCESS:// return list of posts and make loading = false
+    return { ...state, allFeedsList: {feeds: action.payload, error:null, loading: false} };
+  case FETCH_ALL_FEEDS_FAILURE:// return error and make loading = false
+    error = action.payload || {message: action.payload.message};//2nd one is network or server down errors
+    return { ...state, allFeedsList: {feeds: [], error: error, loading: false} };
+  case RESET_ALL_FEEDS:// reset postList to initial state
+    return { ...state, allFeedsList: {feeds: [], error:null, loading: false} };
 
   case FETCH_FEED:
     return { ...state, activeFeed:{...state.activeFeed, loading: true}};

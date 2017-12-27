@@ -1,18 +1,23 @@
 import axios from 'axios';
 
-//Post list
+//Feed list
 export const FETCH_FEEDS = 'FETCH_FEEDS';
 export const FETCH_FEEDS_SUCCESS = 'FETCH_FEEDS_SUCCESS';
 export const FETCH_FEEDS_FAILURE = 'FETCH_FEEDS_FAILURE';
 export const RESET_FEEDS = 'RESET_FEEDS';
 
-//Create new post
+export const FETCH_ALL_FEEDS = 'FETCH_ALL_FEEDS';
+export const FETCH_ALL_FEEDS_SUCCESS = 'FETCH_ALL_FEEDS_SUCCESS';
+export const FETCH_ALL_FEEDS_FAILURE = 'FETCH_ALL_FEEDS_FAILURE';
+export const RESET_ALL_FEEDS = 'RESET_ALL_FEEDS';
+
+//Create new feed
 export const CREATE_FEED = 'CREATE_FEED';
 export const CREATE_FEED_SUCCESS = 'CREATE_FEED_SUCCESS';
 export const CREATE_FEED_FAILURE = 'CREATE_FEED_FAILURE';
 export const RESET_NEW_FEED = 'RESET_NEW_FEED';
 
-//Validate post fields like Title, Categries on the server
+//Validate feed fields like Title, Categries on the server
 export const VALIDATE_FEED_FIELDS = 'VALIDATE_FEED_FIELDS';
 export const VALIDATE_FEED_FIELDS_SUCCESS = 'VALIDATE_FEED_FIELDS_SUCCESS';
 export const VALIDATE_FEED_FIELDS_FAILURE = 'VALIDATE_FEED_FIELDS_FAILURE';
@@ -24,13 +29,13 @@ export const UPDATE_FEED_SUCCESS = 'UPDATE_FEED_SUCCESS';
 export const UPDATE_FEED_FAILURE = 'UPDATE_FEED_FAILURE';
 export const RESET_UPDATE_FEED_STATE = 'RESET_UPDATE_FEED_STATE';
 
-//Fetch post
+//Fetch feed
 export const FETCH_FEED = 'FETCH_FEED';
 export const FETCH_FEED_SUCCESS = 'FETCH_FEED_SUCCESS';
 export const FETCH_FEED_FAILURE = 'FETCH_FEED_FAILURE';
 export const RESET_ACTIVE_FEED = 'RESET_ACTIVE_FEED';
 
-//Delete post
+//Delete feed
 export const DELETE_FEED = 'DELETE_FEED';
 export const DELETE_FEED_SUCCESS = 'DELETE_FEED_SUCCESS';
 export const DELETE_FEED_FAILURE = 'DELETE_FEED_FAILURE';
@@ -66,32 +71,44 @@ export function fetchFeedsFailure(error) {
     };
 }
 
+export function resetFeeds() {
+    return {
+      type: RESET_FEEDS
+    };
+  }
+
 export  function fetchAllFeeds() {
     const request =  axios({
         method: 'get',
-        url: '/api/feed',
-        headers: []
+        url: '/api/feedAll',
     });
 
     return {
-        type: FETCH_FEEDS,
+        type: FETCH_ALL_FEEDS,
         payload: request
     };
 }
 
 export function fetchAllFeedsSuccess(feeds) {
     return {
-        type: FETCH_FEEDS_SUCCESS,
+        type: FETCH_ALL_FEEDS_SUCCESS,
         payload: feeds
     };
 }
 
 export function fetchAllFeedsFailure(error) {
     return {
-        type: FETCH_FEEDS_FAILURE,
+        type: FETCH_ALL_FEEDS_FAILURE,
         payload: error
     };
 }
+
+export function resetAllFeeds() {
+    return {
+      type: RESET_ALL_FEEDS
+    };
+  }
+
 
 //below not implemented
 // export function validatePostFields(props) {

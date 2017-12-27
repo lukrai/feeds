@@ -36,9 +36,9 @@ class FeedTable extends Component {
 
         <Table.Body>
           {this.state.pageOfItems.map(item =>
-          <Table.Row key={item.id}>
+          <Table.Row key={item._id}>
             <Table.Cell>
-              {item.name}
+              {item.title}
             </Table.Cell>
           </Table.Row>
           )}

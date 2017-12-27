@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import _ from 'underscore';
 import FeedTable from './FeedTable';
-import { Segment, Container, Grid,Header, List, Divider, Image, Button, Menu, Icon, Table } from 'semantic-ui-react';
+import { Loader, Segment, Container, Grid,Header, List, Divider, Image, Button, Menu, Icon, Table } from 'semantic-ui-react';
 
 class FeedTables extends Component {
 
@@ -18,22 +18,52 @@ class FeedTables extends Component {
 		};
 
 		
-	}
+  }
+
+  
+  componentDidMount() {
+    this.props.fetchAllFeeds();
+  }
+
+
+  renderTable(feeds){
+    if(feeds){
+      return (
+        <FeedTable items={feeds}/>
+      );
+    }
+  }
 
   render(){ 
+    const { feeds, loading, error } = this.props.allFeedsList;
+    console.log(this.props.allFeedsList);
+    console.log(feeds);
+    if(loading) {
+      return (
+        <Loader active >
+           <div>
+             <h1>Feeds</h1>
+             <h3>Loading...</h3>
+          </div> 
+        </Loader>
+      );     
+    } else if(error) {
+      return <div className="alert alert-danger">Error: {error.message}</div>
+    }
+
 		return (
       <div>      
 
         <Segment style={{ padding: '8em 0em' }} vertical>
           <Container text>
-            <Header as='h3' style={{ fontSize: '2em' }}>Breaking The Grid, Grabs Your Attention</Header>
+            <Header as='h3' style={{ fontSize: '2em' }}>Feeds by Date</Header>
             <p style={{ fontSize: '1.33em' }}>
             Instead of focusing on content creation and hard work, we have learned how to master the art of doing
             nothing by providing massive amounts of whitespace and generic content that can seem massive, monolithic
             and worth your attention.
             </p>
-
-            <FeedTable items={this.state.exampleItems}/>
+            {console.log(feeds.feedsByDate)}
+            {this.renderTable(feeds.feedsByDate)}
 
             <Divider
             as='h4'
@@ -43,14 +73,14 @@ class FeedTables extends Component {
             >
             <a href='#'>Case Studies</a>
             </Divider>
-            <Header as='h3' style={{ fontSize: '2em' }}>Did We Tell You About Our Bananas?</Header>
+            <Header as='h3' style={{ fontSize: '2em' }}>Feeds by Likes</Header>
             <p style={{ fontSize: '1.33em' }}>
             Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but it's really
             true.
             It took years of gene splicing and combinatory DNA research, but our bananas can really dance.
             </p>
-            <FeedTable items={this.state.exampleItems}/>
-
+            {/* <FeedTable items={feeds.feedsByLikes}/> */}
+            {this.renderTable(feeds.feedsByLikes)}
 
           </Container>
 			</Segment>   

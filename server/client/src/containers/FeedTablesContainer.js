@@ -1,11 +1,12 @@
 import { connect } from 'react-redux'
-import { fetchAllFeeds, fetchAllFeedsSuccess, fetchAllFeedsFailure } from '../actions/feeds';
+import { fetchAllFeeds, fetchAllFeedsSuccess, fetchAllFeedsFailure, resetAllFeeds } from '../actions/feeds';
 import FeedTables from '../components/feeds/FeedTables';
 
 
 const mapStateToProps = (state) => {
+    console.log(state);
     return { 
-      feedsList: state.feeds.feedsList
+      allFeedsList: state.feeds.allFeedsList
     };
 }
 
@@ -14,7 +15,6 @@ const mapDispatchToProps = (dispatch) => {
       fetchAllFeeds: () => {
           var response = dispatch(fetchAllFeeds());
           //console.log(response);
-          dispatch(fetchAllFeeds());
           response.payload.then((payload) => {
               //console.log(payload);
               if(payload.status == 200){
@@ -25,6 +25,9 @@ const mapDispatchToProps = (dispatch) => {
               dispatch(fetchAllFeedsFailure(err));
           });
 
+      },
+      resetMe: () => {
+        dispatch(resetAllFeeds());
       }
   }
 }
