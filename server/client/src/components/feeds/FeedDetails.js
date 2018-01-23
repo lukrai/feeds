@@ -19,9 +19,7 @@ class FeedDetails extends Component {
   close = () => this.setState({ open: false })
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     if (nextProps.deletedFeed.feed && nextProps.deletedFeed.feed.status==200 && !nextProps.deletedFeed.feed.error) {
-      console.log(this.context)
       this.context.router.history.push('/feeds');
     }
   }

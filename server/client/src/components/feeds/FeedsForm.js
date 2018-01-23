@@ -13,7 +13,6 @@ const validateAndCreateFeed = (values, dispatch) => {
             // success's "data" is in result.payload.data
             console.log(result);
             if (result && result.status !== 200) {
-                console.log("kode");
                 dispatch(createFeedFailure(result.payload.response.data));
                 throw new SubmissionError(result.payload.response.data);
             }

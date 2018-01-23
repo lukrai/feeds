@@ -5,10 +5,10 @@ const Feed = mongoose.model('feeds');
 const Like = mongoose.model('likes');
 
 module.exports = app => {
-    app.post('/api/like', async(req, res) => {
+    app.post('/api/like', requireLogin, async(req, res) => {
         var like = new Like({
-            _userID: "59b829ba6355e619ec0e4837",
-            _feedID: '59ba7ef20ef0281e48d94e7e',//req.user.id,
+            _userID: req.user.id,
+            _feedID: req.body.feedId,
 
         });
         //const user = await req.feed.save();

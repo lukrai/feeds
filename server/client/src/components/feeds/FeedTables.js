@@ -22,6 +22,7 @@ class FeedTables extends Component {
 
   
   componentDidMount() {
+    console.log(this.props);
     this.props.fetchAllFeeds();
   }
 
@@ -29,15 +30,16 @@ class FeedTables extends Component {
   renderTable(feeds){
     if(feeds){
       return (
-        <FeedTable items={feeds}/>
+        <FeedTable user={this.props.user} onLikeClick={this.props.onLikeClick}  items={feeds}/>
       );
     }
   }
 
   render(){ 
     const { feeds, loading, error } = this.props.allFeedsList;
-    console.log(this.props.allFeedsList);
-    console.log(feeds);
+    const user = this.props.user;
+    // console.log(this.props.allFeedsList);
+    // console.log(feeds);
     if(loading) {
       return (
         <Loader active >
@@ -62,7 +64,7 @@ class FeedTables extends Component {
             nothing by providing massive amounts of whitespace and generic content that can seem massive, monolithic
             and worth your attention.
             </p>
-            {console.log(feeds.feedsByDate)}
+
             {this.renderTable(feeds.feedsByDate)}
 
             <Divider

@@ -15,6 +15,7 @@ const feedSchema = new Schema({
     date_created: { type: Date },
     date_updated: { type: Date },
     like_count: { type: Number, default: 0 },
+    likes: []
 });
 
 mongoose.model('feeds', feedSchema);

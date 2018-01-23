@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch) => {
             console.log(payload);
             if (payload && payload.status == 200) {
                 //console.log("status 200");
-                console.log(payload);
+                //console.log(payload);
                 dispatch(fetchFeedSuccess(payload.data))                   
             } else {
                 dispatch(fetchFeedFailure(payload.data));
@@ -49,13 +49,13 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteClick: (id, user) => {
         //let token = sessionStorage.getItem('jwtToken');
         //console.log(globalState);
-        console.log("delete Clicked");
+        //console.log("delete Clicked");
         if (!user) { //if there is no token, dont bother,
             let data = {data: {message: 'Please Sign In'}};//axios like error
             dispatch(deleteFeedFailure(data)); // but let other comps know
             return;
         }
-        console.log(dispatch(deleteFeed(id)));
+        //console.log(dispatch(deleteFeed(id)));
         dispatch(deleteFeed(id)).payload
             .then((response) => {
                 console.log(response);                

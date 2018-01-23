@@ -26,25 +26,50 @@ class FeedTable extends Component {
   }
 
   render(){ 
+    console.log(this.props);
 		return (
-      <Table color='black' selectable  inverted>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>Feeds</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
+      // <Table color='black' selectable  inverted>
+      //   <Table.Header>
+      //     <Table.Row>
+      //       <Table.HeaderCell>Feeds</Table.HeaderCell>
+      //     </Table.Row>
+      //   </Table.Header>
 
-        <Table.Body>
-          {this.state.pageOfItems.map(item =>
-          <Table.Row key={item._id}>
-            <Table.Cell>
-              {item.title}
-            </Table.Cell>
-          </Table.Row>
-          )}
-        </Table.Body>                 
+      //   <Table.Body>
+      //     {this.state.pageOfItems.map(item =>
+      //     <Table.Row key={item._id}>
+      //       <Table.Cell as={Link} to={"feeds/" + item._id}>
+      //         {item.title}
+      //       </Table.Cell>
+      //     </Table.Row>
+      //     )}
+      //   </Table.Body>                 
+      //   <Pagination items={this.props.items} onChangePage={this.onChangePage} />
+      // </Table>
+      <Segment>             
+        <Header as='h1' dividing >
+          Feeds
+        </Header>           
+        <List divided relaxed>
+        {this.state.pageOfItems.map(item =>
+          // return (             
+            // as={Link} style={{color:'black'}} to={"feeds/" + item._id}
+              <List.Item key={item._id}>
+                <List.Content floated='right'>
+                  <Icon size='large' name='like' onClick={()=> {this.props.onLikeClick(this.props.feedId,this.props.user)}} /> 4 Likes
+                </List.Content>
+                <List.Icon name='arrow right' size='large' verticalAlign='middle' />
+                <List.Content>
+                  <List.Header>{item.title} </List.Header>
+                  <List.Description>Created: {item.date_created}</List.Description>
+                </List.Content>
+                
+              </List.Item>
+          // );
+        )}
         <Pagination items={this.props.items} onChangePage={this.onChangePage} />
-      </Table>
+      </List>
+    </Segment>
     );
   }
 }

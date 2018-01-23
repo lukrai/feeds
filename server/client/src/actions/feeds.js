@@ -41,6 +41,18 @@ export const DELETE_FEED_SUCCESS = 'DELETE_FEED_SUCCESS';
 export const DELETE_FEED_FAILURE = 'DELETE_FEED_FAILURE';
 export const RESET_DELETED_FEED = 'RESET_DELETED_FEED';
 
+//LIKE feed
+export const LIKE_FEED = 'LIKE_FEED';
+export const LIKE_FEED_SUCCESS = 'LIKE_FEED_SUCCESS';
+export const LIKE_FEED_FAILURE = 'LIKE_FEED_FAILURE';
+export const RESET_LIKED_FEED_STATE = 'RESET_LIKED_FEED_STATE';
+
+//UNLIKE feed
+export const UNLIKE_FEED = 'UNLIKE_FEED';
+export const UNLIKE_FEED_SUCCESS = 'UNLIKE_FEED_SUCCESS';
+export const UNLIKE_FEED_FAILURE = 'UNLIKE_FEED_FAILURE';
+export const RESET_UNLIKED_FEED_STATE = 'RESET_UNLIKED_FEED_STATE';
+
 
 
 //const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
@@ -269,6 +281,56 @@ export function deleteFeedSuccess(deletedFeed) {
 export function deleteFeedFailure(response) {
     return {
         type: DELETE_FEED_FAILURE,
+        payload: response
+    };
+}
+
+export function likeFeed(id) {
+    const request = axios({
+        method: 'put',
+        url: `/api/feed/${id}/like`,   
+    });
+    return {
+        type: LIKE_FEED,
+        payload: request
+    };
+}
+
+export function likeFeedSuccess(likedFeed) {
+    return {
+        type: LIKE_FEED_SUCCESS,
+        payload: likedFeed
+    };
+}
+
+export function likeFeedFailure(response) {
+    return {
+        type: LIKE_FEED_FAILURE,
+        payload: response
+    };
+}
+
+export function unlikeFeed(id) {
+    const request = axios({
+        method: 'put',
+        url: `/api/feed/${id}/unlike`,   
+    });
+    return {
+        type: UNLIKE_FEED,
+        payload: request
+    };
+}
+
+export function unlikeFeedSuccess(likedFeed) {
+    return {
+        type: UNLIKE_FEED_SUCCESS,
+        payload: likedFeed
+    };
+}
+
+export function unlikeFeedFailure(response) {
+    return {
+        type: UNLIKE_FEED_FAILURE,
         payload: response
     };
 }

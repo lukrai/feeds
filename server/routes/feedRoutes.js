@@ -65,7 +65,7 @@ module.exports = app => {
 
         try {
             feedsByLikes = await  Feed.find({}, null, {sort: {likes_count: -1}}).limit(1000);
-            feedsByDate = await Feed.find({}, null, {sort: {date_created: 1}}).limit(1000);
+            feedsByDate = await Feed.find({}, null, {sort: {date_created: -1}}).limit(1000);
             feeds['feedsByLikes'] = feedsByLikes;
             feeds['feedsByDate'] = feedsByDate;
     
@@ -78,7 +78,7 @@ module.exports = app => {
     });
     
     //Get feed by id
-    app.get('/api/feed/:feed_id', requireLogin, (req, res) => {
+    app.get('/api/feed/:feed_id', (req, res) => {
 
         Feed.findById(req.params.feed_id, function (err, feed) {
             if (err) {
@@ -160,5 +160,39 @@ module.exports = app => {
                 return res.status(500).send("There was a problem deleting feed.");
             res.status(200).send("Feed deleted.");
         });
+    });
+
+    app.put('/api/feed/:feed_id/like', requireLogin, async(req, res) => {
+        console.log(req.body);
+        console.log(req.user);
+        await Feed.update(
+            { 
+                "_id": req.body.feedId, 
+                "likes": { "$ne": req.user.id }
+            },
+            {
+                "$inc": { "like_count": 1 },
+                "$push": { "likes": req.user.id }
+            }
+        )
+
+       return res.status(200).send("Feed liked.");
+        
+    });
+
+    app.put('/api/feed/:feed_id/unlike', requireLogin, async(req, res) => {
+        await Feed.update(
+            { 
+                "_id": req.body.feedId, 
+                "likes": req.user.id 
+            },
+            {
+                "$inc": { "like_count": -1 },
+                "$pull": { "likes": req.user.id }
+            }
+        )
+
+       return res.status(200).send("Feed unliked.");
+        
     });
 }

@@ -16,7 +16,7 @@ export const fetchUser = () => async dispatch => {
 
 export const submitFeedForm = (values, history) => dispatch => {debugger;
     const res =  axios.post('/api/feed', values.values);debugger;
-    console.log(' po submit');
+
     //history.push('/redirect-to');debugger;
     //this.context.history.push('/path');
     history.push('/feeds');
