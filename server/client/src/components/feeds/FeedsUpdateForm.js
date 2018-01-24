@@ -20,23 +20,10 @@ const validateAndUpdateFeed = (values, dispatch, props) => {
             //     throw new SubmissionError(result.payload.response.data);
             // }
             // //let other components know that everything is fine by updating the redux` state
-            dispatch(updateFeedSuccess()); //ps: this is same as dispatching RESET_USER_FIELDS
-            //this.context.router.history.push('/feeds');
+            dispatch(updateFeedSuccess());
+
         });
 
-
-
-    // return dispatch(createPost(values, sessionStorage.getItem('jwtToken')))
-    //   .then(result => {
-    //     // Note: Error's "data" is in result.payload.response.data (inside "response")
-    //     // success's "data" is in result.payload.data
-    //     if (result.payload.response && result.payload.response.status !== 200) {
-    //       dispatch(createPostFailure(result.payload.response.data));
-    //       throw new SubmissionError(result.payload.response.data);
-    //     }
-    //     //let other components know that everything is fine by updating the redux` state
-    //     dispatch(createPostSuccess(result.payload.data)); //ps: this is same as dispatching RESET_USER_FIELDS
-    //   });
   }
 
 const renderField = ({ input, label, type, meta: { touched, error } }) =>

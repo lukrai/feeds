@@ -38,8 +38,6 @@ class FeedTables extends Component {
   render(){ 
     const { feeds, loading, error } = this.props.allFeedsList;
     const user = this.props.user;
-    // console.log(this.props.allFeedsList);
-    // console.log(feeds);
     if(loading) {
       return (
         <Loader active >

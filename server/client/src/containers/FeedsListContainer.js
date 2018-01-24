@@ -13,14 +13,11 @@ const mapDispatchToProps = (dispatch) => {
   return {
       fetchFeeds: () => {
           var response = dispatch(fetchFeeds());
-          //console.log(response);
           response.payload.then((payload) => {
-              //console.log(payload);
               if(payload.status == 200){
                   dispatch(fetchFeedsSuccess(payload.data));
               }            
           }).catch((err) => {
-              //console.log(err);
               dispatch(fetchFeedsFailure(err));
           });
 

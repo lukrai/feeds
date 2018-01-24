@@ -18,11 +18,9 @@ componentDidMount() {
     this.props.fetchUser();
 }
 render() {
-    //console.log(this.props.auth);
     return (       
         <div>           
-            <BrowserRouter> 
-                   
+            <BrowserRouter>                   
                 <div >      
                 <Header/> 
                     <div className="container" style={{paddingTop: '55px'}}>               
@@ -33,10 +31,7 @@ render() {
                         <Route exact path="/feeds/edit" component={FeedsEdit}/>
                         <Route exact path="/feeds/:id" component={FeedDetails}/>                      
                     </Switch>                               
-                    {/* <Route exact path="/feeds/new" component={FeedsNew}/> */}
-                    {/* <Route exact path="/feeds/:id" component={FeedDetails}/> */}
                     </div>
-                    {/* <Footer /> */}
                 </div>
             </BrowserRouter>
             
