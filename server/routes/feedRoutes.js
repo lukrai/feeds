@@ -163,32 +163,29 @@ module.exports = app => {
     });
 
     app.put('/api/feed/:feed_id/like', requireLogin, async(req, res) => {
-        console.log(req.body);
-        console.log(req.user);
         await Feed.update(
             { 
-                "_id": req.body.feedId, 
-                "likes": { "$ne": req.user.id }
+                "_id": req.params.feed_id, 
+                "likes": { "$ne": req.user._id }
             },
             {
                 "$inc": { "like_count": 1 },
-                "$push": { "likes": req.user.id }
+                "$push": { "likes": req.user._id }
             }
         )
 
-       return res.status(200).send("Feed liked.");
-        
+       return res.status(200).send("Feed liked.");       
     });
 
     app.put('/api/feed/:feed_id/unlike', requireLogin, async(req, res) => {
         await Feed.update(
             { 
-                "_id": req.body.feedId, 
-                "likes": req.user.id 
+                "_id": params.feed_id, 
+                "likes": req.user._id 
             },
             {
                 "$inc": { "like_count": -1 },
-                "$pull": { "likes": req.user.id }
+                "$pull": { "likes": req.user._id }
             }
         )
 

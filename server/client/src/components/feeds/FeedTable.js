@@ -34,7 +34,7 @@ class FeedTable extends Component {
             // as={Link} style={{color:'black'}} to={"feeds/" + item._id}
               <List.Item key={item._id}>
                 <List.Content floated='right'>
-                  <Icon size='large' name='like' onClick={()=> {this.props.onLikeClick(this.props.feedId,this.props.user)}} /> 4 Likes
+                  <Icon size='large' name='like' onClick={()=> {this.props.onLikeClick(item._id,this.props.user)}} /> {item.like_count}
                 </List.Content>
                 <List.Icon name='arrow right' size='large' verticalAlign='middle' />
                 <List.Content>
