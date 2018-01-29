@@ -1,10 +1,11 @@
 import { connect } from 'react-redux'
 import { fetchAllFeeds, fetchAllFeedsSuccess, fetchAllFeedsFailure, resetAllFeeds, likeFeed, likeFeedFailure, likeFeedSuccess, unlikeFeed,
-unlikeFeedFailure, unlikeFeedSuccess } from '../actions/feeds';
+unlikeFeedFailure, unlikeFeedSuccess, resetLikedFeed, resetUnlikedFeed } from '../actions/feeds';
 import FeedTables from '../components/feeds/FeedTables';
 
 
 const mapStateToProps = (state) => {
+    console.log(state.feeds);
     return { 
       user: state.auth,
       allFeedsList: state.feeds.allFeedsList
@@ -31,11 +32,21 @@ const mapDispatchToProps = (dispatch) => {
             return;
         }
         dispatch(likeFeed(id)).payload
-            .then((response) => {
-                console.log(response);                
+            .then((response) => {              
                 !response.error ? dispatch(likeFeedSuccess(response)) : dispatch(likeFeedFailure(response));
             });
-    },
+      },
+      onUnlikeClick: (id, user) => {
+        if (!user) {
+            let data = {data: {message: 'Please Sign In'}};//axios like error
+            dispatch(unlikeFeedFailure(data)); // but let other comps know
+            return;
+        }
+        dispatch(unlikeFeed(id)).payload
+            .then((response) => {                
+                !response.error ? dispatch(unlikeFeedSuccess(response)) : dispatch(unlikeFeedFailure(response));
+            });
+      },
       resetMe: () => {
         dispatch(resetAllFeeds());
       }

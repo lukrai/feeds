@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import _ from 'underscore';
 import Pagination from './Pagination';
-import { Segment, Container, Grid,Header, List, Divider, Image, Button, Menu, Icon, Table } from 'semantic-ui-react';
+import FeedLike from './FeedLike';
+import FeedTableRow from './FeedTableRow';
+import { Segment, Container, Grid,Header, List, Divider, Image, Button, Menu, Icon, Table, Rating } from 'semantic-ui-react';
 
 class FeedTable extends Component {
 
@@ -22,31 +24,17 @@ class FeedTable extends Component {
   }
 
   render(){ 
-    console.log(this.props);
 		return (
       <Segment>             
         <Header as='h1' dividing >
           Feeds
         </Header>           
         <List divided relaxed>
-        {this.state.pageOfItems.map(item =>
-          // return (             
-            // as={Link} style={{color:'black'}} to={"feeds/" + item._id}
-              <List.Item key={item._id}>
-                <List.Content floated='right'>
-                  <Icon size='large' name='like' onClick={()=> {this.props.onLikeClick(item._id,this.props.user)}} /> {item.like_count}
-                </List.Content>
-                <List.Icon name='arrow right' size='large' verticalAlign='middle' />
-                <List.Content>
-                  <List.Header>{item.title} </List.Header>
-                  <List.Description>Created: {item.date_created}</List.Description>
-                </List.Content>
-                
-              </List.Item>
-          // );
-        )}
-        <Pagination items={this.props.items} onChangePage={this.onChangePage} />
-      </List>
+          {this.state.pageOfItems.map(item =>
+            <FeedTableRow key={item._id} item={item} user={this.props.user} onLikeClick={this.props.onLikeClick} onUnlikeClick={this.props.onUnlikeClick} />
+          )}
+          <Pagination items={this.props.items} onChangePage={this.onChangePage} />
+        </List>
     </Segment>
     );
   }

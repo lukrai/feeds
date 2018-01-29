@@ -310,6 +310,12 @@ export function likeFeedFailure(response) {
     };
 }
 
+export function resetLikedFeed() {
+    return {
+      type: RESET_LIKED_FEED_STATE
+    };
+}
+
 export function unlikeFeed(id) {
     const request = axios({
         method: 'put',
@@ -332,5 +338,11 @@ export function unlikeFeedFailure(response) {
     return {
         type: UNLIKE_FEED_FAILURE,
         payload: response
+    };
+}
+
+export function resetUnlikedFeed() {
+    return {
+      type: RESET_UNLIKED_FEED_STATE
     };
 }

@@ -30,7 +30,7 @@ class FeedTables extends Component {
   renderTable(feeds){
     if(feeds){
       return (
-        <FeedTable user={this.props.user} onLikeClick={this.props.onLikeClick}  items={feeds}/>
+        <FeedTable user={this.props.user} onLikeClick={this.props.onLikeClick} onUnlikeClick={this.props.onUnlikeClick} items={feeds}/>
       );
     }
   }

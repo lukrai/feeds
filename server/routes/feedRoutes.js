@@ -180,7 +180,7 @@ module.exports = app => {
     app.put('/api/feed/:feed_id/unlike', requireLogin, async(req, res) => {
         await Feed.update(
             { 
-                "_id": params.feed_id, 
+                "_id": req.params.feed_id, 
                 "likes": req.user._id 
             },
             {

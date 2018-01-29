@@ -16,7 +16,9 @@ const INITIAL_STATE = {
               allFeedsList: {feeds: [], error:null, loading: false},  
 							newFeed:{feed:null, error: null, loading: false}, 
 							activeFeed:{feed:null, error:null, loading: false}, 
-							deletedFeed: {feed: null, error:null, loading: false},
+              deletedFeed: {feed: null, error:null, loading: false},
+              likedFeed: {likedFeed: null, error: null, loading: false},
+              unlikedFeed: {unlikedFeed: null, error: null, loading: false}
           };
 
 export default function(state = INITIAL_STATE, action) {
@@ -84,24 +86,24 @@ export default function(state = INITIAL_STATE, action) {
     return {...state,  deletedFeed:{feed:null, error:null, loading: false}}
     
   case LIKE_FEED:
-    return { ...state, likedFeed: false, error: null, loading: true};
+    return { ...state, likedFeed: {likedFeed: false, error: null, loading: true}};
   case LIKE_FEED_SUCCESS:
-    return { ...state, likedFeed: true, error: null, loading: false};
+    return { ...state, likedFeed: {likedFeed: true, error: null, loading: false}};
   case LIKE_FEED_FAILURE:
     error = action.payload || {message: action.payload.message};
-  	return { ...state, likedFeed: false, error: error, loading: false};
+  	return { ...state, likedFeed: {likedFeed: false, error: error, loading: false}};
   case RESET_LIKED_FEED_STATE:
-    return { ...state, likedFeed: false, error: null, loading: false};
+    return { ...state, likedFeed: {likedFeed: false, error: null, loading: false}};
     
   case UNLIKE_FEED:
-    return { ...state, unlikedFeed: false, error: null, loading: true};
+    return { ...state, unlikedFeed: {unlikedFeed: false, error: null, loading: true}};
   case UNLIKE_FEED_SUCCESS:
-    return { ...state, unlikedFeed: true, error: null, loading: false};
+    return { ...state, unlikedFeed: {unlikedFeed: true, error: null, loading: false}};
   case UNLIKE_FEED_FAILURE:
     error = action.payload || {message: action.payload.message};
-  	return { ...state, unlikedFeed: false, error: error, loading: false};
+  	return { ...state, unlikedFeed: {unlikedFeed: false, error: error, loading: false}};
   case RESET_UNLIKED_FEED_STATE:
-  	return { ...state, unlikedFeed: false, error: null, loading: false};
+  	return { ...state, unlikedFeed: {unlikedFeed: false, error: null, loading: false}};
 
   // case VALIDATE_POST_FIELDS:
   //   return {...state, newPost:{...state.newPost, error: null, loading: true}}
