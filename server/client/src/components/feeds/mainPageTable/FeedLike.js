@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import _ from 'underscore';
 import {Icon} from 'semantic-ui-react';
 
 class FeedLike extends Component {
@@ -40,13 +39,13 @@ class FeedLike extends Component {
     } else if(this.state.liked === false) {
       return (
         <a>
-          <Icon color='red' name='like' circular={true} onClick={()=> {this.props.onLikeClick(itemId,this.props.user), this.changeLikeState()}} /> {this.state.likeCount}        
+          <Icon color='red' name='like' circular={true} onClick={()=> {this.props.onLikeClick(itemId,this.props.user); this.changeLikeState()}} /> {this.state.likeCount}        
         </a>      
       );
     } else if(this.state.liked === true) {
       return (
         <a>
-          <Icon color='red' inverted name='like' circular={true} onClick={()=> {this.props.onUnlikeClick(itemId,this.props.user), this.changeLikeState()}} /> {this.state.likeCount}
+          <Icon color='red' inverted name='like' circular={true} onClick={()=> {this.props.onUnlikeClick(itemId,this.props.user); this.changeLikeState()}} /> {this.state.likeCount}
         </a>      
       );
     }

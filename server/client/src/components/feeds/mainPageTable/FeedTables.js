@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
 import _ from 'underscore';
 import FeedTable from './FeedTable';
-import { Loader, Segment, Container, Grid,Header, List, Divider, Image, Button, Menu, Icon, Table } from 'semantic-ui-react';
+import { Loader, Segment, Container, Header, Divider } from 'semantic-ui-react';
 
 class FeedTables extends Component {
 
@@ -37,7 +36,6 @@ class FeedTables extends Component {
 
   render(){ 
     const { feeds, loading, error } = this.props.allFeedsList;
-    const user = this.props.user;
     if(loading) {
       return (
         <Loader active >

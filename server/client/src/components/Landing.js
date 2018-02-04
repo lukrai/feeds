@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import _ from 'underscore';
 import Footer from './Footer';
-import FeedTables from './feeds/FeedTables';
 import FeedsTablesContainer from '../containers/FeedTablesContainer.js';
 import { Segment, Container, Grid,Header, List, Divider, Image, Button, Menu, Icon, Table } from 'semantic-ui-react';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
-import { Icon, Label, Menu, Table } from 'semantic-ui-react';
+import { Icon, Menu, Table } from 'semantic-ui-react';
 
 const propTypes = {
     items: PropTypes.array.isRequired,

@@ -1,13 +1,8 @@
 import React, {Component} from 'react';
-import _ from 'underscore';
-import { Segment, Container, Grid,Header, List, Divider, Image, Button, Menu, Icon, Table, Rating } from 'semantic-ui-react';
+import { List } from 'semantic-ui-react';
 import FeedLike from './FeedLike';
 
 class FeedTableRow extends Component {
-
-  constructor(props) {
-		super(props);
-  }
 
   renderLike(item) {
     if(!this.props.user) {

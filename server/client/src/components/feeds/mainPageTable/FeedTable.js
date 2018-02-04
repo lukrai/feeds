@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
-import _ from 'underscore';
 import Pagination from './Pagination';
-import FeedLike from './FeedLike';
 import FeedTableRow from './FeedTableRow';
-import { Segment, Container, Grid,Header, List, Divider, Image, Button, Menu, Icon, Table, Rating } from 'semantic-ui-react';
+import { Segment, List, Header } from 'semantic-ui-react';
 
 class FeedTable extends Component {
 

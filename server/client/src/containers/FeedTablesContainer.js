@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { fetchAllFeeds, fetchAllFeedsSuccess, fetchAllFeedsFailure, resetAllFeeds, likeFeed, likeFeedFailure, likeFeedSuccess, unlikeFeed,
 unlikeFeedFailure, unlikeFeedSuccess, resetLikedFeed, resetUnlikedFeed } from '../actions/feeds';
-import FeedTables from '../components/feeds/FeedTables';
+import FeedTables from '../components/feeds/mainPageTable/FeedTables';
 
 
 const mapStateToProps = (state) => {
