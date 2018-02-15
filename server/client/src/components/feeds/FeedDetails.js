@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
+import CommentBox from './comments/CommentBox';
 import { Card, Icon, Image, Grid, Segment, List, Header, Button, Modal, Dimmer, Loader } from 'semantic-ui-react';
 
 class FeedDetails extends Component {
@@ -132,8 +133,8 @@ class FeedDetails extends Component {
                   }
               })}
           </Grid.Column>
-          <Grid.Column>
-            <Segment>Comming soon...</Segment>
+          <Grid.Column>            
+              <CommentBox />
           </Grid.Column>
         </Grid>
       </div>

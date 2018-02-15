@@ -31,6 +31,7 @@ app.use(passport.session());
 
 require('./routes/authRoutes')(app);
 require('./routes/feedRoutes')(app);
+require('./routes/commentRoutes')(app);
 
 app.get('/', (req, res) => {
     res.send({ hi: "bla"});

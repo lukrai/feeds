@@ -87,7 +87,7 @@ export function resetFeeds() {
     return {
       type: RESET_FEEDS
     };
-  }
+}
 
 export  function fetchAllFeeds() {
     const request =  axios({

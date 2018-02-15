@@ -3,19 +3,17 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const commentSchema = new Schema({
-    _userID: {type: Schema.Types.ObjectId},
+const commentSchema = new Schema({   
     _feedID: {type: Schema.Types.ObjectId},
-    text: String,
-    date_created: { type: Date, default: Date.now },
-    replies: [{
-        text: String,
-        postedBy: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'users'
-        }
-    }]
-    
+    _parentID: {type: Schema.Types.ObjectId},
+    slug: String,
+    full_slug: String,
+    date_created: Date,
+    author: {
+        _userID: {type: Schema.Types.ObjectId},
+        name: String
+    },    
+    text: String  
 });
 
 mongoose.model('comments', commentSchema);

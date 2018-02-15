@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Container, Icon, Dropdown, Menu, Segment, Button, Card, Image, Grid, Responsive } from 'semantic-ui-react';
 
-class Header extends Component {
+class FixedTopMenu extends Component {
     constructor (props) {
         super(props);
     }
@@ -89,7 +89,7 @@ function mapStateToProps({ auth }) {
     return { auth };
 }
 
-export default  connect(mapStateToProps)(Header);
+export default  connect(mapStateToProps)(FixedTopMenu);
 
 const icons = {
     'bin2': 'M192 1024h640l64-704h-768zM640 128v-128h-256v128h-320v192l64-64h768l64 64v-192h-320zM576 128h-128v-64h128v64z',
