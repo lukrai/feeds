@@ -12,14 +12,14 @@ import FeedDetails from '../pages/FeedsDetails';
 import FeedsList from '../pages/FeedsList';
 import FeedsNew from '../pages/FeedsNew';
 import FeedsEdit from '../pages/FeedsEdit';
-import FixedTopMenu from './FixedTopMenu'
-import CustomMenu from './CustomMenu'
+import FixedTopMenu from './common/FixedTopMenu';
+import CustomMenu from './common/CustomMenu';
 
 import { Menu, Icon, Segment, Container, Sidebar } from 'semantic-ui-react';
 
 const style = {
-    layout: {display: "flex", flex: 1, minHeight: "100vh", flexDirection: "column", backgroundColor: '#E5E5E5'},
-    pusher: { paddingTop:'60px' },
+    layout: {display: "flex", flex: 1, minHeight: "100vh", flexDirection: "column" },
+    pusher: { paddingTop:'5em',paddingLeft: '250px' },
 }
 
 class App extends Component {
@@ -33,8 +33,9 @@ render() {
       <div>           
         <BrowserRouter>                   
           <div >           
+            
+            <div style={style.layout}>
             <FixedTopMenu/>
-            <div>
               <Sidebar as={CustomMenu}/>
               <Sidebar.Pusher style={style.pusher}>
                 <Route exact path="/" component={Landing}/>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import CommentBox from './comments/CommentBox';
-import { Card, Icon, Image, Grid, Segment, List, Header, Button, Modal, Dimmer, Loader } from 'semantic-ui-react';
+import { Card, Icon, Image, Grid, Segment, List, Header, Button, Modal, Dimmer, Loader, Sticky } from 'semantic-ui-react';
 
 class FeedDetails extends Component {
   static contextTypes = {
@@ -45,12 +45,7 @@ class FeedDetails extends Component {
 
     if (loading) {
         return (         
-          <Grid columns={3} stackable style={{paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
-            <Grid.Column>
-              <Segment loading={true}>
-                <br /><br /><br />
-              </Segment>
-            </Grid.Column>
+          <Grid columns={2} stackable style={{ paddingLeft: '1em', paddingRight: '1em' }}>
             <Grid.Column>
               <Segment loading={true}><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></Segment>
             </Grid.Column>
@@ -66,40 +61,7 @@ class FeedDetails extends Component {
     }
     return (    
       <div>
-        <Grid columns={3} stackable style={{paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
-          <Grid.Column>
-            <Segment>
-              <Header size='medium'>{feed.title}</Header>
-              <List bulleted>
-                {feed.pages.map(function(page) {
-                  return (
-                    <List.Item key={page.url}>{page.url}</List.Item>
-                  );
-                })}
-              </List>
-              <Button as={Link} to={"/feeds/edit"} basic color='green'>Edit Feed</Button>
-              <Button basic color='red' onClick={this.show('small')}>Delete Feed</Button>
-
-              <div>      
-                <Modal size={this.state.size} open={this.state.open} onClose={this.close}>
-                  <Modal.Header>
-                    Delete Your Feed
-                  </Modal.Header>
-                  <Modal.Content>
-                    <p>Are you sure you want to delete your feed?</p>
-                  </Modal.Content>
-                  <Modal.Actions>
-                    <Button negative onClick={this.close}>
-                      No
-                    </Button>
-                    <Button positive  onClick={()=> {this.props.onDeleteClick(this.props.feedId,user)}}>
-                      Yes
-                    </Button>
-                  </Modal.Actions>
-                </Modal>
-              </div>
-            </Segment>
-          </Grid.Column>
+        <Grid columns={2} stackable style={{ paddingLeft: '1em', paddingRight: '1em' }}>
           <Grid.Column>
             {feed.feedData.map(function(post) {
                   if(post.from){
@@ -133,7 +95,38 @@ class FeedDetails extends Component {
                   }
               })}
           </Grid.Column>
-          <Grid.Column>            
+          <Grid.Column> 
+            <Segment>
+                <Header size='medium'>{feed.title}</Header>
+                <List bulleted>
+                  {feed.pages.map(function(page) {
+                    return (
+                      <List.Item key={page.url}>{page.url}</List.Item>
+                    );
+                  })}
+                </List>
+                <Button as={Link} to={"/feeds/edit"} basic color='green'>Edit Feed</Button>
+                <Button basic color='red' onClick={this.show('small')}>Delete Feed</Button>
+
+                <div>      
+                  <Modal size={this.state.size} open={this.state.open} onClose={this.close}>
+                    <Modal.Header>
+                      Delete Your Feed
+                    </Modal.Header>
+                    <Modal.Content>
+                      <p>Are you sure you want to delete your feed?</p>
+                    </Modal.Content>
+                    <Modal.Actions>
+                      <Button negative onClick={this.close}>
+                        No
+                      </Button>
+                      <Button positive  onClick={()=> {this.props.onDeleteClick(this.props.feedId,user)}}>
+                        Yes
+                      </Button>
+                    </Modal.Actions>
+                  </Modal>
+                </div>
+              </Segment>           
               <CommentBox />
           </Grid.Column>
         </Grid>

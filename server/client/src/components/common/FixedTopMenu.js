@@ -51,7 +51,7 @@ class FixedTopMenu extends Component {
         return (         
             <div>
                 <Responsive minWidth={Responsive.onlyTablet.minWidth}>
-                    <Menu fixed='top' inverted style={{height: '60px',  border: '1px solid #000', boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)'}}>
+                    <Menu fixed='top' inverted style={{height: '60px',  border: '1px solid #000', boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)', paddingLeft: '250px'}}>
                         <Container>
                             <Menu.Item as={Link} to='/' header style={{ fontSize: '1.75em' }}>
                                 <svg width="22" height="22" viewBox="0 0 1024 1024" style={{ marginRight: '1.5em' }}>
@@ -65,7 +65,7 @@ class FixedTopMenu extends Component {
                 </Responsive>
 
                 <Responsive {...Responsive.onlyMobile} >
-                    <Menu fixed='top' inverted style={{height: '60px',  border: '1px solid #000', boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)'}}>>
+                    <Menu fixed='top' inverted style={{height: '60px',  border: '1px solid #000', boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)', paddingLeft: '250px'}}>>
                         <Dropdown item icon='sidebar' simple>
                             <Dropdown.Menu>
                                 {this.renderContentMobile()}
