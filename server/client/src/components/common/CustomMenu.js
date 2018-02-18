@@ -23,7 +23,7 @@ class CustomMenu extends React.Component {
       <div>
         <Menu fixed='left' vertical inverted style={style.menu}>  
           <Menu.Item>
-            <Icon name='lab' bordered size='large' color='white'/>
+            <Icon name='lab' bordered size='large' />
             <strong>
               4Scroll            
             </strong>

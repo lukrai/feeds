@@ -32,8 +32,7 @@ render() {
     return (       
       <div>           
         <BrowserRouter>                   
-          <div >           
-            
+          <div >                       
             <div style={style.layout}>
             <FixedTopMenu/>
               <Sidebar as={CustomMenu}/>
