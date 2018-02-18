@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose; // tas pats kaip ir 2 eilutė
 
 const userSchema = new Schema({
-    googleID: String
+    googleId: String,
+    facebookId: String
     
 });
 

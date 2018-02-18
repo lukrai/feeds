@@ -8,12 +8,22 @@ module.exports = (app) => {
     app.get(
         '/auth/google/callback', 
         passport.authenticate('google'),
-        (req,res) =>{
+        (req,res) => {
             //console.log(res);
             res.redirect('/');
             
         }
     );
+
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope : ['public_profile'] }));
+
+    app.get('/auth/facebook/callback', 
+        passport.authenticate('facebook', { failureRedirect: '/fail' }), 
+        (req, res) => {
+            //console.log(res);
+            // Successful authentication, redirect home.
+            res.redirect('/');
+    });
 
     app.get('/api/logout', (req, res) => {
         req.logout();
@@ -23,4 +33,6 @@ module.exports = (app) => {
     app.get('/api/current_user', (req, res) => {
         res.send(req.user);
     });
+
+    
 }
