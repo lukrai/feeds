@@ -66,14 +66,14 @@ export function createFeedComment(feedId, props) {
     };
 }
 
-export function createFeedSuccess(newComment) {
+export function createFeedCommentSuccess(newComment) {
     return {
         type: CREATE_FEED_COMMENT_SUCCESS,
         payload: newComment
     };
 }
 
-export function createFeedFailure(error) {
+export function createFeedCommentFailure(error) {
     return {
         type: CREATE_FEED_COMMENT_FAILURE,
         payload: error
@@ -114,6 +114,6 @@ export function deleteFeedCommentFailure(response) {
 
 export function resetDeletedFeedComment() {
     return {
-        type: RESET_DELETED_FEED
+        type: RESET_DELETED_FEED_COMMENT
     };
 }
