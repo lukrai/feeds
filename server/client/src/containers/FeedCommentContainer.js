@@ -20,7 +20,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchComments: (id) => {
+    fetchMessages: (id) => {
         var response = dispatch(fetchFeedComments(id));
         response.payload.then((payload)=> {
             console.log(payload);

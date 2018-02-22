@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
+const open = require('open');
 const keys = require('./config/keys');
 require('./models/User');
 require('./models/Comment');
@@ -39,22 +40,39 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 5000; 
 //app.listen(PORT);
-
-const server = app.listen(PORT, function(err) {  
-  if (err) {
-    console.log(err);
-  } else {
-    open(`http://localhost:${PORT}`);
-  }
-});
+const server = app.listen(PORT);
+// const server = app.listen(PORT, function(err) {  
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     open(`http://localhost:${PORT}`);
+//   }
+// });
 
 const io = require('socket.io')(server);
 
-io.on('connection', (socket) => {  
+io.on('connection', (socket) => {
   console.log('a user connected');
+ 
+  socket.on('room', function(data) {
+    console.log('in joining room in SERVER')
+    socket.join(data.room);
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
   });
-  
+
+  socket.on('SEND_MESSAGE', function(data) {
+    console.log('SEND_MESSAGE');
+    console.log(data);
+    var id = mongoose.Types.ObjectId();
+    data.id = id;
+    data.date = new Date().toISOString();
+    socket.to(data.room).emit('RECEIVE_MESSAGE', data);
+  })
+
+  socket.on('leave room', function(data) {
+    console.log('user left')
+    socket.broadcast.to(data.room).emit('user left room', {user: data.user})
+    socket.leave(data.room)
+  })
+
 });

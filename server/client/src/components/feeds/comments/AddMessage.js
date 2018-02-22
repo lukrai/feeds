@@ -4,11 +4,11 @@ import { Button, Form } from 'semantic-ui-react';
 
 const validate = values => {
   const errors = {};
-  if (!values.comment) {
-    errors.comment = 'Required';
-  } else if (values.comment.length < 2) {
-    errors.comment = 'Must be 2 characters or more';
-  }
+  if (!values.message) {
+    errors.message = 'Can\'t be empty' ;
+  } //else if (values.comment.length < 2) {
+    //errors.comment = 'Must be 2 characters or more';
+  //}
   return errors;
 }
 
@@ -30,12 +30,14 @@ const renderField = ({
 )
 
 
-class AddComment extends Component {
+class AddMessage extends Component {
   
   submit(values, dispatch) {
-    console.log(this.props);
+    console.log(values);
     // here you can access all the form props from this.props
-    this.props.handleCommentSubmit(this.props.feedId, this.props.user, values);
+    this.props.handleSendMessageClick(values.message);
+    this.props.reset();
+    //this.props.handleCommentSubmit(this.props.feedId, this.props.user, values);
   }
 
   render() {
@@ -45,10 +47,10 @@ class AddComment extends Component {
       <Form onSubmit={handleSubmit(this.submit.bind(this))} reply>
         {/* <Form.TextArea as={Field} name='comment' type="text" /> */}
         <Field
-          name="comment"
+          name="message"
           type="text"
           component={renderField}
-          label="Comment"
+          label="Message"
         />
         <Button type="submit" content='Add Reply' labelPosition='left' icon='edit' primary disabled={submitting}/>
         <button type="button" disabled={pristine || submitting} onClick={reset}>
@@ -60,9 +62,9 @@ class AddComment extends Component {
 }
 
 export default reduxForm({
-  form: 'commentForm', 
+  form: 'messageForm', 
   validate, 
 
-})(AddComment)
+})(AddMessage)
 
 //export default AddComment;

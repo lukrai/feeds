@@ -121,6 +121,9 @@ module.exports = app => {
 
                     // migth create another route for fb feed
                     res.json(feedData)
+                }).catch(function (err) {
+                    return res.status(500).send("There was a problem parsing feed.");
+                    console.log(err);
                 });
 
         });
