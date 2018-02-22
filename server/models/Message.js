@@ -7,7 +7,10 @@ const messageSchema = new Schema({
     room: { type: Schema.Types.ObjectId },
     date: Date,
     author: {
-        name: String
+        _id: { type: Schema.Types.ObjectId },
+        name: String,
+        googleId: String,
+        facebookId: String
     },    
     text: String  
 });

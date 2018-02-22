@@ -5,15 +5,20 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const open = require('open');
 const keys = require('./config/keys');
+
 require('./models/User');
 require('./models/Comment');
 require('./models/Feed');
+require('./models/Message');
 require('./models/Like');
 require('./services/passport');
 
 mongoose.connect(keys.mongoURI);
+const Message = mongoose.model('messages');
 
 const app = express();
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -32,6 +37,7 @@ app.use(passport.session());
 
 require('./routes/authRoutes')(app);
 require('./routes/feedRoutes')(app);
+require('./routes/messageRoutes')(app);
 require('./routes/commentRoutes')(app);
 
 app.get('/', (req, res) => {
@@ -48,6 +54,8 @@ const server = app.listen(PORT);
 //     open(`http://localhost:${PORT}`);
 //   }
 // });
+
+
 
 const io = require('socket.io')(server);
 
@@ -66,6 +74,16 @@ io.on('connection', (socket) => {
     var id = mongoose.Types.ObjectId();
     data.id = id;
     data.date = new Date().toISOString();
+    var newMsg = new Message({ room: data.room, author: data.author, date: data.date, text: data.text});
+    data.id = newMsg._id;
+    newMsg.save(function(err) {
+      if(err) {
+        console.log(err);
+      }
+      
+    });
+
+
     socket.to(data.room).emit('RECEIVE_MESSAGE', data);
   })
 
