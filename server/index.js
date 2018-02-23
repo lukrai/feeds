@@ -71,11 +71,10 @@ io.on('connection', (socket) => {
   socket.on('SEND_MESSAGE', function(data) {
     console.log('SEND_MESSAGE');
     console.log(data);
-    var id = mongoose.Types.ObjectId();
-    data.id = id;
+
     data.date = new Date().toISOString();
     var newMsg = new Message({ room: data.room, author: data.author, date: data.date, text: data.text});
-    data.id = newMsg._id;
+    data._id = newMsg._id;
     newMsg.save(function(err) {
       if(err) {
         console.log(err);

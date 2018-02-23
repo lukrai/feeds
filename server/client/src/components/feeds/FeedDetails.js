@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import CommentSegment from './comments/CommentSegment';
-import FeedCommentContainer from '../../containers/FeedCommentContainer.js';
+import ChatContainer from '../../containers/ChatContainer.js';
 import { Card, Icon, Image, Grid, Segment, List, Header, Button, Modal, Dimmer, Loader, Sticky } from 'semantic-ui-react';
 
 class FeedDetails extends Component {
@@ -128,7 +127,7 @@ class FeedDetails extends Component {
                   </Modal>
                 </div>
               </Segment>           
-              <FeedCommentContainer feedId={this.props.feedId}/>
+              <ChatContainer feedId={this.props.feedId}/>
           </Grid.Column>
         </Grid>
       </div>

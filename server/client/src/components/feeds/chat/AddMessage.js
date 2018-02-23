@@ -42,7 +42,7 @@ class AddMessage extends Component {
 
   render() {
     const { handleSubmit, handleCommentSubmit, pristine, reset, submitting, feedId, user } = this.props;
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <Form onSubmit={handleSubmit(this.submit.bind(this))} reply>
         {/* <Form.TextArea as={Field} name='comment' type="text" /> */}
