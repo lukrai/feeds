@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { fetchFeeds, fetchFeedsSuccess, fetchFeedsFailure, resetFeeds  } from '../../actions/feeds';
-import { Menu, Sidebar, Container, Segment, Icon, Image } from 'semantic-ui-react'
-import { Switch, Route, Link, NavLink } from 'react-router-dom'
+import LoginModal from './LoginModal';
+import { Menu, Sidebar, Container, Segment, Icon, Image, Button } from 'semantic-ui-react';
+import { Switch, Route, Link, NavLink } from 'react-router-dom';
 
 const style = {
   menu: {
@@ -23,17 +24,67 @@ class CustomMenu extends React.Component {
 
   constructor (props) {
     super(props);
+    this.state = { openModal: false };
+    this.showLoginModal = this.showLoginModal.bind(this);
+    this.closeLoginModal = this.closeLoginModal.bind(this);
   }
+
+  showLoginModal = () => {this.setState({ openModal: true })}
+  closeLoginModal = () => {this.setState({ openModal: false })}
 
   componentWillMount() {
     this.props.resetMe();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user !== this.props.user && this.props.user) { //!== this.props.feedsList
+    if (nextProps.user !== this.props.user && nextProps.user) {
       this.props.fetchFeeds();
     }
   }
+
+  renderContent() {
+    switch (this.props.user) {
+      case null:
+        return;
+      case false:
+        return (
+          <Menu.Item  onClick={() => this.showLoginModal(true)}>
+            Login
+          </Menu.Item>
+        );
+      default:
+        return(
+          <Menu.Item  as='a' href="/api/logout">
+            Logout
+          </Menu.Item>      
+        )
+    }
+  }
+
+  renderFeeds() {
+    if(!this.props.user){
+      return (
+        <Menu.Menu>
+          <Menu.Item >
+            Please Login to see your feeds
+          </Menu.Item> 
+        </Menu.Menu>
+      );
+    } else {
+      return (
+        <Menu.Menu>
+          {this.props.feedsList.feeds.map((feed) => {
+            return (             
+              <Menu.Item as={NavLink} to={"feeds/" + feed._id} key={feed._id}>
+                {feed.title}
+              </Menu.Item>
+            );
+          })}              
+        </Menu.Menu>
+      );
+    }
+  }
+
 
   render() { 
     const { feeds } = this.props.feedsList;
@@ -45,19 +96,17 @@ class CustomMenu extends React.Component {
               <path style={{fill: 'white'}} d={icons.spade}></path>
             </svg>            
             <strong  style={{fontSize: '1.25em'}}>4Scroll</strong>
-          </Menu.Item>        
+          </Menu.Item>
           <Menu.Item>       
             <Menu.Header>My Feeds</Menu.Header>
+            {this.renderFeeds()}
+          </Menu.Item>
+          <Menu.Item>
             <Menu.Menu>
-              {feeds.map((feed) => {
-                return (             
-                  <Menu.Item as={NavLink} to={"feeds/" + feed._id} key={feed._id}>
-                    {feed.title}
-                  </Menu.Item>
-                );
-              })}              
+              {this.renderContent()}
             </Menu.Menu>
           </Menu.Item>
+          <LoginModal open={this.state.openModal} closeLoginModal={this.closeLoginModal} />
         </Menu>
       </div>
     );
