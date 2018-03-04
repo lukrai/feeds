@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { List } from 'semantic-ui-react';
 import FeedLike from './FeedLike';
+import { Link } from 'react-router-dom';
 
 class FeedTableRow extends Component {
 
@@ -29,7 +30,7 @@ class FeedTableRow extends Component {
           {this.renderLike(item)}
         </List.Content>
         <List.Icon name='arrow right' size='large' verticalAlign='middle' />
-        <List.Content>
+        <List.Content as={Link} to={"feeds/" + item._id}>
           <List.Header>{item.title} </List.Header>
           <List.Description>Created: {item.date_created}</List.Description>
         </List.Content>            

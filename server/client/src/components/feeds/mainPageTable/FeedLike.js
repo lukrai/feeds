@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Icon} from 'semantic-ui-react';
+import LoginModal from '../../common/LoginModal';
 
 class FeedLike extends Component {
 
@@ -8,9 +9,16 @@ class FeedLike extends Component {
 
 		this.state = {
       liked: this.props.liked,
-      likeCount: this.props.likeCount
+      likeCount: this.props.likeCount,
+      openModal: false 
 		};
+    this.showLoginModal = this.showLoginModal.bind(this);
+    this.closeLoginModal = this.closeLoginModal.bind(this);
   }
+  
+
+  showLoginModal = () => {this.setState({ openModal: true })}
+  closeLoginModal = () => {this.setState({ openModal: false })}
 
   componentWillReceiveProps(nextProps){
     if (nextProps.liked !== this.props.liked) {
@@ -32,9 +40,12 @@ class FeedLike extends Component {
     const itemId = this.props.itemId;  
     if(this.state.liked === null) {
       return (
-        <a>
-          <Icon color='red' disabled name='like' circular={true}/> {this.state.likeCount}
-        </a>      
+        <div>
+          <a onClick={() => this.showLoginModal(true)}>
+            <Icon color='red' disabled name='like' circular={true}/> {this.state.likeCount}
+          </a>  
+          <LoginModal open={this.state.openModal} closeLoginModal={this.closeLoginModal} />
+        </div>    
       );      
     } else if(this.state.liked === false) {
       return (
