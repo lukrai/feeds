@@ -105,20 +105,20 @@ export default function(state = INITIAL_STATE, action) {
   case RESET_UNLIKED_FEED_STATE:
   	return { ...state, unlikedFeed: {unlikedFeed: false, error: null, loading: false}};
 
-  // case VALIDATE_POST_FIELDS:
-  //   return {...state, newPost:{...state.newPost, error: null, loading: true}}
-  // case VALIDATE_POST_FIELDS_SUCCESS:
-  //   return {...state, newPost:{...state.newPost, error: null, loading: false}}
-  // case VALIDATE_POST_FIELDS_FAILURE:
-  //   let result = action.payload;
-  //   if(!result) {
-  //     error = {message: action.payload.message};
-  //   } else {
-  //     error = {title: result.title, categories: result.categories, description: result.description};
-  //   }
-  //   return {...state, newPost:{...state.newPost, error: error, loading: false}}
-  // case RESET_POST_FIELDS:
-  //   return {...state, newPost:{...state.newPost, error: null, loading: null}}
+  case VALIDATE_FEED_FIELDS:
+    return {...state, newFeed:{...state.newFeed, error: null, loading: true}}
+  case VALIDATE_FEED_FIELDS_SUCCESS:
+    return {...state, newFeed:{...state.newFeed, error: null, loading: false}}
+  case VALIDATE_FEED_FIELDS_FAILURE:
+    let result = action.payload;
+    if(!result) {
+      error = {message: action.payload.message};
+    } else {
+      error = {title: result.title, categories: result.categories, description: result.description};
+    }
+    return {...state, newFeed:{...state.newFeed, error: error, loading: false}}
+  case RESET_FEED_FIELDS:
+    return {...state, newFeed:{...state.newFeed, error: null, loading: null}}
    default:
      return state;
   }

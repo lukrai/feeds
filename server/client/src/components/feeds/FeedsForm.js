@@ -84,15 +84,10 @@ class FeedsForm extends Component {
     componentWillReceiveProps(nextProps) {
         console.log(nextProps.newFeed.feed);
         if (nextProps.newFeed.feed && !nextProps.newFeed.error) {
-            console.log("watafak")
             this.context.router.history.push('/feeds');
         }
     }
-
-
-
-
-  
+ 
     renderError(newPost) {
       if (newPost && newPost.error && newPost.error.message) {
         return (
@@ -162,7 +157,7 @@ class FeedsForm extends Component {
   
 export default reduxForm({
     form: 'FeedsForm', // a unique identifier for this form
-    //validate, // <--- validation function given to redux-form
+    validate, // <--- validation function given to redux-form
     //asyncValidate
 })(FeedsForm)
   

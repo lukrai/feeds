@@ -42,7 +42,7 @@ class FeedLike extends Component {
       return (
         <div>
           <a onClick={() => this.showLoginModal(true)}>
-            <Icon color='red' disabled name='like' circular={true}/> {this.state.likeCount}
+            <Icon color='red' name='like' circular={true}/> {this.state.likeCount}
           </a>  
           <LoginModal open={this.state.openModal} closeLoginModal={this.closeLoginModal} />
         </div>    
