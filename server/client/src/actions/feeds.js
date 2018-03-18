@@ -122,7 +122,7 @@ export function resetAllFeeds() {
 }
 
 
-export function validatePostFields(props) {
+export function validateFeedFields(props) {
   //note: we cant have /feed/validateFields because it'll match /feed/:id path!
   const request = axios({
     method: 'post',
@@ -136,20 +136,20 @@ export function validatePostFields(props) {
   };
 }
 
-export function validatePostFieldsSuccess() {
+export function validateFeedFieldsSuccess() {
   return {
     type: VALIDATE_FEED_FIELDS_SUCCESS
   };
 }
 
-export function validatePostFieldsFailure(error) {
+export function validateFeedFieldsFailure(error) {
   return {
     type: VALIDATE_FEED_FIELDS_FAILURE,
     payload: error
   };
 }
 
-export function resetPostFields() {
+export function resetFeedFields() {
   return {
     type: RESET_FEED_FIELDS
   }

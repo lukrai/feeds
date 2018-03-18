@@ -40,6 +40,39 @@ module.exports = app => {
 
     });
 
+    app.post('/api/feed/validate/fields', requireLogin, (req, res, next) => {
+        var body = req.body;
+        // var title = body.title ? body.title.trim() : '';
+        console.log(body);
+        var pagesString = [];
+        req.body.pages.forEach(element => {
+
+            pagesString.push(element['url'].trim());
+        });
+
+        const options = {
+            method: 'GET',
+            uri: `https://graph.facebook.com/v2.11/?ids=${pagesString.toString()}`,
+            qs: {
+              access_token: keys.fbAccessKey,
+            },
+            json: true
+          };
+        request(options)
+            .then(result => {
+                console.log(result);
+                if (!result) {
+                    body.errors = "Specified pages are empty";
+                    res.send({body});
+                }
+                res.send("Valid")
+            }).catch(function (err) {
+                var errorString = err.error.error.message.replace(/,/g, ", ");
+                res.status(200).send({ error: errorString });
+            });
+    });
+
+      
     //Get all user feeds
     app.get('/api/feed', requireLogin, (req, res) => {
 
@@ -128,16 +161,6 @@ module.exports = app => {
 
         });
     });
-
-    // app.get('/api/feed_fb_data/:feed_id', requireLogin, (req, res) => {
-    // //suformuoti fb duomenis
-    //     Feed.findById(req.params.feed_id, function (err, feed) {
-    //         if (err)
-    //             res.send(err);
-
-    //         res.json(feed);
-    //     });
-    // });        
     
     //update feed
     app.put('/api/feed/:feed_id', requireLogin, (req, res) => {

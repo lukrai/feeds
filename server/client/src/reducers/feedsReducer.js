@@ -114,7 +114,8 @@ export default function(state = INITIAL_STATE, action) {
     if(!result) {
       error = {message: action.payload.message};
     } else {
-      error = {title: result.title, categories: result.categories, description: result.description};
+      console.log(result);
+      error = result;
     }
     return {...state, newFeed:{...state.newFeed, error: error, loading: false}}
   case RESET_FEED_FIELDS:
