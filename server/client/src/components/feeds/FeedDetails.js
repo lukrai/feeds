@@ -12,8 +12,6 @@ class FeedDetails extends Component {
   constructor (props){
     super(props);
     this.state = { 
-      open: false, 
-      size: 'small',
       posts: [],
       sliceIndex: 0,
       calculations: {
@@ -21,8 +19,7 @@ class FeedDetails extends Component {
         bottomVisible: false,
       },
     };
-    this.show = this.show.bind(this);
-    this.close = this.close.bind(this);
+    
     this.loadMorePosts = this.loadMorePosts.bind(this);
   }
 
@@ -35,8 +32,7 @@ class FeedDetails extends Component {
     this.setState({ calculations }); 
   }
 
-  show = size => () => { this.setState({ size, open: true })}
-  close = () => this.setState({ open: false })
+
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.deletedFeed.feed && nextProps.deletedFeed.feed.status === 200 && !nextProps.deletedFeed.feed.error) {
@@ -85,48 +81,17 @@ class FeedDetails extends Component {
     } else if(!feed) {
       return <span />
     }
-    return (    
+    return (
       <div ref={this.handleContextRef}>
         <Grid columns={2} stackable style={{ paddingLeft: '1em', paddingRight: '1em' }}>
           <Grid.Column>
-              <Visibility offset={[200,200]} onUpdate={this.handleUpdate} >               
-                <InfiniteFeedScroll list={this.state.posts} loadMorePosts={this.loadMorePosts}/>
-              </Visibility>
+            <Visibility onUpdate={this.handleUpdate} >
+              <InfiniteFeedScroll list={this.state.posts} loadMorePosts={this.loadMorePosts} />
+            </Visibility>
           </Grid.Column>
-          <Grid.Column> 
-            <Segment>
-                <Header size='medium'>{feed.title}</Header>
-                <List bulleted>
-                  {feed.pages.map(function(page) {
-                    return (
-                      <List.Item key={page.url}>{page.url}</List.Item>
-                    );
-                  })}
-                </List>
-                <Button as={Link} to={"/feeds/edit"} basic color='green'>Edit Feed</Button>
-                <Button basic color='red' onClick={this.show('small')}>Delete Feed</Button>
-
-                <div>      
-                  <Modal size={this.state.size} open={this.state.open} onClose={this.close}>
-                    <Modal.Header>
-                      Delete Your Feed
-                    </Modal.Header>
-                    <Modal.Content>
-                      <p>Are you sure you want to delete your feed?</p>
-                    </Modal.Content>
-                    <Modal.Actions>
-                      <Button negative onClick={this.close}>
-                        No
-                      </Button>
-                      <Button positive  onClick={()=> {this.props.onDeleteClick(this.props.feedId,user)}}>
-                        Yes
-                      </Button>
-                    </Modal.Actions>
-                  </Modal>
-                </div>
-              </Segment>           
-              <ChatContainer feedId={this.props.feedId}/>
-
+          <Grid.Column>
+            <FeedBasicInfo feed={feed} user={user}/>
+            <ChatContainer feedId={this.props.feedId} />
           </Grid.Column>
         </Grid>
       </div>
@@ -135,3 +100,65 @@ class FeedDetails extends Component {
 }
 
 export default FeedDetails;
+
+class FeedBasicInfo extends Component {
+  constructor (props){
+    super(props);
+    this.state = { 
+      open: false, 
+      size: 'small',
+    }
+    this.show = this.show.bind(this);
+    this.close = this.close.bind(this);
+  }
+
+  show = size => () => { this.setState({ size, open: true })}
+  close = () => this.setState({ open: false })
+
+  renderButtons (user) {
+    if (user) {
+      return (
+        <div>
+          <Button as={Link} to={"/feeds/edit"} basic color='green'>Edit Feed</Button>
+          <Button basic color='red' onClick={this.show('small')}>Delete Feed</Button>
+        </div>
+      );
+    }
+  }
+
+  render() {
+    const feed  = this.props.feed;
+    const user = this.props.user;
+    return (
+      <Segment>
+        <Header size='medium'>{feed.title}</Header>
+        <List bulleted>
+          {feed.pages.map(function (page) {
+            return (
+              <List.Item key={page.url}>{page.url}</List.Item>
+            );
+          })}
+        </List>
+        {this.renderButtons(user)}
+        <div>
+          <Modal size={this.state.size} open={this.state.open} onClose={this.close}>
+            <Modal.Header>
+              Delete Your Feed
+                    </Modal.Header>
+            <Modal.Content>
+              <p>Are you sure you want to delete your feed?</p>
+            </Modal.Content>
+            <Modal.Actions>
+              <Button negative onClick={this.close}>
+                No
+              </Button>
+              <Button positive onClick={() => { this.props.onDeleteClick(this.props.feedId, user) }}>
+                Yes
+              </Button>
+            </Modal.Actions>
+          </Modal>
+        </div>
+      </Segment>
+    );
+  }
+}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { timeToString } from '../../../utils/misc.js'
 import { Comment, Icon } from 'semantic-ui-react';
 
 
@@ -14,7 +14,7 @@ class CustomMessage extends Component {
           <Comment.Content>
             <Comment.Author as='a'>{message.author._id}</Comment.Author>
             <Comment.Metadata>
-              <div>{message.date}</div>
+              <div>{timeToString(message.date)}</div>
             </Comment.Metadata>
             <Comment.Text>{message.text}</Comment.Text>
           </Comment.Content>

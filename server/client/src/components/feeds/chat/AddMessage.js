@@ -14,19 +14,19 @@ const renderField = ({
   input,
   label,
   type,
+  placeholder,
   meta: { touched, error, warning }
 }) => (
   <div>
     <label>{label}</label>
     <div>
-      <input {...input} placeholder={label} type={type} />
+      <input {...input} placeholder={placeholder} type={type} />
       {touched &&
         ((error && <span>{error}</span>) ||
           (warning && <span>{warning}</span>))}
     </div>
   </div>
 )
-
 
 class AddMessage extends Component {
   
@@ -36,21 +36,29 @@ class AddMessage extends Component {
   }
 
   render() {
-    const { handleSubmit, pristine, reset, submitting, } = this.props;
-    return (
-      <Form onSubmit={handleSubmit(this.submit.bind(this))} reply>
-        <Field
-          name="message"
-          type="text"
-          component={renderField}
-          label="Message"
-        />
-        <Button type="submit" content='Add Reply' labelPosition='left' icon='edit' primary disabled={submitting}/>
-        <button type="button" disabled={pristine || submitting} onClick={reset}>
-          Clear Values
-        </button>
-      </Form>
-    );
+    const { handleSubmit, pristine, reset, submitting, user} = this.props;
+    if (user) {
+      return (
+        <Form onSubmit={handleSubmit(this.submit.bind(this))} reply>
+          <Field
+            name="message"
+            type="text"
+            component={renderField}
+            placeholder="Say something"
+          />
+          <Button type="submit" content='Add Reply' labelPosition='left' icon='edit' primary disabled={submitting}/>
+          <Button type="button" disabled={pristine || submitting} onClick={reset}>
+            Clear Values
+          </Button>
+        </Form>
+      );
+    } else {
+      return(
+        <div>
+          Login to chat. 
+        </div>
+      );
+    }
   }
 }
 
