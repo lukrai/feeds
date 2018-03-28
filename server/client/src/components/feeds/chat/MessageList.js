@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import CustomMessage from './CustomMessage';
-import { Comment, Form, Header, Button } from 'semantic-ui-react';
+import { Comment, Header } from 'semantic-ui-react';
 
 const style = {
   segment: {

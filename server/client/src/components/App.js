@@ -34,7 +34,7 @@ render() {
         <BrowserRouter>                   
           <div >                       
             <div style={style.layout}>
-            <FixedTopMenu />
+              <FixedTopMenu />
               <Sidebar as={CustomMenu}/>
               <Sidebar.Pusher style={style.pusher}>
                 <Route exact path="/" component={Landing}/>

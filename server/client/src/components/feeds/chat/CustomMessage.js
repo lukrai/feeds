@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Comment, Form, Header, Button, Icon } from 'semantic-ui-react';
+import { Comment, Icon } from 'semantic-ui-react';
 
 
 class CustomMessage extends Component {
@@ -17,7 +17,6 @@ class CustomMessage extends Component {
               <div>{message.date}</div>
             </Comment.Metadata>
             <Comment.Text>{message.text}</Comment.Text>
-            
           </Comment.Content>
         </Comment>
     );

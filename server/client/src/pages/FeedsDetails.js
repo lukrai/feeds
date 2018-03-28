@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteFeed } from '../actions/feeds';
-//import Header from '../containers/HeaderContainer.js';
 import FeedDetailsContainer from '../containers/FeedDetailsContainer.js';
 
 class FeedsDetails extends Component {

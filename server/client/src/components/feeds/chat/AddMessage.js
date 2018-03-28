@@ -6,9 +6,7 @@ const validate = values => {
   const errors = {};
   if (!values.message) {
     errors.message = 'Can\'t be empty' ;
-  } //else if (values.comment.length < 2) {
-    //errors.comment = 'Must be 2 characters or more';
-  //}
+  }
   return errors;
 }
 
@@ -33,19 +31,14 @@ const renderField = ({
 class AddMessage extends Component {
   
   submit(values, dispatch) {
-    console.log(values);
-    // here you can access all the form props from this.props
     this.props.handleSendMessageClick(values.message);
     this.props.reset();
-    //this.props.handleCommentSubmit(this.props.feedId, this.props.user, values);
   }
 
   render() {
-    const { handleSubmit, handleCommentSubmit, pristine, reset, submitting, feedId, user } = this.props;
-    // console.log(this.props);
+    const { handleSubmit, pristine, reset, submitting, } = this.props;
     return (
       <Form onSubmit={handleSubmit(this.submit.bind(this))} reply>
-        {/* <Form.TextArea as={Field} name='comment' type="text" /> */}
         <Field
           name="message"
           type="text"
@@ -64,7 +57,4 @@ class AddMessage extends Component {
 export default reduxForm({
   form: 'messageForm', 
   validate, 
-
-})(AddMessage)
-
-//export default AddComment;
+})(AddMessage);

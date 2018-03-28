@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import InfiniteFeedScroll from './InfiniteFeedScroll.js'
 import ChatContainer from '../../containers/ChatContainer.js';
-import { Card, Icon, Image, Grid, Segment, List, Header, Button, Modal, Dimmer, Loader, Sticky } from 'semantic-ui-react';
+import { Grid, Segment, List, Header, Button, Modal, Visibility } from 'semantic-ui-react';
 
 class FeedDetails extends Component {
   static contextTypes = {
@@ -10,18 +11,41 @@ class FeedDetails extends Component {
   };
   constructor (props){
     super(props);
-    this.state = { open: false, size: 'small' };
+    this.state = { 
+      open: false, 
+      size: 'small',
+      posts: [],
+      sliceIndex: 0,
+      calculations: {
+        percentagePassed: 0,
+        bottomVisible: false,
+      },
+    };
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
-    // this.handleLogoutClick = this.handleLogoutClick
+    this.loadMorePosts = this.loadMorePosts.bind(this);
+  }
+
+  handleContextRef = contextRef => { this.setState({ contextRef }); }
+  handleUpdate = (e, { calculations }) => { 
+    const { bottomVisible } = calculations;
+    if (bottomVisible && bottomVisible !== this.setState.calculations) {
+      this.loadMorePosts();
+    }
+    this.setState({ calculations }); 
   }
 
   show = size => () => { this.setState({ size, open: true })}
   close = () => this.setState({ open: false })
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.deletedFeed.feed && nextProps.deletedFeed.feed.status==200 && !nextProps.deletedFeed.feed.error) {
+    if (nextProps.deletedFeed.feed && nextProps.deletedFeed.feed.status === 200 && !nextProps.deletedFeed.feed.error) {
       this.context.router.history.push('/feeds');
+    }
+
+    if (nextProps.activeFeed.feed && nextProps.activeFeed.feed.feedData) {
+      const posts = nextProps.activeFeed.feed.feedData.slice(0, 10);
+      this.setState({posts, sliceIndex: 10})
     }
   }
 
@@ -29,14 +53,16 @@ class FeedDetails extends Component {
     this.props.resetMe();
   }
 
-  componentWillUnmount() {
-    //Important! If your component is navigating based on some global state(from say componentWillReceiveProps)
-    //always reset that global state back to null when you REMOUNT
-     //this.props.resetMe();
-  }
-
   componentDidMount() {
     this.props.fetchFeed(this.props.feedId);
+  }
+
+  // Might change .slice to something else in the future
+  loadMorePosts() {
+    if (this.props.activeFeed.feed && this.state.sliceIndex < this.props.activeFeed.feed.feedData.length) {
+      const posts = this.props.activeFeed.feed.feedData.slice(0, this.state.sliceIndex + 10);
+      this.setState({posts, sliceIndex: this.state.sliceIndex + 10})
+    }
   }
 
   render() {
@@ -60,40 +86,12 @@ class FeedDetails extends Component {
       return <span />
     }
     return (    
-      <div>
+      <div ref={this.handleContextRef}>
         <Grid columns={2} stackable style={{ paddingLeft: '1em', paddingRight: '1em' }}>
           <Grid.Column>
-            {feed.feedData.map(function(post) {
-                  if(post.from){
-                    return (                   
-                        <Card fluid key={post.id}>
-                            <Card.Content>
-                              <Card.Header>                   
-                                <Image src={post.from.picture.data.url} floated='left' avatar />             
-                                {post.from.name}
-                              </Card.Header>
-                              <Card.Meta>
-                                <span className='date'>
-                                {getTime(post.created_time)}
-                                </span>
-                              </Card.Meta>
-                            </Card.Content>
-                          {renderImage(post)}                            
-                            <Card.Content>
-                              <Card.Description>
-                                {post.message}
-                              </Card.Description>
-                            </Card.Content>
-                            <Card.Content extra>
-                              <a>
-                                <Icon name='like' />
-                                {post.likes.summary.total_count} Likes
-                              </a>
-                            </Card.Content>
-                        </Card>                     
-                    );
-                  }
-              })}
+              <Visibility offset={[200,200]} onUpdate={this.handleUpdate} >               
+                <InfiniteFeedScroll list={this.state.posts} loadMorePosts={this.loadMorePosts}/>
+              </Visibility>
           </Grid.Column>
           <Grid.Column> 
             <Segment>
@@ -128,25 +126,12 @@ class FeedDetails extends Component {
                 </div>
               </Segment>           
               <ChatContainer feedId={this.props.feedId}/>
+
           </Grid.Column>
         </Grid>
       </div>
     );
   }
-}
-
-const renderImage = function(post) {
-  if (post.attachments.data[0].media){
-    return(
-      <Image src={post.attachments.data[0].media.image.src} />
-      );
-  }
-}
-
-const getTime = function(time) {
-  var t = new Date(1970, 0, 1, 0,0); // Epoch
-  t.setSeconds(Date.parse(time).toString().substring(0,10));
-  return t.toLocaleString();
 }
 
 export default FeedDetails;

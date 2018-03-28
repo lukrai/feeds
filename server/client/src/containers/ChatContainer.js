@@ -1,7 +1,6 @@
 import ChatSegment from '../components/feeds/chat/ChatSegment.js';
 import { fetchFeedMessages, fetchFeedMessagesSuccess, fetchFeedMessagesFailure, resetFeedMessages } from '../actions/messages';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
 
 function mapStateToProps(state, ownProps) {
     console.log(state);
@@ -18,8 +17,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchMessages: (id) => {
         var response = dispatch(fetchFeedMessages(id));
         response.payload.then((payload)=> {
-            console.log(payload);
-            if (payload && payload.status == 200) {
+            if (payload && payload.status === 200) {
                 dispatch(fetchFeedMessagesSuccess(payload.data))                   
             } else {
                 dispatch(fetchFeedMessagesFailure(payload.data));

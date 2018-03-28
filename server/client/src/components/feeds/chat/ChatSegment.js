@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MessageList from './MessageList';
 import AddMessage from './AddMessage';
-import { Comment, Form, Header, Button, Segment } from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 const io = require('socket.io-client');
 const socket = io();
 
@@ -46,7 +46,7 @@ class CommentSegment extends Component {
       author: this.props.user,//this.state.username,
       text: message,//this.state.message
       date: new Date().toISOString(),
-  }
+    }
     socket.emit('SEND_MESSAGE', messageObj)
     this.setState({ messages: [...this.state.messages, messageObj] });
   }
