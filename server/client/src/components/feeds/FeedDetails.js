@@ -32,16 +32,19 @@ class FeedDetails extends Component {
     this.setState({ calculations }); 
   }
 
-
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.deletedFeed.feed && nextProps.deletedFeed.feed.status === 200 && !nextProps.deletedFeed.feed.error) {
       this.context.router.history.push('/feeds');
     }
-
-    if (nextProps.activeFeed.feed && nextProps.activeFeed.feed.feedData) {
-      const posts = nextProps.activeFeed.feed.feedData.slice(0, 10);
+    
+    const {feed} = nextProps.activeFeed;
+    if (feed && feed.feedData) {
+      const posts = feed.feedData.slice(0, 10);
       this.setState({posts, sliceIndex: 10})
+    }
+
+    if (nextProps.feedId != this.props.feedId) {
+      this.props.fetchFeed(nextProps.feedId);
     }
   }
 

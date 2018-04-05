@@ -75,7 +75,7 @@ class CustomMenu extends React.Component {
         <Menu.Menu>
           {this.props.feedsList.feeds.map((feed) => {
             return (             
-              <Menu.Item as={NavLink} to={"feeds/" + feed._id} key={feed._id}>
+              <Menu.Item as={Link} to={"../feeds/" + feed._id} key={feed._id}>
                 {feed.title}
               </Menu.Item>
             );
