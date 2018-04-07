@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LoginModal from './LoginModal';
-import { Container, Icon, Dropdown, Menu, Segment, Button, Card, Image, Grid, Responsive } from 'semantic-ui-react';
+import { Container, Dropdown, Menu, Button, Responsive } from 'semantic-ui-react';
 
 class FixedTopMenu extends Component {
   constructor (props) {
@@ -66,7 +65,6 @@ class FixedTopMenu extends Component {
                 4Scroll
               </Menu.Item>                  
               {this.renderContent()}
-              
               <LoginModal open={this.state.openModal} closeLoginModal={this.closeLoginModal} /> 
             </Container>
           </Menu>
@@ -79,7 +77,6 @@ class FixedTopMenu extends Component {
                 {this.renderContentMobile()}
               </Dropdown.Menu>
             </Dropdown>
-
             <Menu.Item as='a' href='/' header style={{ fontSize: '1.75em' }}>
               <svg width="22" height="22" viewBox="0 0 1024 1024" style={{ marginRight: '1.5em' }}>
                 <path style={{fill: 'white'}} d={icons.spade}></path>

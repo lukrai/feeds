@@ -48,13 +48,14 @@ class MessageList extends Component {
                 return (               
                   <CustomMessage key={message._id} message={message}/>
                 );
+              } else {
+                return (<div></div>)
               }
           })}                           
         </div>  
       </Comment.Group> 
     );
   }
-
 }
 
 export default MessageList;

@@ -3,19 +3,17 @@ import PropTypes from 'prop-types';
 import FeedDetailsContainer from '../containers/FeedDetailsContainer.js';
 
 class FeedsDetails extends Component {
-    static contextTypes = {
-        router: PropTypes.object
-    };
+  static contextTypes = {
+    router: PropTypes.object
+  };
 
-    
-    render() {
-        console.log(this.props);
-        return (
-            <div className="container">
-                <FeedDetailsContainer id={this.props.match.params.id}/>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="container">
+        <FeedDetailsContainer id={this.props.match.params.id} />
+      </div>
+    );
+  }
 }
 
 export default FeedsDetails;

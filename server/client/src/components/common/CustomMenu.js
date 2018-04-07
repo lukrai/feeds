@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux';
 import { fetchFeeds, fetchFeedsSuccess, fetchFeedsFailure, resetFeeds  } from '../../actions/feeds';
 import LoginModal from './LoginModal';
-import { Menu, Sidebar, Container, Segment, Icon, Image, Button } from 'semantic-ui-react';
-import { Switch, Route, Link, NavLink } from 'react-router-dom';
+import { Menu } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 const style = {
   menu: {
@@ -85,9 +85,7 @@ class CustomMenu extends React.Component {
     }
   }
 
-
   render() { 
-    const { feeds } = this.props.feedsList;
     return(  
       <div>
         <Menu fixed='left' vertical inverted style={style.menu}>  
@@ -125,7 +123,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchFeeds: () => {
       var response = dispatch(fetchFeeds());
       response.payload.then((payload) => {
-        if(payload.status == 200){
+        if(payload.status === 200){
           dispatch(fetchFeedsSuccess(payload.data));
         }            
       }).catch((err) => {

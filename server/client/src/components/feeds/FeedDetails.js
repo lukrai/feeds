@@ -7,11 +7,11 @@ import { Grid, Segment, List, Header, Button, Modal, Visibility } from 'semantic
 
 class FeedDetails extends Component {
   static contextTypes = {
-     router: PropTypes.object
+    router: PropTypes.object
   };
-  constructor (props){
+  constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       posts: [],
       sliceIndex: 0,
       calculations: {
@@ -19,31 +19,31 @@ class FeedDetails extends Component {
         bottomVisible: false,
       },
     };
-    
+
     this.loadMorePosts = this.loadMorePosts.bind(this);
   }
 
   handleContextRef = contextRef => { this.setState({ contextRef }); }
-  handleUpdate = (e, { calculations }) => { 
+  handleUpdate = (e, { calculations }) => {
     const { bottomVisible } = calculations;
     if (bottomVisible && bottomVisible !== this.setState.calculations) {
       this.loadMorePosts();
     }
-    this.setState({ calculations }); 
+    this.setState({ calculations });
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.deletedFeed.feed && nextProps.deletedFeed.feed.status === 200 && !nextProps.deletedFeed.feed.error) {
       this.context.router.history.push('/feeds');
     }
-    
-    const {feed} = nextProps.activeFeed;
+
+    const { feed } = nextProps.activeFeed;
     if (feed && feed.feedData) {
       const posts = feed.feedData.slice(0, 10);
-      this.setState({posts, sliceIndex: 10})
+      this.setState({ posts, sliceIndex: 10 })
     }
 
-    if (nextProps.feedId != this.props.feedId) {
+    if (nextProps.feedId !== this.props.feedId) {
       this.props.fetchFeed(nextProps.feedId);
     }
   }
@@ -60,7 +60,7 @@ class FeedDetails extends Component {
   loadMorePosts() {
     if (this.props.activeFeed.feed && this.state.sliceIndex < this.props.activeFeed.feed.feedData.length) {
       const posts = this.props.activeFeed.feed.feedData.slice(0, this.state.sliceIndex + 10);
-      this.setState({posts, sliceIndex: this.state.sliceIndex + 10})
+      this.setState({ posts, sliceIndex: this.state.sliceIndex + 10 })
     }
   }
 
@@ -69,19 +69,19 @@ class FeedDetails extends Component {
     const user = this.props.user;
 
     if (loading) {
-        return (         
-          <Grid columns={2} stackable style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-            <Grid.Column>
-              <Segment loading={true}><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></Segment>
-            </Grid.Column>
-            <Grid.Column>
-              <Segment loading={true}><br /></Segment>
-            </Grid.Column>
-          </Grid>
-        );
-    } else if(error) {
-      return  <div className="alert alert-danger">{error.message}</div>
-    } else if(!feed) {
+      return (
+        <Grid columns={2} stackable style={{ paddingLeft: '1em', paddingRight: '1em' }}>
+          <Grid.Column>
+            <Segment loading={true}><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></Segment>
+          </Grid.Column>
+          <Grid.Column>
+            <Segment loading={true}><br /></Segment>
+          </Grid.Column>
+        </Grid>
+      );
+    } else if (error) {
+      return <div className="alert alert-danger">{error.message}</div>
+    } else if (!feed) {
       return <span />
     }
     return (
@@ -93,7 +93,7 @@ class FeedDetails extends Component {
             </Visibility>
           </Grid.Column>
           <Grid.Column>
-            <FeedBasicInfo feed={feed} user={user}/>
+            <FeedBasicInfo feed={feed} user={user} />
             <ChatContainer feedId={this.props.feedId} />
           </Grid.Column>
         </Grid>
@@ -105,20 +105,20 @@ class FeedDetails extends Component {
 export default FeedDetails;
 
 class FeedBasicInfo extends Component {
-  constructor (props){
+  constructor(props) {
     super(props);
-    this.state = { 
-      open: false, 
+    this.state = {
+      open: false,
       size: 'small',
     }
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
   }
 
-  show = size => () => { this.setState({ size, open: true })}
+  show = size => () => { this.setState({ size, open: true }) }
   close = () => this.setState({ open: false })
 
-  renderButtons (user) {
+  renderButtons(user) {
     if (user) {
       return (
         <div>
@@ -130,7 +130,7 @@ class FeedBasicInfo extends Component {
   }
 
   render() {
-    const feed  = this.props.feed;
+    const feed = this.props.feed;
     const user = this.props.user;
     return (
       <Segment>
@@ -147,7 +147,7 @@ class FeedBasicInfo extends Component {
           <Modal size={this.state.size} open={this.state.open} onClose={this.close}>
             <Modal.Header>
               Delete Your Feed
-                    </Modal.Header>
+            </Modal.Header>
             <Modal.Content>
               <p>Are you sure you want to delete your feed?</p>
             </Modal.Content>

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Segment, Container, Grid,Header,List, Divider,Image } from 'semantic-ui-react';
+import { Segment, Container, Grid,Header,List, Divider } from 'semantic-ui-react';
 
 class Footer extends Component {
-
 
     render() {
         return (

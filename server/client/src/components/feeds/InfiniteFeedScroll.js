@@ -13,6 +13,8 @@ class InfiniteFeedScroll extends Component {
             return (
               <FacebookCard key={post.id} post={post} />
             );
+          } else {
+            return(<div></div>);
           }
         })}
       </div>

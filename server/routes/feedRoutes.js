@@ -4,6 +4,17 @@ const mongoose = require('mongoose');
 const Feed = mongoose.model('feeds');
 const request = require('request-promise');
 
+var Twitter = require('twitter');
+var twitterConfig = require('../config/twitterKeys.js');
+var T = new Twitter(twitterConfig);
+
+var params = {
+    q: '#nodejs',
+    count: 10,
+    result_type: 'recent',
+    lang: 'en'
+  }
+
 module.exports = app => {
     app.post('/api/feed', requireLogin, (req, res) => {
         const { title, pages } = req.body;
@@ -15,12 +26,6 @@ module.exports = app => {
             date_created: Date.now(),
             date_updated: Date.now()
         });
-        //var feed = new Feed();
-        console.log(feed + ' aaa' + req);
-
-        // feed.save( function (err) {
-        //     if(err) return res.status(422).send(err);           
-        // })
 
         feed.save(function(err, feed) {
             if (err) {
@@ -37,7 +42,6 @@ module.exports = app => {
         // } catch(err) {
         //     res.status(422).send(err);
         // }
-
     });
 
     app.post('/api/feed/validate/fields', requireLogin, (req, res, next) => {
@@ -72,7 +76,6 @@ module.exports = app => {
             });
     });
 
-      
     //Get all user feeds
     app.get('/api/feed', requireLogin, (req, res) => {
 
@@ -84,7 +87,6 @@ module.exports = app => {
             res.status(200).send(feeds);
         });       
     });
-
 
     app.get('/api/feedAll', async (req, res) => {
 
@@ -121,8 +123,7 @@ module.exports = app => {
                 return res.status(404).json({
                     message: 'Feed not found'
                   });
-            }
-            //      
+            }      
             //https://graph.facebook.com/?ids=footengo31,footengo01,Footengo69&fields=posts.limit(5){message,created_time,picture}&access_token={your_access_token}
             var pagesString = [];
             feed.pages.forEach(element => {
@@ -217,5 +218,24 @@ module.exports = app => {
 
        return res.status(200).send("Feed unliked.");
         
+    });
+
+    app.get('/api/twitter', async(req,res) => {
+        await T.get('search/tweets', params, function(err, data, response) {
+            // If there is no error, proceed
+            if(!err){
+              // Loop through the returned tweets
+              for(let i = 0; i < data.statuses.length; i++){
+                // Get the tweet Id from the returned data
+                let id = { id: data.statuses[i].id_str }
+                // Try to Favorite the selected Tweet
+
+              }
+            } else {
+              console.log(err);
+            }
+            // console.log(response);
+            console.log(data);
+        });
     });
 }
