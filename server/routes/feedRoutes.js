@@ -3,7 +3,7 @@ const requireLogin = require('../middlewares/requireLogin');
 const mongoose = require('mongoose');
 const Feed = mongoose.model('feeds');
 const request = require('request-promise');
-const { parseFacebook } = require('../common/helpers');
+const { parseFacebookData, parseTwitterData, sortObjectsByDate } = require('../common/helpers');
 var Twitter = require('twitter');
 var twitterConfig = require('../config/twitterKeys.js');
 var T = new Twitter(twitterConfig);
@@ -121,13 +121,16 @@ module.exports = app => {
       feedObj.pages.forEach(element => {
         pagesString.push(element['url']);
       });
+
+      feedObj = feedObj.toJSON();
+      let facebookData = await parseFacebookData(pagesString);
+      let twitterData = await parseTwitterData(pagesString);
       
-      let feedData = feedObj.toJSON();
-      let facebookData = await parseFacebook(pagesString);
+      let feedData = [].concat.apply([], [facebookData, twitterData]);
+      feedData = sortObjectsByDate(feedData);
+      feedObj.feedData = feedData;
 
-      feedData['feedData'] = facebookData;
-
-      res.json(feedData);
+      res.json(feedObj);
     } catch (err) {
       return res.status(500).send("There was a problem parsing feed.");
     }
@@ -187,25 +190,5 @@ module.exports = app => {
     )
 
     return res.status(200).send("Feed unliked.");
-
-  });
-
-  app.get('/api/twitter', async (req, res) => {
-    await T.get('search/tweets', params, function (err, data, response) {
-      // If there is no error, proceed
-      if (!err) {
-        // Loop through the returned tweets
-        for (let i = 0; i < data.statuses.length; i++) {
-          // Get the tweet Id from the returned data
-          let id = { id: data.statuses[i].id_str }
-          // Try to Favorite the selected Tweet
-
-        }
-      } else {
-        console.log(err);
-      }
-      // console.log(response);
-      console.log(data);
-    });
   });
 }

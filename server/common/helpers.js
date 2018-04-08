@@ -1,7 +1,11 @@
 const keys = require('../config/keys');
 const request = require('request-promise');
 
-async function parseFacebook(pagesString) {
+const Twitter = require('twitter');
+const twitterConfig = require('../config/twitterKeys.js');
+var T = new Twitter(twitterConfig);
+
+async function parseFacebookData(pagesString) {
   let data = [];
   const options = {
     method: 'GET',
@@ -15,23 +19,66 @@ async function parseFacebook(pagesString) {
   //https://graph.facebook.com/?ids=footengo31,footengo01,Footengo69&fields=posts.limit(5){message,created_time,picture}&access_token={your_access_token}
   await request(options)
     .then(fbRes => {
-      var feedData= [];
+      var feedData = [];
       for (pageName in fbRes) {
         if (fbRes.hasOwnProperty(pageName)) {
           fbRes[pageName]['feed']['data'].forEach((obj) => obj['source'] = 'facebook');
           feedData = feedData.concat(fbRes[pageName]['feed']['data']);
         }
       }
-      feedData.sort(function (a, b) {
-        return new Date(b.created_time).getTime() - new Date(a.created_time).getTime();
-      });
+      // feedData = sortObjectsByDate(feedData);
+      // .sort(function (a, b) {
+      //   return new Date(b.created_time).getTime() - new Date(a.created_time).getTime();
+      // });
       data = feedData;
       // return feedData;
     }).catch(function (err) {
-      return res.status(500).send("There was a problem parsing feed.");
+      return res.status(500).send("There was a problem parsing facebook feed.");
       console.log(err);
     });
-    return data;
+  return data;
 }
 
-module.exports.parseFacebook = parseFacebook;
+async function parseTwitterData(pagesString) {
+  let twitterData = [];
+  let params = {
+    q: 'from:spacex OR from:tesla',
+    count: 50,
+    result_type: 'recent',
+    lang: 'en',
+  }
+
+  await T.get('search/tweets', params)
+  .then(function (data) {
+    for (let i = 0; i < data.statuses.length; i++) { // change to map
+      const element = data.statuses[i];
+      const obj = {
+        created_time: element.created_at,
+        id: element.id_str,
+        text: element.text,
+        entities: element.entities,
+        user: element.user,
+        retweet_count: element.retweet_count,
+        favorite_count: element.favorite_count,
+        source: 'twitter'
+      }
+      twitterData.push(obj);
+    }
+  })
+  .catch(function (err) {
+    return res.status(500).send("There was a problem parsing twitter feed.");
+  });
+
+  return twitterData;
+}
+
+function sortObjectsByDate (feedData) {
+  feedData.sort(function (a, b) {
+    return new Date(b.created_time).getTime() - new Date(a.created_time).getTime();
+  });
+  return feedData;
+}
+
+module.exports.parseFacebookData = parseFacebookData;
+module.exports.parseTwitterData = parseTwitterData;
+module.exports.sortObjectsByDate = sortObjectsByDate;
