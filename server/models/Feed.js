@@ -10,12 +10,12 @@ const { Schema } = mongoose; // tas pats kaip ir 2 eilutė
 const feedSchema = new Schema({
     _userID: { type: Schema.Types.ObjectId, ref: 'User'  },
     title: String,
-    pages: [{url: String, _id : false }],
+    pages: [{url: String, source: String, _id : false }],
     comments: [CommentSchema],
     date_created: { type: Date },
     date_updated: { type: Date },
     like_count: { type: Number, default: 0 },
-    likes: []
+    likes: [],
 });
 
 mongoose.model('feeds', feedSchema);

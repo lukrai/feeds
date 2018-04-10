@@ -26,12 +26,7 @@ async function parseFacebookData(pagesString) {
           feedData = feedData.concat(fbRes[pageName]['feed']['data']);
         }
       }
-      // feedData = sortObjectsByDate(feedData);
-      // .sort(function (a, b) {
-      //   return new Date(b.created_time).getTime() - new Date(a.created_time).getTime();
-      // });
       data = feedData;
-      // return feedData;
     }).catch(function (err) {
       return res.status(500).send("There was a problem parsing facebook feed.");
       console.log(err);
@@ -40,43 +35,60 @@ async function parseFacebookData(pagesString) {
 }
 
 async function parseTwitterData(pagesString) {
+  let queryString = formatTwitterQuery(pagesString);
   let twitterData = [];
+
   let params = {
-    q: 'from:spacex OR from:tesla',
+    q: queryString,
     count: 50,
     result_type: 'recent',
     lang: 'en',
   }
 
   await T.get('search/tweets', params)
-  .then(function (data) {
-    for (let i = 0; i < data.statuses.length; i++) { // change to map
-      const element = data.statuses[i];
-      const obj = {
-        created_time: element.created_at,
-        id: element.id_str,
-        text: element.text,
-        entities: element.entities,
-        user: element.user,
-        retweet_count: element.retweet_count,
-        favorite_count: element.favorite_count,
-        source: 'twitter'
+    .then(function (data) {
+      for (let i = 0; i < data.statuses.length; i++) { // change to map
+        const element = data.statuses[i];
+        const obj = {
+          created_time: element.created_at,
+          id: element.id_str,
+          text: element.text,
+          entities: element.entities,
+          user: element.user,
+          retweet_count: element.retweet_count,
+          favorite_count: element.favorite_count,
+          source: 'twitter'
+        }
+        twitterData.push(obj);
       }
-      twitterData.push(obj);
-    }
-  })
-  .catch(function (err) {
-    return res.status(500).send("There was a problem parsing twitter feed.");
-  });
+    })
+    .catch(function (err) {
+      return res.status(500).send("There was a problem parsing twitter feed.");
+    });
 
   return twitterData;
 }
 
-function sortObjectsByDate (feedData) {
+function sortObjectsByDate(feedData) {
   feedData.sort(function (a, b) {
     return new Date(b.created_time).getTime() - new Date(a.created_time).getTime();
   });
   return feedData;
+}
+
+function formatTwitterQuery(string) {
+  let queryString = "";
+
+  let i;
+  for (i = 0; i < string.length; i++) {
+    if (i === 0) {
+      queryString = `from:${string[i]}`;
+    } else {
+      queryString += `OR from:${string[i]}`;
+    }
+  }
+
+  return queryString
 }
 
 module.exports.parseFacebookData = parseFacebookData;

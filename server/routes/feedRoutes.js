@@ -8,17 +8,9 @@ var Twitter = require('twitter');
 var twitterConfig = require('../config/twitterKeys.js');
 var T = new Twitter(twitterConfig);
 
-var params = {
-  q: '#nodejs',
-  count: 10,
-  result_type: 'recent',
-  lang: 'en'
-}
-
 module.exports = app => {
   app.post('/api/feed', requireLogin, (req, res) => {
-    const { title, pages } = req.body;
-
+    const { title, pages, source } = req.body;
     var feed = new Feed({
       _userID: req.user.id,
       title,
@@ -29,30 +21,25 @@ module.exports = app => {
 
     feed.save(function (err, feed) {
       if (err) {
-        console.log(err);
-        return res.status(500).json({
+        return res.status(422).json({
           message: 'Could not save post'
         });
       }
       res.json(feed);
     });
-    // try {
-    //     await feed.save();
-    //     res.status(201).send.json({message: 'Added!'});
-    // } catch(err) {
-    //     res.status(422).send(err);
-    // }
   });
 
   app.post('/api/feed/validate/fields', requireLogin, (req, res, next) => {
     var body = req.body;
-    // var title = body.title ? body.title.trim() : '';
     console.log(body);
     var pagesString = [];
-    req.body.pages.forEach(element => {
-
-      pagesString.push(element['url'].trim());
-    });
+    if (req.body.pages) {
+      req.body.pages.forEach(element => {
+        if (element['url']) {
+          pagesString.push(element['url'].trim());
+        }
+      });
+    }
 
     const options = {
       method: 'GET',
@@ -62,9 +49,10 @@ module.exports = app => {
       },
       json: true
     };
+    
     request(options)
       .then(result => {
-        console.log(result);
+        //console.log(result);
         if (!result) {
           body.errors = "Specified pages are empty";
           res.send({ body });
@@ -117,14 +105,21 @@ module.exports = app => {
     try {
       let feedObj = await Feed.findById(req.params.feed_id);
 
-      var pagesString = [];
-      feedObj.pages.forEach(element => {
-        pagesString.push(element['url']);
-      });
+      var facebookPagesString = [];
+      var twitterPagesString = [];
+      if(feedObj.pages) {
+        feedObj.pages.forEach(element => {
+          if (element.source === 'facebook') {
+            facebookPagesString.push(element.url);
+          } else if (element.source === 'twitter') {
+            twitterPagesString.push(element.url);
+          }
+        });
+      }
 
       feedObj = feedObj.toJSON();
-      let facebookData = await parseFacebookData(pagesString);
-      let twitterData = await parseTwitterData(pagesString);
+      let facebookData = await parseFacebookData(facebookPagesString);
+      let twitterData = await parseTwitterData(twitterPagesString);
       
       let feedData = [].concat.apply([], [facebookData, twitterData]);
       feedData = sortObjectsByDate(feedData);

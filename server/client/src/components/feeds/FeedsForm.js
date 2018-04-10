@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { Field, FieldArray, reduxForm, SubmissionError } from 'redux-form';
 import validate from '../../utils/validateFeedForm';
 import { Link } from 'react-router-dom';
-import { Header, Grid, Segment, Button, Form, Checkbox, Message } from 'semantic-ui-react';
+import { Header, Grid, Segment, Button, Form, Checkbox, Message, Dropdown } from 'semantic-ui-react';
 import { createFeed, createFeedSuccess, createFeedFailure } from '../../actions/feeds';
 import { validateFeedFields, validateFeedFieldsSuccess, validateFeedFieldsFailure } from '../../actions/feeds';
 
+const dropdownOptions = [ { key: 'FB', value: 'facebook', text: 'Facebook' }, { key: 'TW', value: 'twitter', text: 'Twitter' }, ]
 
 const asyncValidate = (values, dispatch) => {
   return dispatch(validateFeedFields(values)).payload
@@ -30,6 +31,7 @@ const asyncValidate = (values, dispatch) => {
 }
 
 const validateAndCreateFeed = (values, dispatch) => {
+  console.log(values);
   return dispatch(createFeed(values)).payload
     .then(result => {
       // Note: Error's "data" is in result.payload.response.data (inside "response")
@@ -58,8 +60,6 @@ const renderField = ({ input, label, type, meta: { touched, error } }) =>
 
 const renderPageField = ({ input, label, type, meta: { asyncValidating, touched, error } }) =>
   <div>
-
-    {console.log(error)}
     <label>{label}</label>
     <div>
       <input {...input} type={type} placeholder={label} />
@@ -70,13 +70,28 @@ const renderPageField = ({ input, label, type, meta: { asyncValidating, touched,
     </div>
   </div>
 
+const DropdownFormField = props => (
+  <Form.Field>
+    <Dropdown 
+      selection {...props.input}
+      value={props.input.value}
+      onChange={(param, data) => props.input.onChange(data.value)}
+      options={dropdownOptions}
+      placeholder={"Feed source"}
+    />
+    <div className="red-text" style={{ marginBottom: '20px' }}>
+      {props.meta.touched && props.meta.error && <span> {props.meta.error} </span>}
+    </div>
+   </Form.Field>
+ )
+
 const renderPages = ({ fields, meta: { error, submitFailed } }) =>
   <div>
     {console.log(fields)}
     <div style={{ paddingBottom: '1em' }}>
       <Button type="button" onClick={() => fields.push({})}>
         Add FB Page
-    </Button>
+      </Button>
       {submitFailed &&
         error &&
         <span>
@@ -91,16 +106,20 @@ const renderPages = ({ fields, meta: { error, submitFailed } }) =>
             onClick={() => fields.remove(index)}
           >
             Remove Page
-      </Button>
+          </Button>
           <h4>
             Page #{index + 1}
           </h4>
           <Field
             name={`${pages}.url`}
-            //value="so"
             type="text"
             component={renderPageField}
             label="FB Page"
+          />
+          <Field
+            name={`${pages}.source`}
+            type="text"
+            component={DropdownFormField}
           />
         </div>
       )}
@@ -153,9 +172,9 @@ class FeedsForm extends Component {
         </Grid.Column>
         <Grid.Column width={8}>
           <Segment>
-            <Header as='h1' dividing >
+            <Header as='h1' dividing>
               New Feed
-              </Header>
+            </Header>
             <Form onSubmit={handleSubmit(validateAndCreateFeed)}>
               <Field
                 name="title"
@@ -169,17 +188,17 @@ class FeedsForm extends Component {
               </Form.Field>
 
               {this.renderError(newFeed)}
+
               <div>
                 <Button as={Link} to="/feeds">
                   Cancel
-                    </Button>
-
+                </Button>
                 <Button type="submit" disabled={submitting || newFeed.error ? true : false}>
                   Submit
                     </Button>
                 <Button type="button" disabled={pristine || submitting} onClick={reset}>
                   Clear Values
-                    </Button>
+                </Button>
               </div>
             </Form>
           </Segment>

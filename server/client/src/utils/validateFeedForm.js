@@ -12,7 +12,11 @@ const validate = values => {
         if (!page || !page.url) {
           pageErrors.url = 'Required'
           pagesArrayErrors[pageIndex] = pageErrors
-        }            
+        }
+        if (!page || !page.source) {
+          pageErrors.source = 'Required'
+          pagesArrayErrors[pageIndex] = pageErrors
+        }               
       });
       if (pagesArrayErrors.length) {
         errors.pages = pagesArrayErrors
