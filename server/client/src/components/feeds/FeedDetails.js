@@ -88,7 +88,7 @@ class FeedDetails extends Component {
       <div ref={this.handleContextRef}>
         <Grid columns={2} stackable style={{ paddingLeft: '1em', paddingRight: '1em' }}>
           <Grid.Column>
-            <Visibility onUpdate={this.handleUpdate} >
+            <Visibility onUpdate={this.handleUpdate}>
               <InfiniteFeedScroll list={this.state.posts} loadMorePosts={this.loadMorePosts} />
             </Visibility>
           </Grid.Column>

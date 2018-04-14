@@ -56,10 +56,10 @@ class FixedTopMenu extends Component {
     return (         
       <div>
         <Responsive minWidth={Responsive.onlyTablet.minWidth}>
-          <Menu fixed='top' inverted borderless style={{height: '60px',  border: '1px solid #000', boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)', paddingLeft: '250px'}}>
+          <Menu fixed='top' inverted borderless style={{height: '4.5em',  border: '1px solid #000', paddingLeft: '250px'}}> {/* boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)'*/}
             <Container>
               <Menu.Item as={Link} to='/' header style={{ fontSize: '1.75em' }}>
-                <svg width="22" height="22" viewBox="0 0 1024 1024" style={{ marginRight: '1.5em' }}>
+                <svg width="22" height="22" viewBox="0 0 1024 1024" style={{ marginRight: '0.5em' }}>
                   <path style={{fill: 'white'}} d={icons.spade}></path>
                 </svg>
                 4Scroll
@@ -71,14 +71,12 @@ class FixedTopMenu extends Component {
         </Responsive>
 
         <Responsive {...Responsive.onlyMobile} >
-          <Menu fixed='top' inverted style={{height: '60px',  border: '1px solid #000', boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)', paddingLeft: '250px'}}>>
-            <Dropdown item icon='sidebar' simple>
-              <Dropdown.Menu>
-                {this.renderContentMobile()}
-              </Dropdown.Menu>
-            </Dropdown>
+          <Menu fixed='top' inverted style={{height: '4.5em',  border: '1px solid #000', boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)'}}>>
+            <Menu.Item icon='sidebar' >
+
+            </Menu.Item>
             <Menu.Item as='a' href='/' header style={{ fontSize: '1.75em' }}>
-              <svg width="22" height="22" viewBox="0 0 1024 1024" style={{ marginRight: '1.5em' }}>
+              <svg width="22" height="22" viewBox="0 0 1024 1024" style={{ marginRight: '0.5em' }}>
                 <path style={{fill: 'white'}} d={icons.spade}></path>
               </svg>
               4Scroll

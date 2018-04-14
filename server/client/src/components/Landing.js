@@ -12,7 +12,7 @@ class Landing extends Component {
         <Segment
           inverted
           textAlign='center'
-          style={{ minHeight: 700, padding: '1em 0em' }} //padding: '1em 0em'
+          style={{ minHeight: 700, padding: '1em 0em'}} //padding: '1em 0em'
           vertical
         >
           <Container text>

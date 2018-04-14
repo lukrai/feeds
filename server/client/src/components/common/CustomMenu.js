@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 const style = {
   menu: {
     position: 'fixed',
-    // top: 0,
+    top: '4.5em',
     // bottom: 0,
     // left: 0,
     width: 250,

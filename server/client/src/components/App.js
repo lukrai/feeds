@@ -16,7 +16,7 @@ import { Sidebar } from 'semantic-ui-react';
 
 const style = {
     layout: {display: "flex", flex: 1, minHeight: "100vh", flexDirection: "column" },
-    pusher: { paddingTop:'5em',paddingLeft: '250px' },
+    pusher: { paddingTop:'4.5em', paddingLeft: '250px' },
 }
 
 class App extends Component {

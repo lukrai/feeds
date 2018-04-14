@@ -9,7 +9,7 @@ class FeedsDetails extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div style={{paddingTop: "0.5em"}}>
         <FeedDetailsContainer id={this.props.match.params.id} />
       </div>
     );
