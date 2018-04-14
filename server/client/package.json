@@ -19,9 +19,9 @@
   "dependencies": {
     "axios": "^0.16.2",
     "prop-types": "^15.6.0",
-    "react": "^15.6.1",
+    "react": "^16.3.1",
     "react-burger-menu": "^2.1.11",
-    "react-dom": "^15.6.1",
+    "react-dom": "^16.3.1",
     "react-modal": "^2.3.2",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
