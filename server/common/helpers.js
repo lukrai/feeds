@@ -28,16 +28,17 @@ async function parseFacebookData(pagesString) {
       }
       data = feedData;
     }).catch(function (err) {
-      return res.status(500).send("There was a problem parsing facebook feed.");
       console.log(err);
+      return res.status(500).send("There was a problem parsing facebook feed.");
     });
   return data;
 }
 
 async function parseTwitterData(pagesString) {
   let queryString = formatTwitterQuery(pagesString);
+  if (!queryString) return;
   let twitterData = [];
-
+  console.log(queryString);
   let params = {
     q: queryString,
     count: 50,
@@ -63,6 +64,7 @@ async function parseTwitterData(pagesString) {
       }
     })
     .catch(function (err) {
+      console.log(err);
       return res.status(500).send("There was a problem parsing twitter feed.");
     });
 

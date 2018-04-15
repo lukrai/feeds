@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Card, Image, Icon, Embed } from 'semantic-ui-react';
-import { timeToString } from '../../utils/misc.js'
+import { Card, Image, Icon, Embed, Segment } from 'semantic-ui-react';
+import { timeToString } from '../../utils/misc.js';
+import ReactDOM from 'react-dom';
 
 class InfiniteFeedScroll extends Component {
 
@@ -44,7 +45,12 @@ class FacebookCard extends Component {
             </span>
           </Card.Meta>
         </Card.Content>
-        {renderMedia(post)}
+        {/* <Card.Content extra> */}
+         
+
+            {renderMedia(post)}
+    
+        {/* </Card.Content> */}
         <Card.Content>
           <Card.Description>
             {post.message}
@@ -106,18 +112,12 @@ const renderMedia = function (post) {
   if(post.source === 'facebook' && post.attachments.data[0]) {
 
     if (post.attachments.data[0].type === 'video_inline' && post.attachments.data[0].media) {
+      const videoRef = post.attachments.data[0].url.replace("://", '%3A%2F%2F');
       return (
-      //   <Embed
-      //     icon='right circle arrow'
-      //     placeholder={post.attachments.data[0].media.image.src}
-      //     url={post.attachments.data[0].url}
-      // />
-      // <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fostraining%2Fvideos%2F10152269755926568%2F&show_text=0&width=560" width="560" height="315" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>
-      // <iframe src={`https://www.facebook.com/plugins/video.php?href=${post.attachments.data[0].url}`} height="315" ></iframe>
-      
-        <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook%2Fvideos%2F10153231379946729%2F&width=500&show_text=false&appId=588914741307945&height=280" width="100%" height="450" style={{overflowY:"auto"}}> scrolling="no" frameBorder="0" allowTransparency="true" allowFullScreen="true"></iframe>
-      
-    );
+        <div style={{  width: '100%', height: '0', position: 'relative', paddingBottom: '100%' }}>
+          <iframe src={`https://www.facebook.com/plugins/video.php?href=${videoRef}&appId=588914741307945`} style={{ display: 'block', position: 'absolute', height: '100%', width:'100%', top: '0', left: '0' }} scrolling="auto" frameBorder="0" allowFullScreen="true"></iframe>
+        </div>
+      );
     } else if (post.attachments.data[0].type === 'photo' && post.attachments.data[0].media) {
       return (
         <Image src={post.attachments.data[0].media.image.src} />
@@ -125,3 +125,4 @@ const renderMedia = function (post) {
     } 
   }
 }
+

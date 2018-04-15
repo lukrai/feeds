@@ -127,6 +127,7 @@ module.exports = app => {
 
       res.json(feedObj);
     } catch (err) {
+      console.log(err);
       return res.status(500).send("There was a problem parsing feed.");
     }
   });
