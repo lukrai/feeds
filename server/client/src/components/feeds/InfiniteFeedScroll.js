@@ -18,8 +18,14 @@ class InfiniteFeedScroll extends Component {
             return (
               <TwitterCard key={post.id} post={post} />
             );
+          } else if (post.source === 'youtube'){
+            return(
+              <YoutubeCard key={post.id} post={post} />
+            );
           } else {
-            return(<div key={post.id}></div>);
+            return(
+              <div key={post.id}></div>
+            );
           }
         })}
       </div>
@@ -44,13 +50,8 @@ class FacebookCard extends Component {
               {timeToString(post.created_time)}
             </span>
           </Card.Meta>
-        </Card.Content>
-        {/* <Card.Content extra> */}
-         
-
-            {renderMedia(post)}
-    
-        {/* </Card.Content> */}
+        </Card.Content>         
+          {renderMedia(post)}
         <Card.Content>
           <Card.Description>
             {post.message}
@@ -108,9 +109,41 @@ const renderImage = function (post) {
   }
 }
 
-const renderMedia = function (post) {
-  if(post.source === 'facebook' && post.attachments.data[0]) {
+class YoutubeCard extends Component {
+  render() {
+    const { post } = this.props;
+    return (
+      <Card fluid key={post.id}>
+        <Card.Content>
+          <Card.Header>
+            {/* <Image src={post.from.picture.data.url} floated='left' avatar /> */}
+            {post.channelTitle}
+          </Card.Header>
+          <Card.Meta>
+            <span className='date'>
+              {timeToString(post.created_time)}
+            </span>
+          </Card.Meta>
+        </Card.Content>         
+          {renderMedia(post)}
+        <Card.Content>
+          <Card.Description>
+            {post.description}
+          </Card.Description>
+        </Card.Content>
+        <Card.Content extra>
+          <a>
+            <Icon name='like' />
+            {/* {post.likes.summary.total_count} Likes */}
+          </a>
+        </Card.Content>
+      </Card>
+    );
+  }
+}
 
+const renderMedia = function (post) {
+  if(post.source === 'facebook' && post.attachments) {
     if (post.attachments.data[0].type === 'video_inline' && post.attachments.data[0].media) {
       const videoRef = post.attachments.data[0].url.replace("://", '%3A%2F%2F');
       return (
@@ -123,6 +156,14 @@ const renderMedia = function (post) {
         <Image src={post.attachments.data[0].media.image.src} />
       );
     } 
+  } else if(post.source === 'youtube') {
+    return (
+      <Embed
+        id={post.id}
+        placeholder={post.thumbnails.high.url}
+        source='youtube'
+      />
+    );
   }
 }
 

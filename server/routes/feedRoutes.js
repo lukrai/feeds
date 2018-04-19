@@ -3,7 +3,7 @@ const requireLogin = require('../middlewares/requireLogin');
 const mongoose = require('mongoose');
 const Feed = mongoose.model('feeds');
 const request = require('request-promise');
-const { parseFacebookData, parseTwitterData, sortObjectsByDate } = require('../common/helpers');
+const { parseFacebookData, parseTwitterData, parseYoutubeData, sortObjectsByDate } = require('../common/helpers');
 var Twitter = require('twitter');
 var twitterConfig = require('../config/twitterKeys.js');
 var T = new Twitter(twitterConfig);
@@ -120,8 +120,9 @@ module.exports = app => {
       feedObj = feedObj.toJSON();
       let facebookData = await parseFacebookData(facebookPagesString);
       let twitterData = await parseTwitterData(twitterPagesString);
-      
-      let feedData = [].concat.apply([], [facebookData, twitterData]);
+      let youtubeData = await parseYoutubeData("");
+
+      let feedData = [].concat.apply([], [facebookData, twitterData, youtubeData]);
       feedData = sortObjectsByDate(feedData);
       feedObj.feedData = feedData;
 
