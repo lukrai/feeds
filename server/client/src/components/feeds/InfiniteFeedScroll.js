@@ -116,7 +116,7 @@ class YoutubeCard extends Component {
       <Card fluid key={post.id}>
         <Card.Content>
           <Card.Header>
-            {/* <Image src={post.from.picture.data.url} floated='left' avatar /> */}
+            <Image src={`https://i3.ytimg.com/i/${post.channelId}/1.jpg`} floated='left' avatar />
             {post.channelTitle}
           </Card.Header>
           <Card.Meta>

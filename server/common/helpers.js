@@ -105,7 +105,7 @@ async function parseYoutubeData(pagesString) {
   await request(options)
     .then(ytRes => {
       for (const element of ytRes.items) { 
-        // console.log(element.snippet);
+        console.log(element.snippet);
         const obj = {    
           id: element.id.videoId,
           kind: element.id.kind,
