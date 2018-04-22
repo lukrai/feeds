@@ -9,7 +9,6 @@ export default combineReducers({
   auth: authReducer,
   form: reduxForm,
   feeds: feedsReducer,
-  comments: commentsReducer,
-  messages: messageReducer
-
+  // comments: commentsReducer,
+  messages: messageReducer,
 });

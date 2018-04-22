@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import LoginModal from './LoginModal';
+import UpdateUsernameContainer from '../../containers/UpdateUsernameContainer';
 import { Container, Dropdown, Menu, Button, Responsive } from 'semantic-ui-react';
 
 class FixedTopMenu extends Component {
@@ -28,7 +29,8 @@ class FixedTopMenu extends Component {
       default:
         return [ 
           <Menu.Item key='1' as={Link} to='/feeds'>My Feeds</Menu.Item>,
-          <Menu.Item key='2' position='right'>
+          <Menu.Item key='3' position='right'> {this.props.auth.username}</Menu.Item>,
+          <Menu.Item key='2' style={{ marginLeft: '10px' }}>
             <Button as='a' href="/api/logout" inverted>Logout</Button>
           </Menu.Item>
         ];
@@ -84,6 +86,7 @@ class FixedTopMenu extends Component {
             <LoginModal open={this.state.openModal} closeLoginModal={this.closeLoginModal} />                 
           </Menu>
         </Responsive>
+        <UpdateUsernameContainer/>
       </div>
     );
   }
