@@ -71,6 +71,39 @@ async function parseTwitterData(pagesString) {
   return twitterData;
 }
 
+async function parseYoutubeData(pagesString) {
+  let data = [];
+  let youtubeData = [];
+  let requests = [];
+
+  for (const channelId of pagesString){
+    requests.push(request(options(channelId)));
+  }
+
+  await Promise.all(requests)
+    .then(data => {
+      for (const channelData of data) {
+        for (const element of channelData.items) {
+          const obj = {
+            id: element.id.videoId,
+            kind: element.id.kind,
+            created_time: element.snippet.publishedAt,
+            title: element.snippet.title,
+            description: element.snippet.description,
+            channelId: element.snippet.channelId,
+            channelTitle: element.snippet.channelTitle,
+            thumbnails: element.snippet.thumbnails,
+            source: 'youtube'
+          }
+          youtubeData.push(obj);
+        }
+      }
+    }).catch(function (err) {
+      return res.status(500).send("There was a problem parsing youtube feed.");
+    });
+  return youtubeData;
+}
+
 function sortObjectsByDate(feedData) {
   feedData.sort(function (a, b) {
     return new Date(b.created_time).getTime() - new Date(a.created_time).getTime();
@@ -89,43 +122,17 @@ function formatTwitterQuery(string) {
       queryString += `OR from:${string[i]}`;
     }
   }
-
-  return queryString
+  return queryString;
 }
 
-async function parseYoutubeData(pagesString) {
-  let data = [];
-  let youtubeData = [];
+const options = (channelId) => {
   const options = {
     method: 'GET',
-    uri: `https://www.googleapis.com/youtube/v3/search?key=${keys.googleApiKey}&channelId=UCjOl2AUblVmg2rA_cRgZkFg&part=snippet,id&order=date&maxResults=20`,
+    uri: `https://www.googleapis.com/youtube/v3/search?key=${keys.googleApiKey}&channelId=${channelId}&part=snippet,id&order=date&maxResults=10`,
        // https://www.googleapis.com/youtube/v3/search?key=AIzaSyBT1riFM8eP1BoixlHv12TcO60SX263jeQ&channelId=UCjOl2AUblVmg2rA_cRgZkFg&part=snippet,id&order=date&maxResults=20
     json: true
   };
-  await request(options)
-    .then(ytRes => {
-      for (const element of ytRes.items) { 
-        console.log(element.snippet);
-        const obj = {    
-          id: element.id.videoId,
-          kind: element.id.kind,
-          created_time: element.snippet.publishedAt,
-          title: element.snippet.title,
-          description: element.snippet.description,
-          channelId: element.snippet.channelId,
-          channelTitle: element.snippet.channelTitle,
-          thumbnails: element.snippet.thumbnails,
-          source: 'youtube'
-        }
-        youtubeData.push(obj);
-      }
-      // console.log(ytRes);
-      data = youtubeData;
-    }).catch(function (err) {
-      console.log(err);
-      return res.status(500).send("There was a problem parsing youtube feed.");
-    });
-  return data;
+  return options;
 }
 
 module.exports.parseFacebookData = parseFacebookData;

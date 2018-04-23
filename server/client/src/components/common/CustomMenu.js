@@ -89,12 +89,12 @@ class CustomMenu extends React.Component {
     return(  
       <div>
         <Menu fixed='left' vertical inverted style={style.menu}>  
-          <Menu.Item >
+          {/* <Menu.Item >
             <svg width="1.25em" height="1.25em" viewBox="0 0 1024 1024" style={{ marginRight: '0.5em' }}>
               <path style={{fill: 'white'}} d={icons.spade}></path>
             </svg>            
             <strong  style={{fontSize: '1.25em'}}>4Scroll</strong>
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item>       
             <Menu.Header>My Feeds</Menu.Header>
             {this.renderFeeds()}

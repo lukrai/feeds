@@ -35,10 +35,14 @@ module.exports = app => {
     var pagesString = [];
     if (req.body.pages) {
       req.body.pages.forEach(element => {
-        if (element['url']) {
+        if (element['url'] && element.source === "facebook") {
           pagesString.push(element['url'].trim());
         }
       });
+    }
+
+    if(!pagesString.toString()) {
+      return res.send('');
     }
 
     const options = {
@@ -107,22 +111,27 @@ module.exports = app => {
 
       var facebookPagesString = [];
       var twitterPagesString = [];
+      var youtubePagesString = [];
       if(feedObj.pages) {
         feedObj.pages.forEach(element => {
           if (element.source === 'facebook') {
             facebookPagesString.push(element.url);
           } else if (element.source === 'twitter') {
             twitterPagesString.push(element.url);
+          } else if (element.source === 'youtube') {
+            youtubePagesString.push(element.url);
           }
         });
       }
 
       feedObj = feedObj.toJSON();
-      let facebookData = await parseFacebookData(facebookPagesString);
-      let twitterData = await parseTwitterData(twitterPagesString);
-      let youtubeData = await parseYoutubeData("");
+      let facebookData = facebookPagesString.length ? await parseFacebookData(facebookPagesString) : [];
+      let twitterData = twitterPagesString.length ? await parseTwitterData(twitterPagesString) : [];
+      let youtubeData = youtubePagesString.length ? await parseYoutubeData(youtubePagesString) : [];
 
+      console.log(youtubeData);
       let feedData = [].concat.apply([], [facebookData, twitterData, youtubeData]);
+      console.log(feedData);
       feedData = sortObjectsByDate(feedData);
       feedObj.feedData = feedData;
 

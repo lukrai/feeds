@@ -7,7 +7,11 @@ import { Header, Grid, Segment, Button, Form, Checkbox, Message, Dropdown } from
 import { createFeed, createFeedSuccess, createFeedFailure } from '../../actions/feeds';
 import { validateFeedFields, validateFeedFieldsSuccess, validateFeedFieldsFailure } from '../../actions/feeds';
 
-const dropdownOptions = [ { key: 'FB', value: 'facebook', text: 'Facebook' }, { key: 'TW', value: 'twitter', text: 'Twitter' }, ]
+const dropdownOptions = [
+  { key: 'FB', value: 'facebook', text: 'Facebook' }, 
+  { key: 'TW', value: 'twitter', text: 'Twitter' }, 
+  { key: 'YT', value: 'youtube', text: 'Youtube' },
+];
 
 const asyncValidate = (values, dispatch) => {
   return dispatch(validateFeedFields(values)).payload
