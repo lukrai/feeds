@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import InfiniteFeedScroll from './InfiniteFeedScroll.js'
 import ChatContainer from '../../containers/ChatContainer.js';
-import { Grid, Segment, List, Header, Button, Modal, Visibility } from 'semantic-ui-react';
+import { Grid, Segment, List, Header, Button, Modal, Visibility, Rail, Sticky } from 'semantic-ui-react';
 
 class FeedDetails extends Component {
   static contextTypes = {
@@ -23,7 +23,7 @@ class FeedDetails extends Component {
     this.loadMorePosts = this.loadMorePosts.bind(this);
   }
 
-  handleContextRef = contextRef => { this.setState({ contextRef }); }
+  handleContextRef = contextRef => this.setState({ contextRef })
   handleUpdate = (e, { calculations }) => {
     const { bottomVisible } = calculations;
     if (bottomVisible && bottomVisible !== this.setState.calculations) {
@@ -67,6 +67,7 @@ class FeedDetails extends Component {
   render() {
     const { feed, loading, error } = this.props.activeFeed;
     const user = this.props.user;
+    const { contextRef } = this.state;
 
     if (loading) {
       return (
@@ -86,15 +87,22 @@ class FeedDetails extends Component {
     }
     return (
       <div ref={this.handleContextRef}>
-        <Grid columns={2} stackable style={{ paddingLeft: '1em', paddingRight: '1em' }}>
+        <Grid columns={2}  style={{ paddingLeft: '1em', paddingRight: '1em' }}>
           <Grid.Column>
             <Visibility onUpdate={this.handleUpdate}>
               <InfiniteFeedScroll list={this.state.posts} loadMorePosts={this.loadMorePosts} />
             </Visibility>
+            
           </Grid.Column>
           <Grid.Column>
+            
+          {/* <Rail position='right'> */}
             <FeedBasicInfo feed={feed} user={user} />
-            <ChatContainer feedId={this.props.feedId} />
+              <Sticky context={contextRef}  offset={75} >
+                <ChatContainer feedId={this.props.feedId} />
+              </Sticky>
+            {/* </Rail> */}
+           
           </Grid.Column>
         </Grid>
       </div>

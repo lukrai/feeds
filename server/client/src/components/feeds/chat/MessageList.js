@@ -4,7 +4,7 @@ import { Comment, Header } from 'semantic-ui-react';
 
 const style = {
   segment: {
-    height: 300,
+    height: "45vh",
     overflowY: 'auto',
   }
 }
@@ -40,7 +40,7 @@ class MessageList extends Component {
     }
 
     return(
-      <Comment.Group minimal >
+      <Comment.Group minimal style={{maxWidth: '1200px', width: '100%'}}>
         <Header as='h3' dividing>Chat</Header>
         <div style={style.segment} ref={(ref) => this.messagesRef = ref }  >
           {messages.map(function(message) {

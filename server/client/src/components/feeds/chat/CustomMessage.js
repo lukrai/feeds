@@ -9,10 +9,8 @@ class CustomMessage extends Component {
     const message = this.props.message;
     return (
         <Comment>
-          <Comment.Avatar as={Icon} name='universal access' >
-          </Comment.Avatar>
           <Comment.Content>
-            <Comment.Author as='a'>{message.author._id}</Comment.Author>
+            <Comment.Author as='a'>{message.author.username}</Comment.Author>
             <Comment.Metadata>
               <div>{timeToString(message.date)}</div>
             </Comment.Metadata>

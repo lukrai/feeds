@@ -8,7 +8,7 @@ const messageSchema = new Schema({
     date: Date,
     author: {
         _id: { type: Schema.Types.ObjectId },
-        name: String,
+        username: String,
         googleId: String,
         facebookId: String
     },    
