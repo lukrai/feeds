@@ -71,7 +71,7 @@ class FeedDetails extends Component {
 
     if (loading) {
       return (
-        <Grid columns={2} stackable style={{ paddingLeft: '1em', paddingRight: '1em' }}>
+        <Grid columns={2} container style={{ paddingLeft: '1em', paddingRight: '1em' }}>
           <Grid.Column>
             <Segment loading={true}><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></Segment>
           </Grid.Column>
@@ -87,14 +87,14 @@ class FeedDetails extends Component {
     }
     return (
       <div ref={this.handleContextRef}>
-        <Grid columns={2}  style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-          <Grid.Column>
+        <Grid columns={2} container style={{ paddingLeft: '1em', paddingRight: '1em' }}>
+          <Grid.Column width={8}>
             <Visibility onUpdate={this.handleUpdate}>
               <InfiniteFeedScroll list={this.state.posts} loadMorePosts={this.loadMorePosts} />
             </Visibility>
             
           </Grid.Column>
-          <Grid.Column>
+          <Grid.Column width={8}>
             
           {/* <Rail position='right'> */}
             <FeedBasicInfo feed={feed} user={user} />

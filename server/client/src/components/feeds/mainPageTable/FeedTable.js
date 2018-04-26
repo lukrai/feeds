@@ -22,10 +22,7 @@ class FeedTable extends Component {
 
   render(){ 
 		return (
-      <Segment>             
-        <Header as='h1' dividing >
-          Feeds
-        </Header>           
+      <Segment style={{minHeigth: "150px", important: true}}>             
         <List divided relaxed>
           {this.state.pageOfItems.map(item =>
             <FeedTableRow key={item._id} item={item} user={this.props.user} onLikeClick={this.props.onLikeClick} onUnlikeClick={this.props.onUnlikeClick} />
