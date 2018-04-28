@@ -16,6 +16,7 @@ const INITIAL_STATE = {
               allFeedsList: {feeds: [], error:null, loading: false},  
               newFeed:{feed:null, error: null, loading: false}, 
               isValidFeed:{error: null, loading: false},
+              updatedFeed:{feedUpdated: false, error: null, loading: true},
 							activeFeed:{feed:null, error:null, loading: false}, 
               deletedFeed: {feed: null, error:null, loading: false},
               likedFeed: {likedFeed: null, error: null, loading: false},

@@ -33,7 +33,10 @@ const validateAndUpdateFeed = (values, dispatch, props) => {
         dispatch(updateFeedFailure(result.payload.response.data));
       }
       dispatch(updateFeedSuccess());
-
+    }).catch(function (err) {
+      console.log(err);
+      console.log(err.response.data);
+      dispatch(updateFeedFailure(err.response.data));
     });
 }
 
@@ -67,10 +70,11 @@ const DropdownFormField = props => (
       onChange={(param, data) => props.input.onChange(data.value)}
       options={dropdownOptions}
       placeholder={"Feed source"}
+      error={props.meta.touched && (props.meta.error ? true : false)}
     />
-    <div className="red-text" style={{ marginBottom: '20px' }}>
+    <p style={{color: "#b9382f"}} >
       {props.meta.touched && props.meta.error && <span> {props.meta.error} </span>}
-    </div>
+    </p>
   </Form.Field>
 )
 
@@ -141,7 +145,7 @@ class FeedsUpdateForm extends Component {
 
   render() {
     console.log(this.props)
-    const { handleSubmit, submitting, isValidFeed, reset, pristine } = this.props;
+    const { handleSubmit, submitting, isValidFeed, updatedFeed, reset, pristine } = this.props;
     return (
       <Grid columns={3} stackable style={{ paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
         <Grid.Column width={4}>
@@ -150,7 +154,7 @@ class FeedsUpdateForm extends Component {
         <Grid.Column width={8}>
           <Segment>
             <Header as='h1' dividing>
-              New Feed
+              Edit Feed
             </Header>
             <Form onSubmit={handleSubmit(validateAndUpdateFeed)}>
               <Field
@@ -165,12 +169,13 @@ class FeedsUpdateForm extends Component {
               </Form.Field> */}
 
               {this.renderError(isValidFeed)}
+              {this.renderError(updatedFeed)}
 
               <div style={{ paddingTop: "1em" }}>
                 <Button as={Link} to="/feeds">
                   Cancel
                 </Button>
-                <Button type="submit" disabled={submitting || isValidFeed.error ? true : false}>
+                <Button type="submit" disabled={submitting || isValidFeed.error ? true : false ||  updatedFeed.error ? true : false}>
                   Submit
                 </Button>
                 <Button type="button" disabled={pristine || submitting} onClick={reset}>

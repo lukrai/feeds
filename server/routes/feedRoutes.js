@@ -158,11 +158,12 @@ module.exports = app => {
       date_updated: Date.now()
     };
     //console.log(req);
-    Feed.findByIdAndUpdate(req.params.feed_id, feed, function (err, data) {
-      if (err)
+    Feed.findOneAndUpdate({_id: req.params.feed_id, _userID: req.user.id}, feed, function (err, data) {
+      if (err) {
         return res.status(500).send("There was a problem updating feed.");
+      }
       if (!data)
-        return res.status(404).send("Feed not found.");
+        return res.status(401).send("Not authorized to modify this feed");
       res.status(200).send("Feed updated");
     });
   });

@@ -81,10 +81,11 @@ const DropdownFormField = props => (
       onChange={(param, data) => props.input.onChange(data.value)}
       options={dropdownOptions}
       placeholder={"Feed source"}
-    />
-    <div className="red-text" style={{ marginBottom: '20px' }}>
+      error={props.meta.touched && (props.meta.error ? true : false)}
+    /> 
+    <p style={{color: "#b9382f"}} >
       {props.meta.touched && props.meta.error && <span> {props.meta.error} </span>}
-    </div>
+    </p>
   </Form.Field>
 )
 

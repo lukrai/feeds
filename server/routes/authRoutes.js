@@ -60,10 +60,6 @@ module.exports = (app) => {
     const user = {
       username: req.body.username,
     };
-    console.log(req.user._id);
-    console.log("req.user._id");
-    console.log(req.params.user_id);
-    console.log(req.params.user_id === req.user._id.toString());
     if (req.user._id.toString() === req.params.user_id) {
       User.findByIdAndUpdate(req.params.user_id, user, function (err, data) {
         if (err) {
