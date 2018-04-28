@@ -79,7 +79,6 @@ io.on('connection', (socket) => {
       if(err) {
         console.log(err);
       }
-      
     });
 
 

@@ -14,7 +14,8 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state, ownProps) {
   return {
-    newFeed: state.feeds.newFeed
+    newFeed: state.feeds.newFeed,
+    isValidFeed: state.feeds.isValidFeed
   };
 }
 

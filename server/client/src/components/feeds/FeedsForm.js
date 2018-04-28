@@ -54,29 +54,28 @@ const validateAndCreateFeed = (values, dispatch) => {
 const renderField = ({ input, label, type, meta: { touched, error } }) =>
   <div>
     <label>{label}</label>
-    <div>
-      <input {...input} type={type} placeholder={label} />
-      <div className="red-text" style={{ marginBottom: '20px' }}>
+    <div style={{paddingBottom: "0.5em"}}>
+      <Form.Input {...input} type={type} placeholder={label} error={touched && (error ? true : false)}/>
+      <p style={{color: "#b9382f", marginTop: "-14px"}} >
         {touched && error && <span> {error} </span>}
-      </div>
+      </p>
     </div>
   </div>
 
 const renderPageField = ({ input, label, type, meta: { asyncValidating, touched, error } }) =>
   <div>
-    <label>{label}</label>
-    <div>
-      <input {...input} type={type} placeholder={label} />
-      <div className="red-text" style={{ marginBottom: '20px' }}>
+    <div style={{paddingBottom: "0.5em"}}>
+      <Form.Input {...input} type={type} placeholder={label} error={touched && (error ? true : false)} />
+      <p style={{color: "#b9382f", marginTop: "-14px"}} >
         {touched && error && <span> {error} </span>}
         {asyncValidating && <span> Validating... </span>}
-      </div>
+      </p>
     </div>
   </div>
 
 const DropdownFormField = props => (
   <Form.Field>
-    <Dropdown 
+    <Dropdown
       selection {...props.input}
       value={props.input.value}
       onChange={(param, data) => props.input.onChange(data.value)}
@@ -86,48 +85,38 @@ const DropdownFormField = props => (
     <div className="red-text" style={{ marginBottom: '20px' }}>
       {props.meta.touched && props.meta.error && <span> {props.meta.error} </span>}
     </div>
-   </Form.Field>
- )
+  </Form.Field>
+)
 
 const renderPages = ({ fields, meta: { error, submitFailed } }) =>
   <div>
-    {console.log(fields)}
-    <div style={{ paddingBottom: '1em' }}>
+    {fields.map((pages, index) =>
+      <Segment clearing key={index}>
+        <h4>
+          Source #{index + 1}
+        </h4>
+        <Field
+          name={`${pages}.source`}
+          type="text"
+          component={DropdownFormField}
+        />
+        <Field
+          name={`${pages}.url`}
+          type="text"
+          component={renderPageField}
+          label="Id or Name"
+        />
+        <Button floated="right" type="button" onClick={() => fields.remove(index)}>
+          Remove Source
+        </Button>
+      </Segment>
+    )}
+    <div >
       <Button type="button" onClick={() => fields.push({})}>
-        Add FB Page
+        Add Source
       </Button>
-      {submitFailed &&
-        error &&
-        <span>
-          {error}
-        </span>}
+      { submitFailed && error && <Message color='red'>{error}</Message> }
     </div>
-    <ul>
-      {fields.map((pages, index) =>
-        <div key={index}>
-          <Button
-            type="button"
-            onClick={() => fields.remove(index)}
-          >
-            Remove Page
-          </Button>
-          <h4>
-            Page #{index + 1}
-          </h4>
-          <Field
-            name={`${pages}.url`}
-            type="text"
-            component={renderPageField}
-            label="FB Page"
-          />
-          <Field
-            name={`${pages}.source`}
-            type="text"
-            component={DropdownFormField}
-          />
-        </div>
-      )}
-    </ul>
   </div>
 
 class FeedsForm extends Component {
@@ -148,13 +137,13 @@ class FeedsForm extends Component {
     }
   }
 
-  renderError(newFeed) {
-    if (newFeed && newFeed.error) {
+  renderError(isValidFeed) {
+    if (isValidFeed && isValidFeed.error) {
       return (
         <Message color='red'>
           <Message.Header>Errors in your submission</Message.Header>
           <Message.List>
-            <Message.Item>{newFeed.error}</Message.Item>
+            <Message.Item>{isValidFeed.error}</Message.Item>
           </Message.List>
         </Message>
       );
@@ -166,10 +155,9 @@ class FeedsForm extends Component {
   }
 
   render() {
-    const { handleSubmit, submitting, newFeed, reset, pristine } = this.props;
+    const { handleSubmit, submitting, isValidFeed, reset, pristine } = this.props;
     console.log(this.props)
     return (
-
       <Grid columns={3} stackable style={{ paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
         <Grid.Column width={4}>
           {/* <Segment/> */}
@@ -187,17 +175,17 @@ class FeedsForm extends Component {
                 label="Title"
               />
               <FieldArray name="pages" component={renderPages} />
-              <Form.Field>
+              {/* <Form.Field>
                 <Checkbox label='Is private' />
-              </Form.Field>
+              </Form.Field> */}
 
-              {this.renderError(newFeed)}
+              {this.renderError(isValidFeed)}
 
-              <div>
+              <div style={{ paddingTop: "1em" }}>
                 <Button as={Link} to="/feeds">
                   Cancel
                 </Button>
-                <Button type="submit" disabled={submitting || newFeed.error ? true : false}>
+                <Button type="submit" disabled={submitting || isValidFeed.error ? true : false}>
                   Submit
                     </Button>
                 <Button type="button" disabled={pristine || submitting} onClick={reset}>
@@ -210,7 +198,6 @@ class FeedsForm extends Component {
         <Grid.Column width={4}>
         </Grid.Column>
       </Grid>
-
     )
   }
 }

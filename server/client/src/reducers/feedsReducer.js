@@ -14,7 +14,8 @@ import {
 const INITIAL_STATE = { 
               feedsList: {feeds: [], error:null, loading: false},  
               allFeedsList: {feeds: [], error:null, loading: false},  
-							newFeed:{feed:null, error: null, loading: false}, 
+              newFeed:{feed:null, error: null, loading: false}, 
+              isValidFeed:{error: null, loading: false},
 							activeFeed:{feed:null, error:null, loading: false}, 
               deletedFeed: {feed: null, error:null, loading: false},
               likedFeed: {likedFeed: null, error: null, loading: false},
@@ -66,14 +67,14 @@ export default function(state = INITIAL_STATE, action) {
     return {...state,  newFeed:{feed:null, error:null, loading: false}}
     
   case UPDATE_FEED:
-    return { ...state, feedUpdated: false, error: null, loading: true};
+    return { ...state, updatedFeed: { feedUpdated: false, error: null, loading: true }};
   case UPDATE_FEED_SUCCESS:
-    return { ...state, feedUpdated: true, error: null, loading: false};
+    return { ...state, updatedFeed: { feedUpdated: true, error: null, loading: false }};
   case UPDATE_FEED_FAILURE:
     error = action.payload || {message: action.payload.message};//2nd one is network or server down errors
-  	return { ...state, feedUpdated: false, error: error, loading: false};
+  	return { ...state, updatedFeed: { feedUpdated: false, error: error, loading: false }};
   case RESET_UPDATE_FEED_STATE:
-  	return { ...state, feedUpdated: false, error: null, loading: false};
+  	return { ...state, updatedFeed: { feedUpdated: false, error: null, loading: false }};
 
   case DELETE_FEED:
    	return {...state, deletedFeed: {...state.deletedFeed, loading: true}}
@@ -106,9 +107,9 @@ export default function(state = INITIAL_STATE, action) {
   	return { ...state, unlikedFeed: {unlikedFeed: false, error: null, loading: false}};
 
   case VALIDATE_FEED_FIELDS:
-    return {...state, newFeed:{...state.newFeed, error: null, loading: true}}
+    return {...state, isValidFeed:{ error: null, loading: true}}
   case VALIDATE_FEED_FIELDS_SUCCESS:
-    return {...state, newFeed:{...state.newFeed, error: null, loading: false}}
+    return {...state, isValidFeed:{ error: null, loading: false}}
   case VALIDATE_FEED_FIELDS_FAILURE:
     let result = action.payload;
     if(!result) {
@@ -117,9 +118,9 @@ export default function(state = INITIAL_STATE, action) {
       console.log(result);
       error = result;
     }
-    return {...state, newFeed:{...state.newFeed, error: error, loading: false}}
+    return {...state, isValidFeed:{ error: error, loading: false}}
   case RESET_FEED_FIELDS:
-    return {...state, newFeed:{...state.newFeed, error: null, loading: null}}
+    return {...state, isValidFeed:{ error: null, loading: null}}
    default:
      return state;
   }

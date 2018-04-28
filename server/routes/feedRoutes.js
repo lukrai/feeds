@@ -32,22 +32,27 @@ module.exports = app => {
   app.post('/api/feed/validate/fields', requireLogin, (req, res, next) => {
     var body = req.body;
     console.log(body);
-    var pagesString = [];
+    var facebookPagesString = [];
+    var twitterPagesString = [];
+    var youtubePagesString = [];
     if (req.body.pages) {
       req.body.pages.forEach(element => {
         if (element['url'] && element.source === "facebook") {
-          pagesString.push(element['url'].trim());
+          facebookPagesString.push(element['url'].trim());
+        } 
+        else if (element['url'] && element.source === "twitter") {
+          twitterPagesString.push(element['url'].trim());
+        }
+        else if (element['url'] && element.source === "youtube") {
+          youtubePagesString.push(element['url'].trim());
         }
       });
     }
 
-    if(!pagesString.toString()) {
-      return res.send('');
-    }
-
+    if (facebookPagesString.toString()) {
     const options = {
       method: 'GET',
-      uri: `https://graph.facebook.com/v2.11/?ids=${pagesString.toString()}`,
+      uri: `https://graph.facebook.com/v2.11/?ids=${facebookPagesString.toString()}`,
       qs: {
         access_token: keys.fbAccessKey,
       },
@@ -61,11 +66,14 @@ module.exports = app => {
           body.errors = "Specified pages are empty";
           res.send({ body });
         }
-        res.send("Valid")
+        return res.send("Valid")
       }).catch(function (err) {
         var errorString = err.error.error.message.replace(/,/g, ", ");
-        res.status(200).send({ error: errorString });
+        return res.status(200).send({ error: errorString });
       });
+    } else {
+      return res.send({});
+    }
   });
 
   //Get all user feeds

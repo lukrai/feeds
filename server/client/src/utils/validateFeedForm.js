@@ -21,8 +21,8 @@ const validate = values => {
       if (pagesArrayErrors.length) {
         errors.pages = pagesArrayErrors
       }
-      if (values.pages.length > 5) {
-        errors.pages = { _error: 'No more than five values allowed' }
+      if (values.pages.length > 15) {
+        errors.pages = { _error: 'No more than 15 values allowed' }
       }
     }
     return errors

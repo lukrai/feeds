@@ -1,24 +1,37 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, FieldArray, reduxForm } from 'redux-form';
-// import validate from '../../utils/validateFeedForm';
+import validate from '../../utils/validateFeedForm';
 import { Link } from 'react-router-dom';
-import { Header, Grid, Segment, Button, Form } from 'semantic-ui-react';
-import { updateFeed, updateFeedSuccess } from '../../actions/feeds';
+import { Header, Grid, Segment, Button, Form, Checkbox, Message, Dropdown } from 'semantic-ui-react';
+import { updateFeed, updateFeedSuccess, updateFeedFailure } from '../../actions/feeds';
+import { validateFeedFields, validateFeedFieldsSuccess, validateFeedFieldsFailure } from '../../actions/feeds';
+
+const dropdownOptions = [
+  { key: 'FB', value: 'facebook', text: 'Facebook' }, 
+  { key: 'TW', value: 'twitter', text: 'Twitter' }, 
+  { key: 'YT', value: 'youtube', text: 'Youtube' },
+];
+
+const asyncValidate = (values, dispatch) => {
+  return dispatch(validateFeedFields(values)).payload
+    .then((result) => {
+      if (result && result.status === 200 && result.data.error) {
+        dispatch(validateFeedFieldsFailure(result.data.error));
+        throw result.data;
+      } else {
+        dispatch(validateFeedFieldsSuccess(result.data));
+      }
+    });
+}
 
 const validateAndUpdateFeed = (values, dispatch, props) => {
 
   return dispatch(updateFeed(props.activeFeed.feed._id, values)).payload
     .then(result => {
-      // Note: Error's "data" is in result.payload.response.data (inside "response")
-      // success's "data" is in result.payload.data
-      console.log(result);
-      // if (result && result.status !== 200) {
-      //     console.log("kode");
-      //     dispatch(createFeedFailure(result.payload.response.data));
-      //     throw new SubmissionError(result.payload.response.data);
-      // }
-      // //let other components know that everything is fine by updating the redux` state
+      if (result && result.status !== 200) {
+        dispatch(updateFeedFailure(result.payload.response.data));
+      }
       dispatch(updateFeedSuccess());
 
     });
@@ -27,48 +40,69 @@ const validateAndUpdateFeed = (values, dispatch, props) => {
 const renderField = ({ input, label, type, meta: { touched, error } }) =>
   <div>
     <label>{label}</label>
-    <div>
-      <input {...input} type={type} placeholder={label} />
-      <div className="red-text" style={{ marginBottom: '20px' }}>
+    <div style={{paddingBottom: "0.5em"}}>
+      <Form.Input {...input} type={type} placeholder={label} error={touched && (error ? true : false)}/>
+      <p style={{color: "#b9382f", marginTop: "-14px"}} >
         {touched && error && <span> {error} </span>}
-      </div>
+      </p>
     </div>
   </div>
 
+const renderPageField = ({ input, label, type, meta: { asyncValidating, touched, error } }) =>
+<div>
+  <div style={{paddingBottom: "0.5em"}}>
+    <Form.Input {...input} type={type} placeholder={label} error={touched && (error ? true : false)} />
+    <p style={{color: "#b9382f", marginTop: "-14px"}} >
+      {touched && error && <span> {error} </span>}
+      {asyncValidating && <span> Validating... </span>}
+    </p>
+  </div>
+</div>
+
+const DropdownFormField = props => (
+  <Form.Field>
+    <Dropdown
+      selection {...props.input}
+      value={props.input.value}
+      onChange={(param, data) => props.input.onChange(data.value)}
+      options={dropdownOptions}
+      placeholder={"Feed source"}
+    />
+    <div className="red-text" style={{ marginBottom: '20px' }}>
+      {props.meta.touched && props.meta.error && <span> {props.meta.error} </span>}
+    </div>
+  </Form.Field>
+)
+
 const renderPages = ({ fields, meta: { error, submitFailed } }) =>
   <div>
-    <div style={{ paddingBottom: '1em' }}>
+    {fields.map((pages, index) =>
+      <Segment clearing key={index}>
+        <h4>
+          Source #{index + 1}
+        </h4>
+        <Field
+          name={`${pages}.source`}
+          type="text"
+          component={DropdownFormField}
+        />
+        <Field
+          name={`${pages}.url`}
+          type="text"
+          component={renderPageField}
+          label="Id or Name"
+        />
+        <Button floated="right" type="button" onClick={() => fields.remove(index)}>
+          Remove Source
+        </Button>
+      </Segment>
+    )}
+    <div >
       <Button type="button" onClick={() => fields.push({})}>
-        Add FB Page
-    </Button>
-      {submitFailed &&
-        error &&
-        <span>
-          {error}
-        </span>}
-    </div>
-    <ul>
-      {fields.map((pages, index) =>
-        <div key={index}>
-          <Button
-            type="button"
-            onClick={() => fields.remove(index)}
-          >
-            Remove Page
+        Add Source
       </Button>
-          <h4>
-            Page #{index + 1}
-          </h4>
-          <Field
-            name={`${pages}.url`}
-            //value="so"
-            type="text"
-            component={renderField}
-            label="FB Page"
-          />
-        </div>
-      )}
-    </ul>
+      { submitFailed && error && <Message color='red'>{error}</Message> }
+    </div>
   </div>
 
 class FeedsUpdateForm extends Component {
@@ -83,25 +117,31 @@ class FeedsUpdateForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.updateFeed || nextProps.activeFeed.feed == null) {
+    if (nextProps.updatedFeed.feedUpdated || nextProps.activeFeed.feed == null) {
       this.context.router.history.push('/feeds');
     }
   }
 
-  renderError(newPost) {
-    if (newPost && newPost.error && newPost.error.message) {
+  renderError(isValidFeed) {
+    if (isValidFeed && isValidFeed.error) {
       return (
-        <div className="alert alert-danger">
-          {newPost ? newPost.error.message : ''}
-        </div>
+        <Message color='red'>
+          <Message.Header>Errors in your submission</Message.Header>
+          <Message.List>
+            <Message.Item>{isValidFeed.error}</Message.Item>
+          </Message.List>
+        </Message>
       );
     } else {
-      return <span></span>
+      return (
+        <span></span>
+      );
     }
   }
 
   render() {
-    const { handleSubmit, submitting, reset, pristine } = this.props;
+    console.log(this.props)
+    const { handleSubmit, submitting, isValidFeed, reset, pristine } = this.props;
     return (
       <Grid columns={3} stackable style={{ paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
         <Grid.Column width={4}>
@@ -109,9 +149,9 @@ class FeedsUpdateForm extends Component {
         </Grid.Column>
         <Grid.Column width={8}>
           <Segment>
-            <Header as='h1' dividing >
+            <Header as='h1' dividing>
               New Feed
-              </Header>
+            </Header>
             <Form onSubmit={handleSubmit(validateAndUpdateFeed)}>
               <Field
                 name="title"
@@ -120,22 +160,27 @@ class FeedsUpdateForm extends Component {
                 label="Title"
               />
               <FieldArray name="pages" component={renderPages} />
-              <div>
+              {/* <Form.Field>
+                <Checkbox label='Is private' />
+              </Form.Field> */}
+
+              {this.renderError(isValidFeed)}
+
+              <div style={{ paddingTop: "1em" }}>
                 <Button as={Link} to="/feeds">
                   Cancel
-                  </Button>
-                <Button type="submit" disabled={submitting}>
+                </Button>
+                <Button type="submit" disabled={submitting || isValidFeed.error ? true : false}>
                   Submit
-                  </Button>
+                </Button>
                 <Button type="button" disabled={pristine || submitting} onClick={reset}>
                   Clear Values
-                  </Button>
+                </Button>
               </div>
             </Form>
           </Segment>
         </Grid.Column>
         <Grid.Column width={4}>
-
         </Grid.Column>
       </Grid>
     )
@@ -144,6 +189,6 @@ class FeedsUpdateForm extends Component {
 
 export default reduxForm({
   form: 'FeedsUpdateForm', // a unique identifier for this form
-  //validate, // <--- validation function given to redux-form
-  //asyncValidate
+  validate, // <--- validation function given to redux-form
+  asyncValidate
 })(FeedsUpdateForm)
