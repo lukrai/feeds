@@ -39,7 +39,7 @@ class FeedDetails extends Component {
 
     const { feed } = nextProps.activeFeed;
     if (feed && feed.feedData) {
-      const posts = feed.feedData.slice(0, 10);
+      const posts = feed.feedData.slice(0, 20);
       this.setState({ posts, sliceIndex: 10 })
     }
 

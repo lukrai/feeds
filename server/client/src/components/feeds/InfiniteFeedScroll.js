@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Card, Image, Icon, Embed, Segment } from 'semantic-ui-react';
 import { timeToString } from '../../utils/misc.js';
+import Gallery from 'react-grid-gallery';
 import ReactDOM from 'react-dom';
 
 class InfiniteFeedScroll extends Component {
-
   render() {
     const { list } = this.props;
     return (
@@ -36,6 +36,11 @@ class InfiniteFeedScroll extends Component {
 export default InfiniteFeedScroll;
 
 class FacebookCard extends Component {
+  
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.post !== this.props.post);
+  }
+     
   render() {
     const { post } = this.props;
     return (
@@ -154,6 +159,34 @@ const renderMedia = function (post) {
     } else if (post.attachments.data[0].type === 'photo' && post.attachments.data[0].media) {
       return (
         <Image src={post.attachments.data[0].media.image.src} />
+      );
+    } else if (post.attachments.data[0].type === 'album' && post.attachments.data[0].subattachments) {
+      const images = post.attachments.data[0].subattachments.data.map(item => { 
+        if (item.type === 'photo') {
+          return {
+            src: item.media.image.src,
+            thumbnail: item.media.image.src,
+            thumbnailWidth: item.media.image.width,
+            thumbnailHeight: item.media.image.height,
+          };
+        }
+      });
+     
+      console.log(images);
+      return (
+        <div style={{
+          display: "block",
+          minHeight: "1px",
+          width: "100%",
+          // border: "1px solid #ddd",
+          // overflow: "auto",
+          // display: 'flex', 
+          justifyContent: 'center'
+        }}>
+          <Gallery
+            images={images}
+            enableImageSelection={false} />
+        </div>
       );
     } 
   } else if(post.source === 'youtube') {
