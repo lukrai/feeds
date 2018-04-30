@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Card, Image, Icon, Embed, Segment } from 'semantic-ui-react';
 import { timeToString } from '../../utils/misc.js';
-import Gallery from 'react-grid-gallery';
 import ReactDOM from 'react-dom';
+import { Carousel } from "react-responsive-carousel";
 
 class InfiniteFeedScroll extends Component {
   render() {
@@ -171,22 +171,14 @@ const renderMedia = function (post) {
           };
         }
       });
-     
-      console.log(images);
       return (
-        <div style={{
-          display: "block",
-          minHeight: "1px",
-          width: "100%",
-          // border: "1px solid #ddd",
-          // overflow: "auto",
-          // display: 'flex', 
-          justifyContent: 'center'
-        }}>
-          <Gallery
-            images={images}
-            enableImageSelection={false} />
-        </div>
+        <Carousel showThumbs={false} emulateTouch>
+          {images.map(function (image) {
+            return (
+              <Image key={image.src} src={image.src}/>
+            );
+          })}
+        </Carousel> 
       );
     } 
   } else if(post.source === 'youtube') {
