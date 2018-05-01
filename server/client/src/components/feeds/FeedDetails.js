@@ -127,7 +127,8 @@ class FeedBasicInfo extends Component {
   close = () => this.setState({ open: false })
 
   renderButtons(user) {
-    if (user) {
+    console.log(this.props);
+    if (user._id === this.props.feed._userID) {
       return (
         <div>
           <Button as={Link} to={"/feeds/edit"} basic color='green'>Edit Feed</Button>
@@ -137,17 +138,16 @@ class FeedBasicInfo extends Component {
     }
   }
 
+
+
   render() {
-    const feed = this.props.feed;
-    const user = this.props.user;
+    const { feed, user } = this.props;
     return (
       <Segment>
         <Header size='medium'>{feed.title}</Header>
-        <List bulleted>
+        <List>
           {feed.pages.map(function (page) {
-            return (
-              <List.Item key={page.url}>{page.url}</List.Item>
-            );
+            return(renderItem(page));
           })}
         </List>
         {this.renderButtons(user)}
@@ -170,6 +170,37 @@ class FeedBasicInfo extends Component {
           </Modal>
         </div>
       </Segment>
+    );
+  }
+}
+
+const renderItem = function (page) {
+  if (page.source === "facebook") {
+    return (
+      <List.Item key={page.url}>
+        <List.Icon name="facebook" style={{ color: '#3b5998' }} size='large' verticalAlign='middle' />
+        <List.Content>
+          {page.url}
+        </List.Content>
+      </List.Item>
+    );
+  } else if (page.source === "twitter") {
+    return (
+      <List.Item key={page.url}>
+        <List.Icon name="twitter" style={{ color: '#55acee' }} size='large' verticalAlign='middle' />
+        <List.Content>
+          {page.url}
+        </List.Content>
+      </List.Item>
+    );
+  } else if (page.source === "youtube") {
+    return (
+      <List.Item key={page.url}>
+        <List.Icon name="youtube" style={{ color: '#cc181e' }} size='large' verticalAlign='middle' />
+        <List.Content>
+          {page.url}
+        </List.Content>
+      </List.Item>
     );
   }
 }
