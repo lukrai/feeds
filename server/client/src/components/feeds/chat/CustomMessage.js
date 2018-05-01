@@ -8,7 +8,7 @@ class CustomMessage extends Component {
   render() {
     const message = this.props.message;
     return (
-        <Comment>
+        <Comment style={{paddingLeft: '0.5em'}} >
           <Comment.Content>
             <Comment.Author as='a'>{message.author.username}</Comment.Author>
             <Comment.Metadata>

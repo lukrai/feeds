@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm,  } from 'redux-form';
-import { Button, Form } from 'semantic-ui-react';
+import { Button, Form, Label } from 'semantic-ui-react';
 
 const validate = values => {
   const errors = {};
@@ -17,14 +17,9 @@ const renderField = ({
   placeholder,
   meta: { touched, error, warning }
 }) => (
-  <div>
-    <label>{label}</label>
-    <div>
-      <input {...input} placeholder={placeholder} type={type} />
-      {touched &&
-        ((error && <span>{error}</span>) ||
-          (warning && <span>{warning}</span>))}
-    </div>
+  <div style={{paddingBottom: '0.5em'}}>
+    {touched && (error && <span><Label basic color='red' pointing='below'>{error}</Label></span>)         }
+    <Form.Input {...input} type={type} placeholder={placeholder}/>
   </div>
 )
 
@@ -46,7 +41,7 @@ class AddMessage extends Component {
             component={renderField}
             placeholder="Say something"
           />
-          <Button type="submit" content='Add Reply' labelPosition='left' icon='edit' primary disabled={submitting}/>
+          <Button type="submit" content='Add Reply' labelPosition='right' icon='send' primary disabled={submitting}/>
           <Button type="button" disabled={pristine || submitting} onClick={reset}>
             Clear Values
           </Button>

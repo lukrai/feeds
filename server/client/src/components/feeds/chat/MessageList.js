@@ -40,7 +40,7 @@ class MessageList extends Component {
     }
 
     return(
-      <Comment.Group minimal style={{maxWidth: '1200px', width: '100%'}}>
+      <Comment.Group style={{paddingLeft: '0.5em'}} minimal style={{maxWidth: '1200px', width: '100%'}}>
         <Header as='h3' dividing>Chat</Header>
         <div style={style.segment} ref={(ref) => this.messagesRef = ref }  >
           {messages.map(function(message) {

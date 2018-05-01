@@ -138,8 +138,6 @@ class FeedBasicInfo extends Component {
     }
   }
 
-
-
   render() {
     const { feed, user } = this.props;
     return (
