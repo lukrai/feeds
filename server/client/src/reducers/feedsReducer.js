@@ -12,7 +12,7 @@ import {
 
 
 const INITIAL_STATE = { 
-              feedsList: {feeds: [], error:null, loading: false},  
+              feedsList: {feeds: { userFeeds: [], likedFeeds: [] }, error:null, loading: false},  
               allFeedsList: {feeds: [], error:null, loading: false},  
               newFeed:{feed:null, error: null, loading: false}, 
               isValidFeed:{error: null, loading: false},
@@ -28,14 +28,14 @@ export default function(state = INITIAL_STATE, action) {
   switch(action.type) {
 
   case FETCH_FEEDS:// start fetching feeds and set loading = true
-  	return { ...state, feedsList: {feeds:[], error: null, loading: true} }; 
+  	return { ...state, feedsList: {feeds: { userFeeds: [], likedFeeds: [] }, error: null, loading: true} }; 
   case FETCH_FEEDS_SUCCESS:// return list of posts and make loading = false
     return { ...state, feedsList: {feeds: action.payload, error:null, loading: false} };
   case FETCH_FEEDS_FAILURE:// return error and make loading = false
     error = action.payload || {message: action.payload.message};//2nd one is network or server down errors
-    return { ...state, feedsList: {feeds: [], error: error, loading: false} };
+    return { ...state, feedsList: {feeds: { userFeeds: [], likedFeeds: [] }, error: error, loading: false} };
   case RESET_FEEDS:// reset postList to initial state
-    return { ...state, feedsList: {feeds: [], error:null, loading: false} };
+    return { ...state, feedsList: {feeds: { userFeeds: [], likedFeeds: [] }, error:null, loading: false} };
 
   case FETCH_ALL_FEEDS:// start fetching feeds and set loading = true
   	return { ...state, allFeedsList: {feeds:[], error: null, loading: true} }; 

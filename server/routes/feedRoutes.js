@@ -77,15 +77,42 @@ module.exports = app => {
   });
 
   //Get all user feeds
-  app.get('/api/feed', requireLogin, (req, res) => {
+  app.get('/api/feed', requireLogin, async (req, res) => {
+    var feeds = {
+      userFeeds: [],
+      likedFeeds: []
+    };
 
-    Feed.find({ _userID: req.user.id }, function (err, feeds) {
-      if (err)
-        return res.status(500).send("There was a problem parsing feed.");
-      if (!feeds)
-        return res.status(404).send("Feed not found.");
-      res.status(200).send(feeds);
-    });
+    try {
+      const userFeeds = await Feed.find({ _userID: req.user.id }, function (err, feeds) {
+        if (err) {
+          return res.status(500).send("There was a problem parsing feed.");
+        }
+        if (!feeds) {
+          return res.status(404).send("Feed not found.");
+        }
+        // res.status(200).send(feeds);
+        return feeds;
+      });
+
+      const likedFeeds = await Feed.find({ likes: mongoose.Types.ObjectId(req.user.id) }, null, { sort: { date_created: -1 } }, function (err, feeds) {
+        if (err) {
+          return res.status(500).send("There was a problem parsing feed."); 
+        }
+        if (!feeds) {
+          return res.status(404).send("Feeds not found."); 
+        }
+        return feeds;
+      });
+
+      feeds.userFeeds = userFeeds;
+      feeds.likedFeeds = likedFeeds;
+      console.log(feeds);
+      return res.status(200).send(feeds);
+    } catch (err) {
+      // console.log(error);
+      return res.status(500).send("There was a problem parsing user feeds.");
+    }
   });
 
   app.get('/api/feedAll', async (req, res) => {
@@ -99,7 +126,7 @@ module.exports = app => {
     };
 
     try {
-      feedsByLikes = await Feed.find({}, null, { sort: { likes_count: -1 } }).limit(1000);
+      feedsByLikes = await Feed.find({}, null, { sort: { like_count: -1 } }).limit(1000);
       feedsByDate = await Feed.find({}, null, { sort: { date_created: -1 } }).limit(1000);
       feeds['feedsByLikes'] = feedsByLikes;
       feeds['feedsByDate'] = feedsByDate;

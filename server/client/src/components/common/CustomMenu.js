@@ -73,7 +73,7 @@ class CustomMenu extends React.Component {
     } else {
       return (
         <Menu.Menu>
-          {this.props.feedsList.feeds.map((feed) => {
+          {this.props.feedsList.map((feed) => {
             return (             
               <Menu.Item as={Link} to={"../feeds/" + feed._id} key={feed._id}>
                 {feed.title}
@@ -114,7 +114,7 @@ class CustomMenu extends React.Component {
 function mapStateToProps(state, ownProps) {
   return {
     user: state.auth,
-    feedsList: state.feeds.feedsList,
+    feedsList: state.feeds.feedsList.feeds.userFeeds,
   };
 }
 

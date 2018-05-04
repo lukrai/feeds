@@ -12,7 +12,7 @@ class Landing extends Component {
         <Segment
           inverted
           textAlign='center'
-          style={{ minHeight: 700, padding: '1em 0em'}} //padding: '1em 0em'
+          style={{ minHeight: 300, padding: '1em 0em'}} //padding: '1em 0em'
           vertical
         >
           <Container text>
@@ -20,7 +20,7 @@ class Landing extends Component {
               as='h1'
               content='4Scroll'
               inverted
-              style={{ fontSize: '4em', fontWeight: 'normal', marginBottom: 0, marginTop: '3em' }}
+              style={{ fontSize: '4em', fontWeight: 'normal', marginBottom: 0, marginTop: '1em' }}
             />
             <Header
               as='h2'
@@ -28,16 +28,16 @@ class Landing extends Component {
               inverted
               style={{ fontSize: '1.7em', fontWeight: 'normal' }}
             />
-            <Button primary size='huge' as={Link} to={"/feeds"}>
+            {/* <Button primary size='huge' as={Link} to={"/feeds"}>
               Get Started
 						<Icon name='right arrow' />
-            </Button>
+            </Button> */}
           </Container>
         </Segment>
 
         <FeedsTablesContainer />
 
-        <Segment vertical style={{ padding: '5em 0em' }}>
+        {/* <Segment vertical style={{ padding: '5em 0em' }}>
           <Container>
             <Grid divided stackable columns='equal'>
               <Grid.Row textAlign='center'>
@@ -56,7 +56,7 @@ class Landing extends Component {
               </Grid.Row>
             </Grid>
           </Container>
-        </Segment>
+        </Segment> */}
 
         <Footer />
       </div>

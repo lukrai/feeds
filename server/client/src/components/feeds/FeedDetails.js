@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import InfiniteFeedScroll from './InfiniteFeedScroll.js'
 import ChatContainer from '../../containers/ChatContainer.js';
+import FeedLike from './mainPageTable/FeedLike';
 import { Grid, Segment, List, Header, Button, Modal, Visibility, Rail, Sticky } from 'semantic-ui-react';
 
 class FeedDetails extends Component {
@@ -97,7 +98,7 @@ class FeedDetails extends Component {
           <Grid.Column width={8}>
             
           {/* <Rail position='right'> */}
-            <FeedBasicInfo feed={feed} user={user} />
+            <FeedBasicInfo feed={feed} user={user} onLikeClick={this.props.onLikeClick} onUnlikeClick={this.props.onUnlikeClick}/>
               <Sticky context={contextRef}  offset={75} >
                 <ChatContainer feedId={this.props.feedId} />
               </Sticky>
@@ -126,29 +127,49 @@ class FeedBasicInfo extends Component {
   show = size => () => { this.setState({ size, open: true }) }
   close = () => this.setState({ open: false })
 
+  renderLike(item) {
+    if(!this.props.user) {
+      return (
+        <FeedLike liked={null} likeCount={item.like_count} itemId={item._id} />  
+      );
+    } else if(item.likes.indexOf(this.props.user._id) === -1) {
+      return (
+        <FeedLike liked={false} onLikeClick={this.props.onLikeClick} onUnlikeClick={this.props.onUnlikeClick} likeCount={item.like_count} itemId={item._id} user={this.props.user}/>  
+      );
+    } else if(item.likes.indexOf(this.props.user._id) !== -1) {
+      return (
+        <FeedLike liked={true} onLikeClick={this.props.onLikeClick} onUnlikeClick={this.props.onUnlikeClick} likeCount={item.like_count} itemId={item._id} user={this.props.user}/>    
+      );
+    }
+  }
+
   renderButtons(user) {
-    console.log(this.props);
     if (user._id === this.props.feed._userID) {
       return (
         <div>
           <Button as={Link} to={"/feeds/edit"} basic color='green'>Edit Feed</Button>
           <Button basic color='red' onClick={this.show('small')}>Delete Feed</Button>
+          {this.renderLike(this.props.feed)}
         </div>
       );
+    } else {
+      return (this.renderLike(this.props.feed));
     }
   }
 
   render() {
+    console.log(this.props);
     const { feed, user } = this.props;
     return (
       <Segment>
-        <Header size='medium'>{feed.title}</Header>
-        <List>
+        <Header size='medium'>{feed.title}</Header> 
+        <List style={{paddingLeft: '0.2em'}}>
           {feed.pages.map(function (page) {
             return(renderItem(page));
           })}
         </List>
-        {this.renderButtons(user)}
+        {this.renderButtons(user)} 
+        
         <div>
           <Modal size={this.state.size} open={this.state.open} onClose={this.close}>
             <Modal.Header>
