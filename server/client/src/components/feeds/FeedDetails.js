@@ -157,6 +157,10 @@ class FeedBasicInfo extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.feed !== this.props.feed);
+  }
+
   render() {
     console.log(this.props);
     const { feed, user } = this.props;

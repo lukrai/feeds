@@ -148,12 +148,14 @@ class YoutubeCard extends Component {
 }
 
 const renderMedia = function (post) {
-  if(post.source === 'facebook' && post.attachments) {
+  if (post.source === 'facebook' && post.attachments) {
     if (post.attachments.data[0].type === 'video_inline' && post.attachments.data[0].media) {
       const videoRef = post.attachments.data[0].url.replace("://", '%3A%2F%2F');
+      const videoHeight = post.attachments.data[0].media.image.height;
+      const videoWidth = post.attachments.data[0].media.image.width;
       return (
-        <div style={{  width: '100%', height: '0', position: 'relative', paddingBottom: '100%' }}>
-          <iframe src={`https://www.facebook.com/plugins/video.php?href=${videoRef}&appId=588914741307945`} style={{ display: 'block', position: 'absolute', height: '100%', width:'100%', top: '0', left: '0' }} scrolling="auto" frameBorder="0" allowFullScreen="true"></iframe>
+        <div style={{ width: '100%', height: '0', position: 'relative', paddingBottom: `${videoHeight / videoWidth * 100}%` }}>
+          <iframe src={`https://www.facebook.com/plugins/video.php?href=${videoRef}&appId=588914741307945`} style={{ display: 'block', position: 'absolute', height: '100%', width: '100%', top: '0', left: '0' }} scrolling="auto" frameBorder="0" allowFullScreen="true"></iframe>
         </div>
       );
     } else if (post.attachments.data[0].type === 'photo' && post.attachments.data[0].media) {
@@ -161,7 +163,7 @@ const renderMedia = function (post) {
         <Image src={post.attachments.data[0].media.image.src} />
       );
     } else if (post.attachments.data[0].type === 'album' && post.attachments.data[0].subattachments) {
-      const images = post.attachments.data[0].subattachments.data.map(item => { 
+      const images = post.attachments.data[0].subattachments.data.map(item => {
         if (item.type === 'photo') {
           return {
             src: item.media.image.src,
@@ -175,13 +177,13 @@ const renderMedia = function (post) {
         <Carousel showThumbs={false} emulateTouch>
           {images.map(function (image) {
             return (
-              <Image key={image.src} src={image.src}/>
+              <Image key={image.src} src={image.src} />
             );
           })}
-        </Carousel> 
+        </Carousel>
       );
-    } 
-  } else if(post.source === 'youtube') {
+    }
+  } else if (post.source === 'youtube') {
     return (
       <Embed
         id={post.id}
