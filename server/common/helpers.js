@@ -38,7 +38,6 @@ async function parseTwitterData(pagesString) {
   let queryString = formatTwitterQuery(pagesString);
   if (!queryString) return;
   let twitterData = [];
-  // console.log(queryString);
   let params = {
     q: queryString,
     count: 50,
@@ -139,9 +138,3 @@ module.exports.parseFacebookData = parseFacebookData;
 module.exports.parseTwitterData = parseTwitterData;
 module.exports.parseYoutubeData = parseYoutubeData;
 module.exports.sortObjectsByDate = sortObjectsByDate;
-
-// https://www.googleapis.com/youtube/v3/channels?part=snippet&id=UCjOl2AUblVmg2rA_cRgZkFg,UCA2zt34_chJ1S0n9Ke_zh6g&fields=items(id%2Csnippet%2Fthumbnails)&key=AIzaSyBT1riFM8eP1BoixlHv12TcO60SX263jeQ
-// https://www.googleapis.com/youtube/v3/channels?id=UCjOl2AUblVmg2rA_cRgZkFg,UCA2zt34_chJ1S0n9Ke_zh6g&key=AIzaSyBT1riFM8eP1BoixlHv12TcO60SX263jeQ&part=contentDetails
-// https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=UCjOl2AUblVmg2rA_cRgZkFg,UCA2zt34_chJ1S0n9Ke_zh6g&fields=items(id%2Csnippet%2Fthumbnails)&key=AIzaSyBT1riFM8eP1BoixlHv12TcO60SX263jeQ
-
-// https://www.googleapis.com/youtube/v3/playlistItems?playlistId=UUjOl2AUblVmg2rA_cRgZkFg,UUA2zt34_chJ1S0n9Ke_zh6g&key=AIzaSyBT1riFM8eP1BoixlHv12TcO60SX263jeQ&part=snippet&maxResults=50

@@ -107,7 +107,6 @@ module.exports = app => {
 
       feeds.userFeeds = userFeeds;
       feeds.likedFeeds = likedFeeds;
-      console.log(feeds);
       return res.status(200).send(feeds);
     } catch (err) {
       // console.log(error);
@@ -144,31 +143,44 @@ module.exports = app => {
     try {
       let feedObj = await Feed.findById(req.params.feed_id);
 
-      var facebookPagesString = [];
-      var twitterPagesString = [];
-      var youtubePagesString = [];
-      if(feedObj.pages) {
-        feedObj.pages.forEach(element => {
-          if (element.source === 'facebook') {
-            facebookPagesString.push(element.url);
-          } else if (element.source === 'twitter') {
-            twitterPagesString.push(element.url);
-          } else if (element.source === 'youtube') {
-            youtubePagesString.push(element.url);
+      if (!feedObj.feed_updated || Date.now() - new Date(feedObj.feed_updated).getTime() > 900000) {
+        var facebookPagesString = [];
+        var twitterPagesString = [];
+        var youtubePagesString = [];
+        if (feedObj.pages) {
+          feedObj.pages.forEach(element => {
+            if (element.source === 'facebook') {
+              facebookPagesString.push(element.url);
+            } else if (element.source === 'twitter') {
+              twitterPagesString.push(element.url);
+            } else if (element.source === 'youtube') {
+              youtubePagesString.push(element.url);
+            }
+          });
+        }
+
+        feedObj = feedObj.toJSON();
+        let facebookData = facebookPagesString.length ? await parseFacebookData(facebookPagesString) : [];
+        let twitterData = twitterPagesString.length ? await parseTwitterData(twitterPagesString) : [];
+        let youtubeData = youtubePagesString.length ? await parseYoutubeData(youtubePagesString) : [];
+
+        let feedData = [].concat.apply([], [facebookData, twitterData, youtubeData]);
+        feedData = sortObjectsByDate(feedData);
+        feedObj.feedData = feedData;
+
+        await Feed.update(
+          {
+            "_id": req.params.feed_id,
+          },
+          {
+            "$set": {
+              "feedData": feedObj.feedData,
+              "feed_updated": Date.now(),
+            }
           }
-        });
+        );
+        console.log("updated");
       }
-
-      feedObj = feedObj.toJSON();
-      let facebookData = facebookPagesString.length ? await parseFacebookData(facebookPagesString) : [];
-      let twitterData = twitterPagesString.length ? await parseTwitterData(twitterPagesString) : [];
-      let youtubeData = youtubePagesString.length ? await parseYoutubeData(youtubePagesString) : [];
-
-      console.log(youtubeData);
-      let feedData = [].concat.apply([], [facebookData, twitterData, youtubeData]);
-      console.log(feedData);
-      feedData = sortObjectsByDate(feedData);
-      feedObj.feedData = feedData;
 
       res.json(feedObj);
     } catch (err) {
