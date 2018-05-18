@@ -97,11 +97,11 @@ class FeedDetails extends Component {
           </Grid.Column>
           <Grid.Column width={8}>
             
-          {/* <Rail position='right'> */}
-            <FeedBasicInfo feed={feed} user={user} onLikeClick={this.props.onLikeClick} onUnlikeClick={this.props.onUnlikeClick}/>
-              <Sticky context={contextRef}  offset={75} >
-                <ChatContainer feedId={this.props.feedId} />
-              </Sticky>
+            {/* <Rail position='right'> */}
+            <FeedBasicInfo feed={feed} user={user} onLikeClick={this.props.onLikeClick} onUnlikeClick={this.props.onUnlikeClick} onDeleteClick={this.props.onDeleteClick} />
+            <Sticky context={contextRef} offset={75} >
+              <ChatContainer feedId={this.props.feedId} />
+            </Sticky>
             {/* </Rail> */}
            
           </Grid.Column>
@@ -118,13 +118,13 @@ class FeedBasicInfo extends Component {
     super(props);
     this.state = {
       open: false,
-      size: 'small',
-    }
-    this.show = this.show.bind(this);
+      size: "small",
+    };
+    // this.show = this.show.bind(this);
     this.close = this.close.bind(this);
   }
 
-  show = size => () => { this.setState({ size, open: true }) }
+  show = size => { this.setState({ size, open: true }); }
   close = () => this.setState({ open: false })
 
   renderLike(item) {
@@ -144,11 +144,11 @@ class FeedBasicInfo extends Component {
   }
 
   renderButtons(user) {
-    if (user._id === this.props.feed._userID) {
+    if (user && user._id === this.props.feed._userID) {
       return (
         <div>
           <Button as={Link} to={"/feeds/edit"} basic color='green'>Edit Feed</Button>
-          <Button basic color='red' onClick={this.show('small')}>Delete Feed</Button>
+          <Button basic color='red' onClick={()=>this.show("small")}>Delete Feed</Button>
           {this.renderLike(this.props.feed)}
         </div>
       );
@@ -157,8 +157,8 @@ class FeedBasicInfo extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    return (nextProps.feed !== this.props.feed);
+  shouldComponentUpdate(nextProps, nextState) {
+    return (nextProps.feed !== this.props.feed || nextState !== this.state);
   }
 
   render() {
@@ -167,7 +167,7 @@ class FeedBasicInfo extends Component {
     return (
       <Segment>
         <Header size='medium'>{feed.title}</Header> 
-        <List style={{paddingLeft: '0.2em'}}>
+        <List style={{paddingLeft: "0.2em"}}>
           {feed.pages.map(function (page) {
             return(renderItem(page));
           })}
@@ -186,7 +186,7 @@ class FeedBasicInfo extends Component {
               <Button negative onClick={this.close}>
                 No
               </Button>
-              <Button positive onClick={() => { this.props.onDeleteClick(this.props.feedId, user) }}>
+              <Button positive onClick={() => { this.props.onDeleteClick(this.props.feed._id, user); }}>
                 Yes
               </Button>
             </Modal.Actions>
@@ -201,7 +201,7 @@ const renderItem = function (page) {
   if (page.source === "facebook") {
     return (
       <List.Item key={page.url}>
-        <List.Icon name="facebook" style={{ color: '#3b5998' }} size='large' verticalAlign='middle' />
+        <List.Icon name="facebook" style={{ color: "#3b5998" }} size='large' verticalAlign='middle' />
         <List.Content>
           {page.url}
         </List.Content>
@@ -210,7 +210,7 @@ const renderItem = function (page) {
   } else if (page.source === "twitter") {
     return (
       <List.Item key={page.url}>
-        <List.Icon name="twitter" style={{ color: '#55acee' }} size='large' verticalAlign='middle' />
+        <List.Icon name="twitter" style={{ color: "#55acee" }} size='large' verticalAlign='middle' />
         <List.Content>
           {page.url}
         </List.Content>
@@ -219,11 +219,11 @@ const renderItem = function (page) {
   } else if (page.source === "youtube") {
     return (
       <List.Item key={page.url}>
-        <List.Icon name="youtube" style={{ color: '#cc181e' }} size='large' verticalAlign='middle' />
+        <List.Icon name="youtube" style={{ color: "#cc181e" }} size='large' verticalAlign='middle' />
         <List.Content>
           {page.url}
         </List.Content>
       </List.Item>
     );
   }
-}
+};
