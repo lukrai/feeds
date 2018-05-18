@@ -11,7 +11,7 @@ const feedSchema = new Schema({
     _userID: { type: Schema.Types.ObjectId, ref: 'User'  },
     title: String,
     pages: [{url: String, source: String, _id : false }],
-    comments: [CommentSchema],
+    // comments: [CommentSchema],
     date_created: { type: Date },
     date_updated: { type: Date },
     like_count: { type: Number, default: 0 },
