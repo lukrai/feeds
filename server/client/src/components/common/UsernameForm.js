@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Field, FieldArray, reduxForm, SubmissionError } from 'redux-form';
-import { Link } from 'react-router-dom';
-import { Header, Grid, Segment, Button, Form, Checkbox, Message, Dropdown, Modal } from 'semantic-ui-react';
-import { updateUser, updateUserSuccess, updateUserFailure } from '../../actions/users';
-import { validateUserUsername, validateUserUsernameSuccess, validateUserUsernameFailure } from '../../actions/users';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Field, reduxForm } from "redux-form";
+import { Header, Segment, Button, Form, Message, Modal } from "semantic-ui-react";
+import { updateUser, updateUserSuccess, updateUserFailure } from "../../actions/users";
+import { validateUserUsername, validateUserUsernameSuccess, validateUserUsernameFailure } from "../../actions/users";
 
 const validate = values => {
-  const errors = {}
+  const errors = {};
   if (!values.username) {
-    errors.username = 'Required'
+    errors.username = "Required";
   }
-  return errors
-}
+  return errors;
+};
 
 const asyncValidate = (values, dispatch) => {
   return dispatch(validateUserUsername(values)).payload
@@ -21,7 +20,7 @@ const asyncValidate = (values, dispatch) => {
     }).catch(function (err) {
       dispatch(validateUserUsernameFailure("Username is already taken"));
     });
-}
+};
 
 const validateAndUpdateUser = (values, dispatch, props) => {
   return dispatch(updateUser(props.user._id, values)).payload
@@ -30,7 +29,7 @@ const validateAndUpdateUser = (values, dispatch, props) => {
     }).catch(function (err) {
       dispatch(updateUserFailure(err.response.data));
     });
-}
+};
 
 const renderField = ({ input, label, type, meta: { asyncValidating, touched, error } }) =>
   <div>
@@ -77,7 +76,7 @@ class UsernameForm extends Component {
           <Segment>
             <Header as='h1' dividing>
               Set Your Username
-              </Header>
+            </Header>
             <Form onSubmit={handleSubmit(validateAndUpdateUser)}>
               <Field
                 name="username"
@@ -89,10 +88,10 @@ class UsernameForm extends Component {
               <div>
                 <Button type="submit" disabled={submitting || user.error ? true : false || asyncValidating ? true : false}>
                   Submit
-                  </Button>
+                </Button>
                 <Button type="button" disabled={pristine || submitting} onClick={reset}>
                   Clear Value
-                  </Button>
+                </Button>
               </div>
             </Form>
           </Segment>
@@ -107,8 +106,8 @@ class UsernameForm extends Component {
 }
 
 export default reduxForm({
-  form: 'UsernameForm', // a unique identifier for this form
+  form: "UsernameForm", // a unique identifier for this form
   validate, // <--- validation function given to redux-form
   asyncValidate,
-  asyncChangeFields: ['username']
-})(UsernameForm)
+  asyncChangeFields: ["username"]
+})(UsernameForm);

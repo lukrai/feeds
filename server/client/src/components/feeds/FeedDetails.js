@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import InfiniteFeedScroll from './InfiniteFeedScroll.js'
 import ChatContainer from '../../containers/ChatContainer.js';
 import FeedLike from './mainPageTable/FeedLike';
-import { Grid, Segment, List, Header, Button, Modal, Visibility, Rail, Sticky } from 'semantic-ui-react';
+import { Grid, Segment, List, Header, Button, Modal, Visibility, Sticky } from 'semantic-ui-react';
 
 class FeedDetails extends Component {
   static contextTypes = {
@@ -35,13 +35,13 @@ class FeedDetails extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.deletedFeed.feed && nextProps.deletedFeed.feed.status === 200 && !nextProps.deletedFeed.feed.error) {
-      this.context.router.history.push('/feeds');
+      this.context.router.history.push("/feeds");
     }
 
     const { feed } = nextProps.activeFeed;
     if (feed && feed.feedData) {
       const posts = feed.feedData.slice(0, 20);
-      this.setState({ posts, sliceIndex: 10 })
+      this.setState({ posts, sliceIndex: 10 });
     }
 
     if (nextProps.feedId !== this.props.feedId) {
@@ -61,7 +61,7 @@ class FeedDetails extends Component {
   loadMorePosts() {
     if (this.props.activeFeed.feed && this.state.sliceIndex < this.props.activeFeed.feed.feedData.length) {
       const posts = this.props.activeFeed.feed.feedData.slice(0, this.state.sliceIndex + 10);
-      this.setState({ posts, sliceIndex: this.state.sliceIndex + 10 })
+      this.setState({ posts, sliceIndex: this.state.sliceIndex + 10 });
     }
   }
 
@@ -96,14 +96,12 @@ class FeedDetails extends Component {
             
           </Grid.Column>
           <Grid.Column width={8}>
-            
             {/* <Rail position='right'> */}
             <FeedBasicInfo feed={feed} user={user} onLikeClick={this.props.onLikeClick} onUnlikeClick={this.props.onUnlikeClick} onDeleteClick={this.props.onDeleteClick} />
             <Sticky context={contextRef} offset={75} >
               <ChatContainer feedId={this.props.feedId} />
             </Sticky>
             {/* </Rail> */}
-           
           </Grid.Column>
         </Grid>
       </div>
@@ -162,7 +160,6 @@ class FeedBasicInfo extends Component {
   }
 
   render() {
-    console.log(this.props);
     const { feed, user } = this.props;
     return (
       <Segment>

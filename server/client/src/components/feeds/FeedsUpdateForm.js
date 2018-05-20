@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import validate from '../../utils/validateFeedForm';
 import { Link } from 'react-router-dom';
-import { Header, Grid, Segment, Button, Form, Checkbox, Message, Dropdown } from 'semantic-ui-react';
+import { Header, Grid, Segment, Button, Form, Message, Dropdown } from 'semantic-ui-react';
 import { updateFeed, updateFeedSuccess, updateFeedFailure } from '../../actions/feeds';
 import { validateFeedFields, validateFeedFieldsSuccess, validateFeedFieldsFailure } from '../../actions/feeds';
 
@@ -34,11 +34,9 @@ const validateAndUpdateFeed = (values, dispatch, props) => {
       }
       dispatch(updateFeedSuccess());
     }).catch(function (err) {
-      console.log(err);
-      console.log(err.response.data);
       dispatch(updateFeedFailure(err.response.data));
     });
-}
+};
 
 const renderField = ({ input, label, type, meta: { touched, error } }) =>
   <div>
@@ -52,15 +50,15 @@ const renderField = ({ input, label, type, meta: { touched, error } }) =>
   </div>
 
 const renderPageField = ({ input, label, type, meta: { asyncValidating, touched, error } }) =>
-<div>
-  <div style={{paddingBottom: "0.5em"}}>
-    <Form.Input {...input} type={type} placeholder={label} error={touched && (error ? true : false)} />
-    <p style={{color: "#b9382f", marginTop: "-14px"}} >
-      {touched && error && <span> {error} </span>}
-      {asyncValidating && <span> Validating... </span>}
-    </p>
+  <div>
+    <div style={{paddingBottom: "0.5em"}}>
+      <Form.Input {...input} type={type} placeholder={label} error={touched && (error ? true : false)} />
+      <p style={{color: "#b9382f", marginTop: "-14px"}} >
+        {touched && error && <span> {error} </span>}
+        {asyncValidating && <span> Validating... </span>}
+      </p>
+    </div>
   </div>
-</div>
 
 const DropdownFormField = props => (
   <Form.Field>
@@ -76,7 +74,7 @@ const DropdownFormField = props => (
       {props.meta.touched && props.meta.error && <span> {props.meta.error} </span>}
     </p>
   </Form.Field>
-)
+);
 
 const renderPages = ({ fields, meta: { error, submitFailed } }) =>
   <div>
@@ -122,7 +120,7 @@ class FeedsUpdateForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.updatedFeed.feedUpdated || nextProps.activeFeed.feed == null) {
-      this.context.router.history.push('/feeds');
+      this.context.router.history.push("/feeds");
     }
   }
 
@@ -144,7 +142,6 @@ class FeedsUpdateForm extends Component {
   }
 
   render() {
-    console.log(this.props)
     const { handleSubmit, submitting, isValidFeed, updatedFeed, reset, pristine } = this.props;
     return (
       <Grid columns={3} stackable style={{ paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
@@ -164,9 +161,6 @@ class FeedsUpdateForm extends Component {
                 label="Title"
               />
               <FieldArray name="pages" component={renderPages} />
-              {/* <Form.Field>
-                <Checkbox label='Is private' />
-              </Form.Field> */}
 
               {this.renderError(isValidFeed)}
               {this.renderError(updatedFeed)}
@@ -188,12 +182,12 @@ class FeedsUpdateForm extends Component {
         <Grid.Column width={4}>
         </Grid.Column>
       </Grid>
-    )
+    );
   }
 }
 
 export default reduxForm({
-  form: 'FeedsUpdateForm', // a unique identifier for this form
+  form: "FeedsUpdateForm", // a unique identifier for this form
   validate, // <--- validation function given to redux-form
   asyncValidate
 })(FeedsUpdateForm)

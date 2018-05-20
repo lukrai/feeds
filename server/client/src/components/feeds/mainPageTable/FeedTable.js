@@ -1,27 +1,26 @@
 import React, {Component} from 'react';
 import Pagination from './Pagination';
 import FeedTableRow from './FeedTableRow';
-import { Segment, List, Header } from 'semantic-ui-react';
+import { Segment, List } from 'semantic-ui-react';
 
 class FeedTable extends Component {
-
   constructor() {
-		super();
+    super();
 
-		this.state = {
-			pageOfItems: []
-		};
+    this.state = {
+      pageOfItems: []
+    };
 
-		this.onChangePage = this.onChangePage.bind(this);
-	}
+    this.onChangePage = this.onChangePage.bind(this);
+  }
 
-	onChangePage(pageOfItems) {
+  onChangePage(pageOfItems) {
     // update state with new page of items
     this.setState({ pageOfItems: pageOfItems });
   }
 
   render(){ 
-		return (
+    return (
       <Segment style={{minHeigth: "150px", important: true}}>             
         <List divided relaxed>
           {this.state.pageOfItems.map(item =>
@@ -29,7 +28,7 @@ class FeedTable extends Component {
           )}
           <Pagination items={this.props.items} onChangePage={this.onChangePage} />
         </List>
-    </Segment>
+      </Segment>
     );
   }
 }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Image, Icon, Embed, Segment } from 'semantic-ui-react';
+import { Card, Image, Icon, Embed } from 'semantic-ui-react';
 import { timeToString } from '../../utils/misc.js';
-import ReactDOM from 'react-dom';
 import { Carousel } from "react-responsive-carousel";
 
 class InfiniteFeedScroll extends Component {
@@ -10,15 +9,15 @@ class InfiniteFeedScroll extends Component {
     return (
       <div>
         {list.map(function (post) {
-          if (post.from && post.source === 'facebook') {
+          if (post.from && post.source === "facebook") {
             return (
               <FacebookCard key={post.id} post={post} />
             );
-          } else if (post.source === 'twitter') {
+          } else if (post.source === "twitter") {
             return (
               <TwitterCard key={post.id} post={post} />
             );
-          } else if (post.source === 'youtube'){
+          } else if (post.source === "youtube"){
             return(
               <YoutubeCard key={post.id} post={post} />
             );
@@ -106,14 +105,6 @@ class TwitterCard extends Component {
   }
 }
 
-const renderImage = function (post) {
-  if (post.attachments.data[0].media) {
-    return (
-      <Image src={post.attachments.data[0].media.image.src} />
-    );
-  }
-}
-
 class YoutubeCard extends Component {
   render() {
     const { post } = this.props;
@@ -130,7 +121,7 @@ class YoutubeCard extends Component {
             </span>
           </Card.Meta>
         </Card.Content>         
-          {renderMedia(post)}
+        {renderMedia(post)}
         <Card.Content>
           <Card.Description>
             {post.description}
@@ -148,8 +139,8 @@ class YoutubeCard extends Component {
 }
 
 const renderMedia = function (post) {
-  if (post.source === 'facebook' && post.attachments) {
-    if (post.attachments.data[0].type === 'video_inline' && post.attachments.data[0].media) {
+  if (post.source === "facebook" && post.attachments) {
+    if (post.attachments.data[0].type === "video_inline" && post.attachments.data[0].media) {
       const videoRef = post.attachments.data[0].url.replace("://", '%3A%2F%2F');
       const videoHeight = post.attachments.data[0].media.image.height;
       const videoWidth = post.attachments.data[0].media.image.width;
@@ -158,13 +149,13 @@ const renderMedia = function (post) {
           <iframe src={`https://www.facebook.com/plugins/video.php?href=${videoRef}&appId=588914741307945`} style={{ display: 'block', position: 'absolute', height: '100%', width: '100%', top: '0', left: '0' }} scrolling="auto" frameBorder="0" allowFullScreen="true"></iframe>
         </div>
       );
-    } else if (post.attachments.data[0].type === 'photo' && post.attachments.data[0].media) {
+    } else if (post.attachments.data[0].type === "photo" && post.attachments.data[0].media) {
       return (
         <Image src={post.attachments.data[0].media.image.src} />
       );
-    } else if (post.attachments.data[0].type === 'album' && post.attachments.data[0].subattachments) {
+    } else if (post.attachments.data[0].type === "album" && post.attachments.data[0].subattachments) {
       const images = post.attachments.data[0].subattachments.data.map(item => {
-        if (item.type === 'photo') {
+        if (item.type === "photo") {
           return {
             src: item.media.image.src,
             thumbnail: item.media.image.src,
@@ -183,7 +174,7 @@ const renderMedia = function (post) {
         </Carousel>
       );
     }
-  } else if (post.source === 'youtube') {
+  } else if (post.source === "youtube") {
     return (
       <Embed
         id={post.id}
@@ -192,5 +183,5 @@ const renderMedia = function (post) {
       />
     );
   }
-}
+};
 

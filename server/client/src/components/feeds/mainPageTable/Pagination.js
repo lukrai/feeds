@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
-import { Icon, Menu, Table, Grid } from 'semantic-ui-react';
+import { Icon, Menu, Grid } from 'semantic-ui-react';
 
 const propTypes = {
   items: PropTypes.array.isRequired,
@@ -118,7 +118,7 @@ class Pagination extends Component {
           <Menu pagination >
             <Menu.Item as='a' onClick={() => this.setPage(1)} disabled={pager.currentPage === 1 ? true : false}>
               First
-							</Menu.Item>
+            </Menu.Item>
             <Menu.Item as='a' icon onClick={() => this.setPage(pager.currentPage - 1)} disabled={pager.currentPage === 1 ? true : false}>
               <Icon name='left chevron' />
             </Menu.Item>
@@ -132,7 +132,7 @@ class Pagination extends Component {
             </Menu.Item>
             <Menu.Item as='a' onClick={() => this.setPage(pager.totalPages)} disabled={pager.currentPage === pager.totalPages ? true : false}>
               Last
-							</Menu.Item>
+            </Menu.Item>
           </Menu>
         </Grid.Column>
       </Grid>

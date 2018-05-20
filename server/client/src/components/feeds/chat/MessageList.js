@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import CustomMessage from './CustomMessage';
-import { Comment, Header } from 'semantic-ui-react';
+import React, { Component } from "react";
+import CustomMessage from "./CustomMessage";
+import { Comment, Header } from "semantic-ui-react";
 
 const style = {
   segment: {
     height: "45vh",
-    overflowY: 'auto',
+    overflowY: "auto",
   }
-}
+};
 
 class MessageList extends Component {
 
@@ -31,7 +31,7 @@ class MessageList extends Component {
 
     if (loading) {
       return (         
-          <h3>Loading...</h3>
+        <h3>Loading...</h3>
       );
     } else if(error) {
       return  <div className="alert alert-danger">{error.message}</div>
@@ -40,17 +40,17 @@ class MessageList extends Component {
     }
 
     return(
-      <Comment.Group style={{paddingLeft: '0.5em'}} minimal style={{maxWidth: '1200px', width: '100%'}}>
+      <Comment.Group minimal style={{maxWidth: '1200px', width: '100%', paddingLeft: '0.5em'}}>
         <Header as='h3' dividing>Chat</Header>
         <div style={style.segment} ref={(ref) => this.messagesRef = ref }  >
           {messages.map(function(message) {
-              if(message){
-                return (               
-                  <CustomMessage key={message._id} message={message}/>
-                );
-              } else {
-                return (<div></div>)
-              }
+            if(message){
+              return (               
+                <CustomMessage key={message._id} message={message}/>
+              );
+            } else {
+              return (<div></div>);
+            }
           })}                           
         </div>  
       </Comment.Group> 

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { timeToString } from '../../../utils/misc.js'
-import { Comment, Icon } from 'semantic-ui-react';
-
+import { Comment } from 'semantic-ui-react';
 
 class CustomMessage extends Component {
-
   render() {
     const message = this.props.message;
     return (
