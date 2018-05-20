@@ -2,7 +2,7 @@ import {
   FETCH_FEED_COMMENTS, FETCH_FEED_COMMENTS_SUCCESS, FETCH_FEED_COMMENTS_FAILURE, RESET_COMMENTS,
   CREATE_FEED_COMMENT, CREATE_FEED_COMMENT_SUCCESS, CREATE_FEED_COMMENT_FAILURE, RESET_NEW_COMMENT,
   DELETE_FEED_COMMENT, DELETE_FEED_COMMENT_SUCCESS, DELETE_FEED_COMMENT_FAILURE, RESET_DELETED_FEED_COMMENT
-} from '../actions/comments';
+} from "../actions/comments";
 
 
 const INITIAL_STATE = { 
@@ -26,24 +26,24 @@ export default function (state = INITIAL_STATE, action) {
       return { ...state, feedCommentList: { comments: [], error: null, loading: false } };
 
     case CREATE_FEED_COMMENT:
-      return { ...state, newComment: { ...state.newComment, loading: true } }
+      return { ...state, newComment: { ...state.newComment, loading: true } };
     case CREATE_FEED_COMMENT_SUCCESS:
-      return { ...state, newComment: { comment: action.payload, error: null, loading: false } }
+      return { ...state, newComment: { comment: action.payload, error: null, loading: false } };
     case CREATE_FEED_COMMENT_FAILURE:
       error = action.payload || { message: action.payload.message };
-      return { ...state, newComment: { comment: null, error: error, loading: false } }
+      return { ...state, newComment: { comment: null, error: error, loading: false } };
     case RESET_NEW_COMMENT:
-      return { ...state, newComment: { comment: null, error: null, loading: false } }
+      return { ...state, newComment: { comment: null, error: null, loading: false } };
       
     case DELETE_FEED_COMMENT:
-      return { ...state, deletedFeed: { ...state.deletedFeed, loading: true } }
+      return { ...state, deletedFeed: { ...state.deletedFeed, loading: true } };
     case DELETE_FEED_COMMENT_SUCCESS: 
-      return { ...state, deletedFeed: { comment: action.payload, error: null, loading: false } }
+      return { ...state, deletedFeed: { comment: action.payload, error: null, loading: false } };
     case DELETE_FEED_COMMENT_FAILURE:
       error = action.payload || { message: action.payload.message };
-      return { ...state, deletedFeed: { comment: null, error:error, loading: false } }
+      return { ...state, deletedFeed: { comment: null, error:error, loading: false } };
     case RESET_DELETED_FEED_COMMENT:
-      return { ...state, deletedFeed: { comment: null, error:null, loading: false } }
+      return { ...state, deletedFeed: { comment: null, error:null, loading: false } };
 
     default:
       return state;

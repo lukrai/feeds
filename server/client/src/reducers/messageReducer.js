@@ -1,7 +1,6 @@
 import {
   FETCH_FEED_MESSAGES, FETCH_FEED_MESSAGES_SUCCESS, FETCH_FEED_MESSAGES_FAILURE, RESET_MESSAGES,
-} from '../actions/messages';
-  
+} from "../actions/messages";
   
 const INITIAL_STATE = { 
   feedMessageList: { messages: [], error: null, loading: false },  
@@ -10,7 +9,6 @@ const INITIAL_STATE = {
 export default function (state = INITIAL_STATE, action) {
   let error;
   switch(action.type) {
-
     case FETCH_FEED_MESSAGES:
       return { ...state, feedMessageList: { messages: [], error: null, loading: true } }; 
     case FETCH_FEED_MESSAGES_SUCCESS:
@@ -20,7 +18,7 @@ export default function (state = INITIAL_STATE, action) {
       return { ...state, feedMessageList: { messages: [], error: error, loading: false } };
     case RESET_MESSAGES:
       return { ...state, feedMessageList: { messages: [], error: null, loading: false } };
-  default:
+    default:
       return state;
   }
 }
