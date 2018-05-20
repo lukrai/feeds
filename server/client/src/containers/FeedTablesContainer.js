@@ -1,9 +1,9 @@
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 import {
   fetchAllFeeds, fetchAllFeedsSuccess, fetchAllFeedsFailure, resetAllFeeds, likeFeed, likeFeedFailure, likeFeedSuccess, unlikeFeed,
   unlikeFeedFailure, unlikeFeedSuccess
-} from '../actions/feeds';
-import FeedTables from '../components/feeds/mainPageTable/FeedTables';
+} from "../actions/feeds";
+import FeedTables from "../components/feeds/mainPageTable/FeedTables";
 
 
 const mapStateToProps = (state) => {
@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
     user: state.auth,
     allFeedsList: state.feeds.allFeedsList
   };
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -27,8 +27,8 @@ const mapDispatchToProps = (dispatch) => {
     },
     onLikeClick: (id, user) => {
       if (!user) {
-        let data = { data: { message: 'Please Sign In' } };//axios like error
-        dispatch(likeFeedFailure(data)); // but let other comps know
+        let data = { data: { message: "Please Sign In" } };
+        dispatch(likeFeedFailure(data));
         return;
       }
       dispatch(likeFeed(id)).payload
@@ -38,8 +38,8 @@ const mapDispatchToProps = (dispatch) => {
     },
     onUnlikeClick: (id, user) => {
       if (!user) {
-        let data = { data: { message: 'Please Sign In' } };//axios like error
-        dispatch(unlikeFeedFailure(data)); // but let other comps know
+        let data = { data: { message: "Please Sign In" } };
+        dispatch(unlikeFeedFailure(data));
         return;
       }
       dispatch(unlikeFeed(id)).payload
@@ -50,7 +50,7 @@ const mapDispatchToProps = (dispatch) => {
     resetMe: () => {
       dispatch(resetAllFeeds());
     }
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedTables);

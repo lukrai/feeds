@@ -1,12 +1,12 @@
-import { connect } from 'react-redux'
-import { fetchFeeds, fetchFeedsSuccess, fetchFeedsFailure, resetFeeds } from '../actions/feeds';
-import FeedList from '../components/feeds/FeedList';
+import { connect } from "react-redux";
+import { fetchFeeds, fetchFeedsSuccess, fetchFeedsFailure, resetFeeds } from "../actions/feeds";
+import FeedList from "../components/feeds/FeedList";
 
 const mapStateToProps = (state) => {
   return {
     feedsList: state.feeds.feedsList
   };
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch) => {
     resetMe: () => {
       dispatch(resetFeeds());
     }
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedList);

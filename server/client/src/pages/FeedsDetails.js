@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import FeedDetailsContainer from '../containers/FeedDetailsContainer.js';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import FeedDetailsContainer from "../containers/FeedDetailsContainer.js";
 
 class FeedsDetails extends Component {
   static contextTypes = {
