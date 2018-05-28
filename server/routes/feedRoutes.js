@@ -158,13 +158,18 @@ module.exports = app => {
             }
           });
         }
-
+        
         feedObj = feedObj.toJSON();
-        let facebookData = facebookPagesString.length ? await parseFacebookData(facebookPagesString) : [];
-        let twitterData = twitterPagesString.length ? await parseTwitterData(twitterPagesString) : [];
-        let youtubeData = youtubePagesString.length ? await parseYoutubeData(youtubePagesString) : [];
-
-        let feedData = [].concat.apply([], [facebookData, twitterData, youtubeData]);
+        let promises = [];
+        let feedData = [];
+        let facebookData = facebookPagesString.length ? promises.push(parseFacebookData(facebookPagesString)) : [];
+        let twitterData = twitterPagesString.length ?  promises.push(parseTwitterData(twitterPagesString)) : [];
+        let youtubeData = youtubePagesString.length ?  promises.push(parseYoutubeData(youtubePagesString)) : [];
+        
+        await Promise.all(promises).then(responses => {
+          responses.map(response => feedData = [].concat.apply(feedData, response));
+        });
+        
         feedData = sortObjectsByDate(feedData);
         feedObj.feedData = feedData;
 
