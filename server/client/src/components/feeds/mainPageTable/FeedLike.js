@@ -42,7 +42,8 @@ class FeedLike extends Component {
       return (
         <div>
           <a onClick={() => this.showLoginModal(true)}>
-            <Icon color='red' name='like' circular={true}/> {this.state.likeCount}
+            <span style={{paddingRight: '0.5em'}}>{this.state.likeCount}</span>
+            <Icon color='red' name='like' circular={true}/>
           </a>  
           <LoginModal open={this.state.openModal} closeLoginModal={this.closeLoginModal} />
         </div>    
@@ -50,13 +51,15 @@ class FeedLike extends Component {
     } else if(this.state.liked === false) {
       return (
         <a>
-          <Icon color='red' name='like' circular={true} onClick={()=> {this.props.onLikeClick(itemId,this.props.user); this.changeLikeState()}} /> {this.state.likeCount}        
+          <span style={{paddingRight: '0.5em'}}>{this.state.likeCount}</span>
+          <Icon color='red' name='like' circular={true} onClick={()=> {this.props.onLikeClick(itemId,this.props.user); this.changeLikeState()}} />      
         </a>      
       );
     } else if(this.state.liked === true) {
       return (
         <a>
-          <Icon color='red' inverted name='like' circular={true} onClick={()=> {this.props.onUnlikeClick(itemId,this.props.user); this.changeLikeState()}} /> {this.state.likeCount}
+          <span style={{paddingRight: '0.5em'}}>{this.state.likeCount}</span>
+          <Icon color='red' inverted name='like' circular={true} onClick={()=> {this.props.onUnlikeClick(itemId,this.props.user); this.changeLikeState()}} />
         </a>      
       );
     }
