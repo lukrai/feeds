@@ -32,15 +32,14 @@ class FeedList extends Component {
   }
 
   render() {
-    console.log(this.props);
     const { loading, error } = this.props.feedsList;
     const { userFeeds, likedFeeds } = this.props.feedsList.feeds;
     if(loading) {
       return (
         <Loader active >
-            <div className="container">
-              <h1>Feeds</h1>
-              <h3>Loading...</h3>
+          <div className="container">
+            <h1>Feeds</h1>
+            <h3>Loading...</h3>
           </div> 
         </Loader>
       );     
