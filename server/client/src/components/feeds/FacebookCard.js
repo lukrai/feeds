@@ -42,7 +42,7 @@ class FacebookCard extends Component {
 }
 
 const renderMedia = function (post) {
-  if (post.source !== "facebook" && !post.attachments) {
+  if (post.source !== "facebook" && !post.attachments || !post.attachments) {
     return;
   }
   if (post.attachments.data[0].type === "video_inline" && post.attachments.data[0].media) {
