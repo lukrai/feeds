@@ -199,7 +199,9 @@ module.exports = app => {
     const feed = {
       title: req.body.title,
       pages: req.body.pages,
-      date_updated: Date.now()
+      date_updated: Date.now(),
+      feedData: [],
+      feed_updated: null,
     };
     //console.log(req);
     Feed.findOneAndUpdate({_id: req.params.feed_id, _userID: req.user.id}, feed, function (err, data) {

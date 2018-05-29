@@ -28,8 +28,9 @@ async function parseFacebookData(pagesString) {
       }
       data = feedData;
     }).catch(function (err) {
-      console.log(err);
-      return res.status(500).send("There was a problem parsing facebook feed.");
+      // console.log(err);
+      // return res.status(500).send("There was a problem parsing facebook feed.");
+      return [];
     });
   return data;
 }
@@ -63,8 +64,9 @@ async function parseTwitterData(pagesString) {
       }
     })
     .catch(function (err) {
-      console.log(err);
-      return res.status(500).send("There was a problem parsing twitter feed.");
+      // console.log(err);
+      // return res.status(500).send("There was a problem parsing twitter feed.");
+      return [];
     });
 
   return twitterData;
@@ -98,7 +100,8 @@ async function parseYoutubeData(pagesString) {
         }
       }
     }).catch(function (err) {
-      return res.status(500).send("There was a problem parsing youtube feed.");
+      //return res.status(500).send("There was a problem parsing youtube feed.");
+      return [];
     });
   return youtubeData;
 }
