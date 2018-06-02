@@ -84,7 +84,7 @@ module.exports = app => {
     };
 
     try {
-      const userFeeds = await Feed.find({ _userID: req.user.id }, function (err, feeds) {
+      const userFeeds = await Feed.find({ _userID: req.user.id }, {feedData: 0}, function (err, feeds) {
         if (err) {
           return res.status(500).send("There was a problem parsing feed.");
         }
@@ -95,7 +95,7 @@ module.exports = app => {
         return feeds;
       });
 
-      const likedFeeds = await Feed.find({ likes: mongoose.Types.ObjectId(req.user.id) }, null, { sort: { date_created: -1 } }, function (err, feeds) {
+      const likedFeeds = await Feed.find({ likes: mongoose.Types.ObjectId(req.user.id) }, {feedData: 0}, { sort: { date_created: -1 } }, function (err, feeds) {
         if (err) {
           return res.status(500).send("There was a problem parsing feed."); 
         }
@@ -125,10 +125,10 @@ module.exports = app => {
     };
 
     try {
-      feedsByLikes = await Feed.find({}, null, { sort: { like_count: -1 } }).limit(1000);
-      feedsByDate = await Feed.find({}, null, { sort: { date_created: -1 } }).limit(1000);
-      feeds['feedsByLikes'] = feedsByLikes;
-      feeds['feedsByDate'] = feedsByDate;
+      feedsByLikes = await Feed.find({}, {feedData: 0}, { sort: { like_count: -1 } }).limit(1000);
+      feedsByDate = await Feed.find({}, {feedData: 0}, { sort: { date_created: -1 } }).limit(1000);
+      feeds.feedsByLikes = feedsByLikes;
+      feeds.feedsByDate = feedsByDate;
 
       return res.status(200).send(feeds);
 
