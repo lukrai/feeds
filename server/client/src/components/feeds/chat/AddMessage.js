@@ -19,7 +19,7 @@ const renderField = ({
 }) => (
   <div style={{paddingBottom: '0.5em'}}>
     {touched && (error && <span><Label basic color='red' pointing='below'>{error}</Label></span>)         }
-    <Form.Input {...input} type={type} placeholder={placeholder}/>
+    <Form.Input {...input} type={type} placeholder={placeholder} autoComplete="off"/>
   </div>
 )
 

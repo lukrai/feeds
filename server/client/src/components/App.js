@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 import Landing from './Landing';
+import Error from './Error';
 
 import FeedDetails from '../pages/FeedsDetails';
 import FeedsList from '../pages/FeedsList';
@@ -33,13 +34,14 @@ render() {
             <div style={style.layout}>
               <FixedTopMenu />
               <Sidebar as={CustomMenu}/>
-              <Sidebar.Pusher style={style.pusher}>
-                <Route exact path="/" component={Landing}/>
-                <Route exact path="/feeds" component={FeedsList}/>    
+              <Sidebar.Pusher style={style.pusher}>  
                 <Switch>
+                  <Route exact path="/" component={Landing}/>
+                  <Route exact path="/feeds" component={FeedsList}/> 
                   <Route exact path="/feeds/new" component={FeedsNew} />
                   <Route exact path="/feeds/edit" component={FeedsEdit}/>
-                  <Route exact path="/feeds/:id" component={FeedDetails}/>                      
+                  <Route exact path="/feeds/:id" component={FeedDetails}/>     
+                  <Route component={Error} />                 
                 </Switch>                 
               </Sidebar.Pusher>
             </div>

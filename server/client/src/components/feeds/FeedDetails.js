@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import InfiniteFeedScroll from './InfiniteFeedScroll.js'
 import ChatContainer from '../../containers/ChatContainer.js';
 import FeedLike from './mainPageTable/FeedLike';
+import Error from './../Error';
 import { Grid, Segment, List, Header, Button, Modal, Visibility, Sticky } from 'semantic-ui-react';
 
 class FeedDetails extends Component {
@@ -82,9 +83,9 @@ class FeedDetails extends Component {
         </Grid>
       );
     } else if (error) {
-      return <div className="alert alert-danger">{error.message}</div>
+      return <Error error={error}></Error>;
     } else if (!feed) {
-      return <span />
+      return <span />;
     }
     return (
       <div ref={this.handleContextRef}>
