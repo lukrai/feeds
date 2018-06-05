@@ -48,7 +48,7 @@ class FeedList extends Component {
     }
     
     return (
-      <Grid columns={3} stackable style={{paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em' }}>
+      <Grid columns={3} stackable style={{paddingTop: '1em', paddingLeft: '1em', paddingRight: '1em', minWidth: '400px'}}>
         <Grid.Column width={4}>
         </Grid.Column>
         

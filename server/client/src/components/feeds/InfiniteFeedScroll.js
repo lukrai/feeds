@@ -9,7 +9,7 @@ class InfiniteFeedScroll extends Component {
   render() {
     const { list } = this.props;
     return (
-      <div>
+      <div >
         {list.map(function (post) {
           if (post.from && post.source === "facebook") {
             return (

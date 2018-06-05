@@ -6,7 +6,7 @@ import { Segment, Container, Header } from 'semantic-ui-react';
 class Landing extends Component {
   render() {
     return (
-      <div>
+      <div style={{minWidth: '400px'}}>
         <Segment
           inverted
           textAlign='center'

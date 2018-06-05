@@ -88,8 +88,8 @@ class FeedDetails extends Component {
       return <span />;
     }
     return (
-      <div ref={this.handleContextRef}>
-        <Grid columns={2} container style={{ paddingLeft: '1em', paddingRight: '1em' }}>
+      <div ref={this.handleContextRef} style={{minWidth: '400px'}}>
+        <Grid columns={2} container style={{ paddingLeft: '1em', paddingRight: '1em'}}>
           <Grid.Column width={8}>
             <Visibility onUpdate={this.handleUpdate}>
               <InfiniteFeedScroll list={this.state.posts} loadMorePosts={this.loadMorePosts} />
