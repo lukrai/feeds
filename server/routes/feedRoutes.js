@@ -171,7 +171,7 @@ module.exports = app => {
         });
         
         feedData = sortObjectsByDate(feedData);
-        feedObj.feedData = feedData;
+        feedObj.feedData = feedData.slice(0, 200);
 
         await Feed.update(
           {

@@ -83,7 +83,7 @@ const renderMedia = function (post) {
     return(
       <div style={{padding: "0.5em"}}>
         <Card centered fluid href2={url} onClick={()=> window.open(url)}>
-          <Image src={media.image.src} />
+          {media ? <Image src={media.image.src} /> : <span></span> }
           <Card.Content>
             <Card.Header>
               {title}

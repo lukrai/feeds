@@ -58,8 +58,12 @@ const renderPageField = ({ input, label, type, meta: { asyncValidating, touched,
     </div>
   </div>
 
-const DropdownFormField = props => (
-  <Form.Field>
+const DropdownFormField = props => {
+  if (!props.input.value) {
+    props.input.onChange(dropdownOptions[0].value);
+  }
+
+  return( <Form.Field>
     <Dropdown
       selection {...props.input}
       value={props.input.value}
@@ -67,12 +71,12 @@ const DropdownFormField = props => (
       options={dropdownOptions}
       placeholder={"Feed source"}
       error={props.meta.touched && (props.meta.error ? true : false)}
-    /> 
+    />
     <p style={{color: "#b9382f"}} >
       {props.meta.touched && props.meta.error && <span> {props.meta.error} </span>}
     </p>
-  </Form.Field>
-);
+  </Form.Field>);
+};
 
 const renderPages = ({ fields, meta: { error, submitFailed } }) =>
   <div>
